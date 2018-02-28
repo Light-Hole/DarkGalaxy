@@ -1,0 +1,35 @@
+﻿@model IEnumerable<DarkGalaxy_Model.Region>
+
+<div id="Region" data-page="region" class="page no-tabbar dgalaxy-region">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a class="icon-only back dgalaxy-icon-back" href="/Default.aspx">
+                    <i class="f7-icons">chevron_left</i>
+                </a>
+            </div>
+            <div class="center dgalaxy-title">选择地区</div>
+        </div>
+    </div>
+
+    <!-- 数据主体区域 -->
+    <div class="page-content">
+        <input id="Titles" type="hidden" value="@ViewData["titles"]" />
+        <input id="Values" type="hidden" value="@ViewData["values"]" />
+        <div class="list-block no-margin dgalaxy-list-region">
+            <ul>
+                @foreach (var temp in Model)
+                {
+                    <li>
+                        <a href="javascript:void(0);" class="item-link item-content" data-id="@temp.ID" data-title="@temp.Title">
+                            <div class="item-inner">
+                                <div class="item-title dgalaxy-title">@temp.Title</div>
+                            </div>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,88 @@
+﻿@model DarkGalaxy_UI.Models.OrderViewModel
+
+<div id="OrderDetails" data-page="orderDetails" class="page no-toolbar">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a class="dgalaxy-icon-back icon-only back" href="@Url.Action("Index","Home")">
+                    <i class="f7-icons">chevron_left</i>
+                </a>
+            </div>
+            <div class="center dgalaxy-title">订单详情</div>
+        </div>
+    </div>
+
+    <!-- 页面主体区域 -->
+    <div class="page-content">
+        <!-- 订单数据 -->
+        <div class="dgalaxy-order">
+            <div class="card dgalaxy-card-order">
+                <div class="card-header dgalaxy-card-header">
+                    <div id="OrderStatusText" class="dgalaxy-text" data-status="@Convert.ToInt32(Model.OrderModel.Status)"></div>
+                    <div class="dgalaxy-img">
+                        <img src="/Images/hhd.png" />
+                    </div>
+                </div>
+                <div class="card-content dgalaxy-card-content">
+                    <div class="dgalaxy-card-contacts">
+                        <div class="dgalaxy-card-left">
+                            <i class="iconfont icon-dizhiguanli font-25"></i>
+                        </div>
+                        <div class="dgalaxy-card-right">
+                            <div class="dgalaxy-info">
+                                <div class="text-line-single dgalaxy-name">收货人：@Model.OrderModel.Name</div>
+                                <div class="text-line-single dgalaxy-phone">@Model.OrderModel.Phone</div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="txt-line-single-2 dgalaxy-address">收货地址：@Model.RegionText @Model.OrderModel.DetailedAddress</div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 订单详情数据 -->
+        <div class="dgalaxy-order-detail">
+            <div class="card dgalaxy-card-order-detail">
+                <div class="card-header dgalaxy-card-header">订单号：@Model.OrderModel.OrderNumber</div>
+                <div class="card-content dgalaxy-card-content">
+                    @foreach (var temp in Model.OrderDetailList)
+                    {
+                        <div class="dgalaxy-card-commodity">
+                            <div class="dgalaxy-card-left">
+                                <img src="@temp.CommodityModel.ImagePath" />
+                            </div>
+                            <div class="dgalaxy-card-right">
+                                <div class="txt-line-single-2 dgalaxy-title">@temp.CommodityModel.Title</div>
+                                <div class="txt-line-single dgalaxy-price">￥@(temp.SpecificationModel.Price / 100.00)</div>
+                                <div class="txt-line-single dgalaxy-price-original"><s>￥@(temp.SpecificationModel.Price / 100.00)</s></div>
+                                <div class="clear"></div>
+                                <div class="txt-line-single-2 dgalaxy-subtitle">@temp.SpecificationModel.Title</div>
+                                <div class="txt-line-single dgalaxy-number">x<span>@temp.OrderDetailModel.Quantity</span></div>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    }
+                    <div class="dgalaxy-card-calculate">
+                        <div class="dgalaxy-card-row">
+                            <div class="dgalaxy-card-left">商品数量</div>
+                            <div class="dgalaxy-card-right">@Model.OrderModel.TotalQuantity</div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer dgalaxy-card-footer">
+                    <div class="dgalaxy-pay">
+                        <div class="float-left color-black">实付款</div>
+                        <div class="float-right color-orange">￥@(Model.OrderModel.ActualPrice / 100.00)</div>
+                        <div class="clear"></div>
+                    </div>
+                    <div id="OrderStatusBtu" data-id="@Model.OrderModel.ID" data-status="@Convert.ToInt32(Model.OrderModel.Status)"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

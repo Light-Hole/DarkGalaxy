@@ -1,0 +1,1287 @@
+﻿/*商品样式*/
+.dgalaxy-commodity .dgalaxy-card-commodity {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    padding: 2vh 4vw;
+}
+
+.dgalaxy-commodity .dgalaxy-card-commodity a{
+    color: black !important;
+}
+
+.dgalaxy-commodity .dgalaxy-card-commodity .dgalaxy-card-header {
+    height: 20vh;
+    border-radius: 5%;
+    background-size: 100% 20vh;
+    background-repeat: no-repeat;
+}
+
+.dgalaxy-commodity .dgalaxy-card-commodity .dgalaxy-card-header .dgalaxy-title {
+    top: 1vh;
+    left: 5vw;
+    position: absolute;
+    width: 85vw;
+    color: #f4efeb;
+}
+
+.dgalaxy-commodity .dgalaxy-card-commodity .dgalaxy-card-content .dgalaxy-title .dgalaxy-text{
+    float: left;
+    width: 90%;
+}
+
+.dgalaxy-commodity .dgalaxy-card-commodity .dgalaxy-card-content .dgalaxy-title .dgalaxy-price {
+    font-size: large;
+    font-family: 微软雅黑;
+    color: #f16a00;
+}
+
+.dgalaxy-commodity .dgalaxy-card-commodity .dgalaxy-card-content .dgalaxy-title .dgalaxy-icon {
+    float: left;
+    width: 10%;
+    line-height: 25px;
+    font-size: 17px;
+    color: #8e8e93;
+}
+
+.dgalaxy-commodity .dgalaxy-card-commodity .dgalaxy-card-content .dgalaxy-subtitle,
+.dgalaxy-commodity .dgalaxy-card-commodity .dgalaxy-card-content .dgalaxy-time{
+    margin-top: .5vh;
+}
+
+.dgalaxy-commodity .dgalaxy-card-commodity .dgalaxy-card-content .dgalaxy-subtitle .dgalaxy-icon {
+    color: #0894ec;
+}
+
+/*商品详情样式*/
+.dgalaxy-commodity-details .dgalaxy-banner {
+    width: 100%;
+    height: 25vh;
+}
+
+.dgalaxy-commodity-details .dgalaxy-banner img{
+    width: 100%;
+    height: 25vh;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-title {
+    margin: 0px !important;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-time,
+.dgalaxy-commodity-details .dgalaxy-card-spec-category,
+.dgalaxy-commodity-details .dgalaxy-card-evaluate,
+.dgalaxy-commodity-details .dgalaxy-card-journey {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-title .dgalaxy-card-content,
+.dgalaxy-commodity-details .dgalaxy-card-time .dgalaxy-card-content,
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-header,
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content,
+.dgalaxy-commodity-details .dgalaxy-card-evaluate .dgalaxy-card-header,
+.dgalaxy-commodity-details .dgalaxy-card-evaluate .dgalaxy-card-content,
+.dgalaxy-commodity-details .dgalaxy-card-journey .dgalaxy-card-header,
+.dgalaxy-commodity-details .dgalaxy-card-journey .dgalaxy-card-content{
+    padding: 2vh 2vh;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content a{
+    color: black;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-evaluate .dgalaxy-card-footer a{
+    color: #999999;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-title .dgalaxy-card-content .dgalaxy-title {
+    color: black;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-title .dgalaxy-card-content .dgalaxy-price {
+    margin-top: 1vh;
+    font-size: small;
+    color: #8e8e93;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-title .dgalaxy-card-content .dgalaxy-price .price{
+    font-size: large;
+    font-family: 微软雅黑;
+    color: #f16a00;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-time .dgalaxy-card-content .dgalaxy-icon,
+.dgalaxy-commodity-details .dgalaxy-card-time .dgalaxy-card-content .dgalaxy-times {
+    float: left;
+    height: 3vh;
+    line-height: 3vh;
+    box-sizing: border-box;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-time .dgalaxy-card-content .dgalaxy-icon,
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-header .dgalaxy-icon,
+.dgalaxy-commodity-details .dgalaxy-card-evaluate .dgalaxy-card-header .dgalaxy-icon,
+.dgalaxy-commodity-details .dgalaxy-card-journey .dgalaxy-card-header .dgalaxy-icon {
+    width: 7%;
+    color: #0894ec;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-time .dgalaxy-card-content .dgalaxy-times {
+    width: 93%;
+    color: #8e8e93;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-time .dgalaxy-card-content .dgalaxy-times .dgalaxy-time{
+    color: black;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-header .dgalaxy-icon,
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-header .dgalaxy-title,
+.dgalaxy-commodity-details .dgalaxy-card-evaluate .dgalaxy-card-header .dgalaxy-icon,
+.dgalaxy-commodity-details .dgalaxy-card-evaluate .dgalaxy-card-header .dgalaxy-title,
+.dgalaxy-commodity-details .dgalaxy-card-journey .dgalaxy-card-header .dgalaxy-icon,
+.dgalaxy-commodity-details .dgalaxy-card-journey .dgalaxy-card-header .dgalaxy-title{
+    float: left;
+    box-sizing: border-box;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-header .dgalaxy-title,
+.dgalaxy-commodity-details .dgalaxy-card-evaluate .dgalaxy-card-header .dgalaxy-title,
+.dgalaxy-commodity-details .dgalaxy-card-journey .dgalaxy-card-header .dgalaxy-title{
+    width: 93%;
+    font-size: smaller;
+    color: black;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category:first-child{
+    margin-top: 0px;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category{
+    height: 13vh;
+    margin-top: 3vh;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category:last-child{
+    margin-bottom: 3vh;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category .dgalaxy-card-left,
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category .dgalaxy-card-center,
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category .dgalaxy-card-right{
+    float: left;
+    height: 13vh;
+    box-sizing: border-box;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category .dgalaxy-card-left{
+    width: 30%;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category .dgalaxy-card-left img{
+    width: 100%;
+    max-height: 13vh;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category .dgalaxy-card-center{
+    width: 65%;
+    padding-left: 3.5%;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category .dgalaxy-card-center .dgalaxy-title,
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category .dgalaxy-card-center .dgalaxy-price{
+    height: 3vh;
+    line-height: 3vh;
+    font-size: large;
+    box-sizing: border-box;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category .dgalaxy-card-center .dgalaxy-price{
+    font-family: 微软雅黑;
+    color: #8e8e93;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category .dgalaxy-card-center .dgalaxy-price .price{
+    color: #f16a00;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category .dgalaxy-card-center .dgalaxy-subtitle{
+    height: 7vh;
+    padding-top: 1vh;
+    font-size: smaller;
+    color: #8e8e93;
+    box-sizing: border-box;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-spec-category .dgalaxy-card-content .dgalaxy-card-category .dgalaxy-card-right{
+    width: 5%;
+    line-height: 13vh;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-journey .dgalaxy-card-content .dgalaxy-timeline{
+    margin: 0px;
+    padding: 0px;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-journey .dgalaxy-card-content .dgalaxy-timeline .dgalaxy-title{
+    font-weight: 600;
+}
+
+.dgalaxy-commodity-details .dgalaxy-card-journey .dgalaxy-card-content .dgalaxy-timeline .dgalaxy-content{
+    font-size: smaller;
+    color: #8e8e93;
+}
+
+/*商品规格样式*/
+.dgalaxy-commodity-spec .dgalaxy-card-spec,
+.dgalaxy-commodity-spec .dgalaxy-list-spec {
+    margin: 10px 0px 0px !important;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec{
+    margin-bottom: 60px !important;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-card-spec .dgalaxy-card-content{
+    padding: 2vh 2vh;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-card-spec .dgalaxy-card-content .dgalaxy-attribute{
+    float: left;
+    width: 50%;
+    height: 4vh;
+    margin-bottom: 2vh;
+    line-height: 4vh;
+    font-size: small;
+    box-sizing: border-box;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-card-spec .dgalaxy-card-content .dgalaxy-title{
+    font-weight: 600;
+    color: black;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-card-spec .dgalaxy-card-content .dgalaxy-desc{
+    margin-top: 2vh;
+    line-height: 3.5vh;
+    font-size: small;
+    color: #666666;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content {
+    padding: 0vw 4vw;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner {
+    height: 17vh;
+    padding: 2vh 0vh;
+    box-sizing: border-box;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-list-left,
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-list-right {
+    float: left;
+    height: 13vh;
+    box-sizing: border-box;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-list-left {
+    width: 30%;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-list-left img{
+    width: 100%;
+    max-height: 13vh;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-list-right {
+    width: 70%;
+    padding-left: 3.5%;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-title{
+    height: 3vh;
+    line-height: 3vh;
+    font-size: initial;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-title .dgalaxy-title-left,
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-title .dgalaxy-title-right{
+    float: left;
+    box-sizing: border-box;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-title .dgalaxy-title-left{
+    width: 65%;
+    font-weight: 600;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-title .dgalaxy-title-right{
+    width: 35%;
+    text-align: right;
+    font-size: small;
+    color: #0894ec;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-subtitle,
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-btn,
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-btn i,
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-btn .number{
+    float: left;
+    height: 6vh;
+    box-sizing: border-box
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-subtitle{
+    width: 60%;
+    margin-top: 1vh;
+    font-size: small;
+    color: #999999;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-btn{
+    width: 40%;
+    text-align: right;
+    line-height: 9vh;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-btn i{
+    width: 30%;
+    font-size: 4.5vh;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-btn .number{
+    width: 40%;
+    text-align: center;
+    line-height: 9vh;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-price{
+    height: 3vh;
+    line-height: 3vh;
+    font-size: large;
+    font-family: 微软雅黑;
+    color: #8e8e93;
+    box-sizing: border-box;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-list-spec .dgalaxy-list-content .dgalaxy-list-inner .dgalaxy-price .price{
+    color: #f16a00;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-btn-bottom {
+    bottom: 0px;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    height: 50px;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-btn-bottom .dgalaxy-btn-left,
+.dgalaxy-commodity-spec .dgalaxy-btn-bottom .dgalaxy-btn-right {
+    float: left;
+    width: 50%;
+    height: 50px;
+    line-height: 50px;
+    box-sizing: border-box;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-btn-bottom .dgalaxy-btn-left {
+    padding-left: 4vw;
+    text-align: left;
+    font-size: 1rem;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-btn-bottom .dgalaxy-btn-left i{
+    font-size: 1.5rem;
+}
+
+.dgalaxy-commodity-spec .dgalaxy-btn-bottom .dgalaxy-btn-right {
+    text-align: center;
+}
+
+/*商品搜索样式*/
+.dgalaxy-commodity-search .dgalaxy-search {
+    background: #f7f7f8;
+}
+
+.dgalaxy-commodity-search .dgalaxy-search .dgalaxy-input{
+    border: 1px solid #aaa;
+    border-radius: 5px;
+}
+
+.dgalaxy-commodity-search {
+    width: 100%;
+    height: 100%;
+    padding:1vh 2vh 0px 2vh;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.dgalaxy-commodity-search .dgalaxy-title {
+    margin-top: 2vh;
+    font-size: small;
+    color: #666666;
+}
+
+.dgalaxy-commodity-search .dgalaxy-row {
+    margin-top: 1vh;
+    height: 7vh;
+    line-height: 7vh;
+    background-color: #f2f2f2;
+}
+
+.dgalaxy-commodity-search .dgalaxy-row .dgalaxy-input-short {
+    width: 36vw;
+    height: 4vh;
+    margin-left: 2vw;
+    border: 1px;
+    border-radius: .3rem;
+    padding-left: 3vw;
+    line-height: 4vh;
+    font-size: smaller;
+    color: #333333;
+}
+
+.dgalaxy-commodity-search .dgalaxy-row .dgalaxy-input-symbol {
+    margin-left: 2vw;
+    font-weight: bolder;
+    color: #999999;
+}
+
+/*发现样式*/
+.dgalaxy-discover .dgalaxy-card-discover {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.dgalaxy-discover .dgalaxy-card-discover .dgalaxy-card-content{
+    height: 10vh;
+    padding: 2vh 4vw;
+}
+
+.dgalaxy-discover .dgalaxy-card-discover .dgalaxy-card-content .dgalaxy-card-left,
+.dgalaxy-discover .dgalaxy-card-discover .dgalaxy-card-content .dgalaxy-card-right{
+    float: left;
+    height: 10vh;
+    box-sizing: border-box;
+}
+
+.dgalaxy-discover .dgalaxy-card-discover .dgalaxy-card-content .dgalaxy-card-left{
+    width: 30%;
+}
+
+.dgalaxy-discover .dgalaxy-card-discover .dgalaxy-card-content .dgalaxy-card-left img {
+    width: 100%;
+    max-height: 10vh;
+}
+
+.dgalaxy-discover .dgalaxy-card-discover .dgalaxy-card-content .dgalaxy-card-right{
+    width: 70%;
+    padding-left: 3.5%;
+}
+
+.dgalaxy-discover .dgalaxy-card-discover .dgalaxy-card-content .dgalaxy-card-right .dgalaxy-title{
+    height: 2.5vh;
+}
+
+.dgalaxy-discover .dgalaxy-card-discover .dgalaxy-card-content .dgalaxy-card-right .dgalaxy-subtitle{
+    height: 8.5vh;
+    padding-top: 1vh;
+    color: #8e8e93;
+}
+
+.dgalaxy-discover .dgalaxy-card-discover .dgalaxy-card-footer .dgalaxy-time{
+    color: #6d6d72;
+}
+
+/*订单样式*/
+.dgalaxy-order .dgalaxy-card-order {
+    margin: 0px !important;
+    font-family: 微软雅黑;
+}
+
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-header {
+    height: 15vh;
+}
+
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-header .dgalaxy-text,
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-header .dgalaxy-img{
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-header .dgalaxy-text {
+    padding-left: 10%;
+    font-size: medium;
+}
+
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-header .dgalaxy-img {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+ .dgalaxy-order .dgalaxy-card-order .dgalaxy-card-header .dgalaxy-img img {
+     max-width: 100%;
+     max-height: 13vh;
+ }
+
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-content .dgalaxy-card-contacts {
+    max-height: 13vh;
+    min-height: 11.5vh;
+    padding: 1vh 4% 2vh;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-left,
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-right{
+    float: left;
+}
+
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-left {
+    width: 10%;
+    max-height: 10vh;
+    min-height: 7.5vh;
+    padding-top: 2vh;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-right {
+    width: 90%;
+    font-size: smaller;
+}
+
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-right .dgalaxy-info {
+    height: 5vh;
+    line-height: 5vh;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-right .dgalaxy-address {
+    max-height: 5vh;
+    min-height: 2.5vh;
+    line-height: 2.5vh;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-right .dgalaxy-info .dgalaxy-name,
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-right .dgalaxy-info .dgalaxy-phone{
+    float: left;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-right .dgalaxy-info .dgalaxy-name {
+    width: 60%;
+    padding-right: 5%;
+}
+
+.dgalaxy-order .dgalaxy-card-order .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-right .dgalaxy-info .dgalaxy-phone {
+    width: 40%;
+    text-align: right;
+}
+
+/*订单详情样式*/
+.dgalaxy-order-detail .dgalaxy-tab-btn {
+    display: block;
+    width: 100%;
+    height: 29px;
+    line-height: 27px;
+    font-size: small;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    box-sizing: border-box;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+}
+
+.dgalaxy-order-detail .dgalaxy-tab-btn.active {
+    border-bottom: 1px solid #007aff;
+    color: #007aff;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    font-family: 微软雅黑;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-header {
+    font-size: inherit;
+    color: #000;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-footer {
+    display: inline-block;
+    width: 100%;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity {
+    height: 15vh;
+    margin-top: .5vh;
+    padding: 1vh 4vw;
+    background-color: #f7f7f7;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-left {
+    width: 30%;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-left img {
+    width: 100%;
+    max-height: 13vh;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right {
+    width: 70%;
+    padding-left: 3.5%;
+    font-size: smaller;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-left,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-title,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-subtitle,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-price,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-price-original,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-number,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-calculate .dgalaxy-card-row .dgalaxy-card-left,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-calculate .dgalaxy-card-row .dgalaxy-card-right{
+    float: left;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-title,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-subtitle,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-price,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-price-original,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-number {
+    padding-top: 1vh;
+    color: #000;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-title,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-subtitle {
+    width: 65%;
+    height: 6vh;
+    line-height: 2.5vh;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-price,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-price-original,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-number {
+    width: 35%;
+    height: 3vh;
+    line-height: 2vh;
+    text-align: right;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-subtitle,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-original,
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-number {
+    color: #999999;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-total {
+    padding: 3% 4% 3% 0px;
+    text-align: right;
+    color: #000;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-calculate {
+    padding: 1vh 4%;
+    color: #999999;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-calculate .dgalaxy-card-row {
+    margin-top: 1vh;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-calculate .dgalaxy-card-row .dgalaxy-card-left{
+    width: 40%;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-content .dgalaxy-card-calculate .dgalaxy-card-row .dgalaxy-card-right {
+    width: 60%;
+    text-align: right;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-footer .dgalaxy-btn {
+    float: right;
+    margin-left: 5%;
+}
+
+.dgalaxy-order-detail .dgalaxy-card-order-detail .dgalaxy-card-footer .dgalaxy-pay {
+    margin-bottom: 2vh;
+}
+
+/*订单确认样式*/
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm a{
+    color: black;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm:last-child{
+    margin-bottom: 60px;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content{
+    background-color: white;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-contacts{
+    max-height: 14vh;
+    padding: 2vh 4%;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-left,
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-right,
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-center{
+    float: left;
+    max-height: 10vh;
+    padding: 0px;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-left{
+    width: 10%;
+    padding-top: 1.5vh;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-right{
+    width: 5%;
+    padding-top: 3.5vh;
+    text-align: right;
+    color: #B6B6B6;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-center{
+    width: 85%;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-center .dgalaxy-hint-choose{
+    width: 100%;
+    max-height: 10vh;
+    min-height: 7.5vh;
+    padding-top: 3vh;
+    text-align: center;
+    font-size: 1rem;
+    font-family: 黑体;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-center .dgalaxy-info{
+    height: 5vh;
+    font-size: 1rem;
+    font-family: 黑体;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-center .dgalaxy-address{
+    min-height: 2.5vh;
+    max-height: 5vh;
+    line-height: 2.5vh;
+    font-size: smaller;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-center .dgalaxy-info .dgalaxy-name {
+    width: 60%;
+    padding-right: 5%;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-contacts .dgalaxy-card-center .dgalaxy-info .dgalaxy-phone {
+    width: 40%;
+    text-align: right;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-adorn{
+    height: 17px;
+    background: url(/Images/contacts-foot.jpg) center center no-repeat;
+    background-size: 100%;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-btn{
+    width: 100%;
+    font-size: small;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-commodity{
+    margin-bottom: .5vh;
+    padding: 1vh 4vw;
+    background-color: #f7f7f7;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-left,
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right{
+    float: left;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-left{
+    width: 30%;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-left img{
+    width: 100%;
+    max-height: 16vh;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right{
+    width: 70%;
+    min-height: 16vh;
+    padding-left: 3.5%;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-title,
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-subtitle{
+    max-height: 5vh;
+    margin-bottom: 1vh;
+    line-height: 2.5vh;
+    font-size: smaller;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-subtitle{
+    color: #999999;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-card-right .dgalaxy-shipments{
+    height: 2.5vh;
+    margin-bottom: 1.5vh;
+    font-size: smaller;
+    color: #eea82e;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-subtotal{
+    height:3vh;
+    font-size: smaller;
+    font-family: 微软雅黑;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-subtotal .dgalaxy-cost{
+    float: left;
+    color: #f85100;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-content .dgalaxy-card-commodity .dgalaxy-subtotal .dgalaxy-number{
+    float: right;
+}
+
+.dgalaxy-order-affirm .dgalaxy-card-order-affirm .dgalaxy-card-footer .dgalaxy-subtotal{
+    width: 100%;
+    text-align: right;
+    font-family: 微软雅黑;
+    color: #000;
+}
+
+.dgalaxy-order-affirm .dgalaxy-btn-bottom {
+    bottom: 0px;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    height: 50px;
+}
+
+.dgalaxy-order-affirm .dgalaxy-btn-bottom .dgalaxy-btn-left,
+.dgalaxy-order-affirm .dgalaxy-btn-bottom .dgalaxy-btn-right {
+    float: left;
+    height: 50px;
+    line-height: 50px;
+    font-family: 微软雅黑;
+    box-sizing: border-box;
+}
+
+.dgalaxy-order-affirm .dgalaxy-btn-bottom .dgalaxy-btn-left {
+    width: 70%;
+    padding-right: 5%;
+    text-align: right;
+}
+
+.dgalaxy-order-affirm .dgalaxy-btn-bottom .dgalaxy-btn-right {
+    width: 30%;
+    border: 0px;
+    text-align: center;
+}
+
+/*订单支付页样式*/
+.dgalaxy-payment .dgalaxy-total {
+    top: 44px;
+    position: fixed;
+    width: 100%;
+    height: 5vh;
+    padding-right: 4%;
+    text-align: right;
+    line-height: 5vh;
+    box-sizing: border-box;
+}
+
+.dgalaxy-payment .dgalaxy-total .total {
+    font-size: large;
+    color: #ff3b30;
+}
+
+.dgalaxy-payment .dgalaxy-list-payment{
+    margin-top: 5vh !important;
+    margin-bottom: 60px !important;
+}
+
+.dgalaxy-payment .dgalaxy-list-payment .dgalaxy-icon-wechat,
+.dgalaxy-payment .dgalaxy-list-payment .dgalaxy-title{
+    float: left;
+    height: 20px;
+    line-height: 20px;
+}
+
+.dgalaxy-payment .dgalaxy-list-payment .dgalaxy-icon-wechat{
+    width: 5%;
+    color: #00c800;
+}
+
+.dgalaxy-payment .dgalaxy-list-payment .dgalaxy-title{
+    width: 95%;
+    padding-left: 3%;
+    font-size: smaller;
+    box-sizing: border-box;
+}
+
+.dgalaxy-payment .dgalaxy-btn-bottom {
+    bottom: 0px;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+
+/*联系人样式*/
+.dgalaxy-contacts .page-content{
+    padding-bottom: 50px !important;
+}
+
+.dgalaxy-contacts .dgalaxy-card-contacts {
+    margin-top: 0px !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.dgalaxy-contacts .dgalaxy-card-contacts:last-child{
+    margin-bottom: 60px;
+}
+
+.dgalaxy-contacts .dgalaxy-card-contacts .dgalaxy-card-center{
+    padding: 2vh 4%;
+    box-sizing: border-box;
+}
+
+.dgalaxy-contacts .dgalaxy-card-contacts .dgalaxy-card-center .dgalaxy-address {
+    max-height: 5vh;
+    line-height: 2.5vh;
+}
+
+.dgalaxy-contacts .dgalaxy-card-contacts .dgalaxy-card-center .dgalaxy-info {
+    height: 5vh;
+    font-size: 1rem;
+    font-family: 黑体;
+}
+
+.dgalaxy-contacts .dgalaxy-card-contacts .dgalaxy-card-center .dgalaxy-address {
+    font-size: smaller;
+}
+
+.dgalaxy-contacts .dgalaxy-card-contacts .dgalaxy-card-footer{
+    display: inline-block;
+}
+
+.dgalaxy-contacts .dgalaxy-card-contacts .dgalaxy-card-footer .dgalaxy-btn{
+    margin-left: 5%;
+    color: black;
+}
+
+.dgalaxy-contacts .dgalaxy-card-contacts .dgalaxy-card-footer .dgalaxy-btn a{
+    color: black;
+}
+
+.dgalaxy-contacts .dgalaxy-form-contacts .dgalaxy-title {
+    width: 21% !important;
+}
+
+.dgalaxy-contacts .dgalaxy-form-contacts .dgalaxy-title,
+.dgalaxy-contacts .dgalaxy-form-contacts .dgalaxy-gender,
+.dgalaxy-contacts .dgalaxy-form-contacts .dgalaxy-regions,
+.dgalaxy-contacts .dgalaxy-form-contacts .dgalaxy-address {
+    font-size: smaller;
+}
+
+.dgalaxy-contacts .dgalaxy-form-contacts .dgalaxy-btn-submit {
+    margin: 1vh 2%;
+    height: 5vh;
+    box-sizing: border-box;
+}
+
+.dgalaxy-contacts .dgalaxy-form-contacts .dgalaxy-btn-submit input{
+    height: 5vh;
+}
+
+.dgalaxy-contacts .dgalaxy-btn-bottom {
+    bottom: 0px;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+
+/*选择地区样式*/
+.dgalaxy-region .dgalaxy-list-region .dgalaxy-title {
+    font-size: small;
+}
+
+/*个人中心样式*/
+.dgalaxy-mycenter a {
+    color: #212121;
+}
+
+.dgalaxy-mycenter .dgalaxy-mycenter-head {
+    height: 12vh;
+    padding: 2vh .5rem 2vh 1.5rem;
+    font-size: 1rem;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.dgalaxy-mycenter .dgalaxy-mycenter-head .dgalaxy-head-left {
+    width: 20%;
+    height: 8vh;
+    box-sizing: border-box;
+}
+
+.dgalaxy-mycenter .dgalaxy-mycenter-head .dgalaxy-head-left .dgalaxy-portrait {
+    width: 8vh;
+    height: 8vh;
+    border-radius: 50%;
+}
+
+.dgalaxy-mycenter .dgalaxy-mycenter-head .dgalaxy-head-right {
+    width: 75%;
+    height: 8vh;
+    margin-left: 5%;
+    line-height: 8vh;
+    box-sizing: border-box;
+}
+
+.dgalaxy-mycenter .dgalaxy-list-mycenter {
+    margin-top: 1vh;
+}
+
+/*搜索框样式*/
+.dgalaxy-search-home {
+    background: #f7f7f8 !important;
+}
+
+.dgalaxy-search-home .dgalaxy-input{
+    border: 1px solid #aaa;
+    border-radius: 5px;
+}
+
+.dgalaxy-search-home .dgalaxy-input input{
+    padding-left: 10px !important;
+    background-position: 95% !important;
+}
+
+/*选择弹出层样式*/
+.dgalaxy-popup-choose {
+    top: 35vh !important;
+    position: fixed !important;
+    width: 100%;
+    height: 65vh !important;
+    box-sizing: border-box;
+}
+
+.dgalaxy-popup-choose .dgalaxy-title{
+    padding: 2vh 4%;
+}
+
+.dgalaxy-popup-choose .dgalaxy-list-choose{
+    margin-top: 0px !important;
+    margin-bottom: 60px !important;
+    font-size: small;
+}
+
+.dgalaxy-popup-choose .dgalaxy-list-choose ul{
+    position: inherit;
+}
+
+.dgalaxy-popup-choose .dgalaxy-list-choose ul li label {
+    padding: 0px 4%;
+}
+
+.dgalaxy-popup-choose .dgalaxy-btn-row {
+    bottom: 0px;
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    border-top: 1px solid #dcdcdc;
+}
+
+.dgalaxy-popup-choose .dgalaxy-btn-row .dgalaxy-btn-short {
+    float: left;
+    position: initial;
+    width: 50%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    color: #ff7e10;
+    box-sizing: border-box;
+}
+
+/*商品规格弹出层样式*/
+.dgalaxy-popup-commodity-spec {
+    top: 15% !important;
+    left: 5% !important;
+    width: 90% !important;
+    height: 70% !important;
+    border-radius: 5%;
+}
+
+.dgalaxy-popup-commodity-spec .dgalaxy-banner {
+    width: 100%;
+    height: 35%;
+}
+
+.dgalaxy-popup-commodity-spec .dgalaxy-banner img{
+    width: 100%;
+    height: 24vh;
+}
+
+.dgalaxy-popup-commodity-spec .dgalaxy-popup-content {
+    padding: 2vh 2vh;
+}
+
+.dgalaxy-popup-commodity-spec .dgalaxy-popup-content .dgalaxy-attribute {
+    float: left;
+    width: 50%;
+    height: 4vh;
+    margin-bottom: .5vh;
+    line-height: 4vh;
+    font-size: small;
+    box-sizing: border-box;
+}
+
+.dgalaxy-popup-commodity-spec .dgalaxy-popup-content .dgalaxy-title{
+    margin-top: .5vh;
+    font-weight: 600;
+    color: black;
+}
+
+.dgalaxy-popup-commodity-spec .dgalaxy-popup-content .dgalaxy-desc {
+    height: 14vh;
+    margin-top: 1vh;
+    line-height: 3.5vh;
+    font-size: small;
+    color: #666666;
+}
+
+.dgalaxy-popup-commodity-spec .dgalaxy-popup-content .dgalaxy-price{
+    height: 3vh;
+    margin-top: 1vh;
+    line-height: 3vh;
+    font-family: 微软雅黑;
+    color: #8e8e93;
+    box-sizing: border-box;
+}
+
+.dgalaxy-popup-commodity-spec .dgalaxy-popup-content .dgalaxy-price .price{
+    color: #f85100;
+}
+
+/*数据未找到样式*/
+.dgalaxy-nofound-big {
+    height: 45vh;
+    background-size: 30% !important;
+}
+
+.dgalaxy-nofound-big .dgalaxy-nofound-text{
+    padding-top: 35vh;
+    font-size: large;
+    text-align: center;
+}
+
+.dgalaxy-nofound-big-order {
+    background: url(/Images/nofound-order.png) center center no-repeat;
+}
+
+.dgalaxy-nofound-big-cart {
+    background: url(/Images/nofound-cart.png) center center no-repeat;
+}
+
+.dgalaxy-nofound-big-contacts {
+    background: url(/Images/nofound-contacts.png) center center no-repeat;
+}
+
+/*其他样式*/
+.dgalaxy-icon-back {
+    color: #212121;
+}
+
+.dgalaxy-title {
+    color: #666666;
+}
+
+.dgalaxy-toolbar-icon {
+    font-size: 1.5rem !important;
+}
+
+.dgalaxy-bg-blue {
+    background: url(/Images/bg-shade-blue.jpg) no-repeat center center;
+    background-size: 100% 100%;
+}
+
+.dgalaxy-hint {
+    width: 100%;
+    height: 2vh;
+    text-align: center;
+    line-height: 2vh;
+    font-size: small;
+    color: #666666;
+}
+
+/*产品详情样式*/
+.dgalaxy-product-details{
+    padding: 2vh 3vw;
+    background-color: #fff;
+}
+
+.dgalaxy-product-details .dgalaxy-title{
+    height: 10vh;
+    line-height: 5vh;
+    font-family: 微软雅黑;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333333;
+}
+
+.dgalaxy-product-details .dgalaxy-content{
+    margin-top: 3vh;
+    line-height: 4vh;
+    font-family: 微软雅黑;
+    font-size: .8rem;
+    letter-spacing: .5vw;
+    color: #333333;
+}
+
+.dgalaxy-product-details .dgalaxy-content img{
+    max-width: 100%;
+    margin: 2vh auto;
+}

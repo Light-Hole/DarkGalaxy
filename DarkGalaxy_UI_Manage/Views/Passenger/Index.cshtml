@@ -1,0 +1,55 @@
+﻿@model IEnumerable<DarkGalaxy_Model.Passenger>
+
+@{
+    ViewBag.Title = "常用旅客";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+<fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+    <legend>常用旅客</legend>
+</fieldset>
+<div class="layui-collapse dgalaxy-tree-space">
+    @foreach (var temp in Model)
+    {
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">@temp.Name</h2>
+            <div class="layui-colla-content">
+                @{
+                    string Gender = null;
+                    switch (temp.Gender)
+                    {
+                        case DarkGalaxy_Model.GenderType.Secrecy:
+                            Gender = "保密";
+                            break;
+                        case DarkGalaxy_Model.GenderType.Male:
+                            Gender = "男";
+                            break;
+                        case DarkGalaxy_Model.GenderType.Female:
+                            Gender = "女";
+                            break;
+                        default:
+                            Gender = "未知数据";
+                            break;
+                    }
+                }
+                <p class="dgalaxy-tree-space">性别：@Gender</p>
+                <p class="dgalaxy-tree-space">身份证号：@temp.IDCard</p>
+            </div>
+        </div>
+    }
+</div>
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        layui.use(['element', 'layer'], function () {
+            var element = layui.element,
+                layer = layui.layer;
+
+            //监听面板折叠
+            element.on('collapse()', function (data) {
+            });
+        });
+    </script>
+}

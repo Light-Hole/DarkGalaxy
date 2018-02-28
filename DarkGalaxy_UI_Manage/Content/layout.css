@@ -1,0 +1,121 @@
+﻿/*Tab页面样式*/
+.dgalaxy-tab-parent {
+    top: 55px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+}
+
+.dgalaxy-tab-parent .dgalaxy-tab {
+    width: 100%;
+    height: 99%;
+    min-width: 600px;
+    box-sizing: border-box;
+}
+
+ .dgalaxy-tab-body {
+    left: 2%;
+    right: 2%;
+    position: relative;
+    width: 96% !important;
+}
+
+/*主页Tab页面样式*/
+.dgalaxy-tab-home {
+    width: 100%;
+    height: 99%;
+    min-width: 560px;
+    box-sizing: border-box;
+}
+
+.dgalaxy-tab-home .dgalaxy-row {
+    margin-top: 10px !important;
+}
+
+.dgalaxy-tab-home .dgalaxy-title {
+    font-weight: bold;
+}
+
+.dgalaxy-tab-home .dgalaxy-subtitle {
+    font-weight: 500;
+}
+
+.dgalaxy-tab-home .dgalaxy-chart {
+    width: 100%;
+    height: 442px;
+}
+
+/*Tab页面元素样式*/
+.dgalaxy-tab-body .dgalaxy-title {
+    margin-top: 20px !important;
+}
+
+.dgalaxy-tab-body .dgalaxy-required {
+    font-size: 18px;
+    color: #FF5722;
+}
+
+.dgalaxy-tab-body .dgalaxy-tab-tool .dgalaxy-search-box {
+    width: 250px;
+}
+
+.dgalaxy-tab-body .dgalaxy-tab-tool .dgalaxy-search-shortbox {
+    width: 100px;
+}
+
+.dgalaxy-tab-body .dgalaxy-tab-tool .dgalaxy-hint {
+    border-color: #c2c2c2 !important;
+}
+
+.dgalaxy-tab-body .dgalaxy-tab-tool .dgalaxy-space {
+    margin-left: 10px;
+}
+
+/*Logo样式*/
+.logo img {
+    width: 80%;
+    margin: 0px auto;
+    box-sizing: border-box;
+}
+
+/*树样式*/
+.dgalaxy-tab-body .dgalaxy-tree-space {
+    margin-top: 10px;
+}
+
+.dgalaxy-tab-body .dgalaxy-tree-bottom {
+    margin-bottom: 20px;
+}
+
+/*用户信息菜单*/
+.dgalaxy-menu-user {
+    width: 70px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/*审核样式*/
+.dgalaxy-tab-body .dgalaxy-audit-pass {
+    color: blue;
+}
+
+.dgalaxy-tab-body .dgalaxy-audit-notpass {
+    color: red;
+}
+
+/*图片样式*/
+.dgalaxy-tab-body .dgalaxy-portrait {
+    width: 200px;
+    height: 200px;
+}
+
+.dgalaxy-tab-body .dgalaxy-thumbs {
+    width: 160px;
+    height: 90px;
+    margin: 10px 10px 10px 10px;
+    box-sizing: border-box;
+}

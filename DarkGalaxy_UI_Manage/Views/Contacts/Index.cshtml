@@ -1,0 +1,41 @@
+﻿@model IEnumerable<DarkGalaxy_UI_Manage.Models.ContactsViewModel>
+
+@{
+    ViewBag.Title = "常用联系人";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+<fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+    <legend>常用联系人</legend>
+</fieldset>
+<div class="layui-collapse dgalaxy-tree-space">
+    @{
+        foreach (var temp in Model)
+        {
+            <div class="layui-colla-item">
+                <h2 class="layui-colla-title">@temp.ContactsModel.Name</h2>
+                <div class="layui-colla-content">
+                    <p class="dgalaxy-tree-space">手机：@temp.ContactsModel.Phone</p>
+                    <p class="dgalaxy-tree-space">邮箱：@temp.ContactsModel.Email</p>
+                    <p class="dgalaxy-tree-space">所在地区：@temp.RegionText</p>
+                    <p class="dgalaxy-tree-space">详细地址：@temp.ContactsModel.DetailedAddress</p>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        layui.use(['element', 'layer'], function () {
+            var element = layui.element,
+                layer = layui.layer;
+
+            //监听面板折叠
+            element.on('collapse()', function (data) {
+            });
+        });
+    </script>
+}

@@ -1,0 +1,281 @@
+﻿@model DarkGalaxy_Model.Specification
+
+@{
+    ViewBag.Title = "编辑规格";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+@using (Ajax.BeginForm("Edit", "Specification", new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "Success",
+}, new
+{
+    @class = "layui-form layui-form-pane"
+}))
+{
+    <fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+        <legend>商品规格信息</legend>
+    </fieldset>
+    <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+    <input type="hidden" name="Commodity_ID" value="@Model.Commodity_ID" />
+    <input type="hidden" name="SpecificationCategory_ID" value="@Model.SpecificationCategory_ID" />
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input id="Title" name="Title" class="layui-input" type="text" lay-verify="required" placeholder="请输入商品规格标题" autocomplete="off" value="@Model.Title">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">首图<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <div class="layui-upload">
+                <div id="ImageUp" class="layui-upload-drag">
+                    <i class="layui-icon">&#xe67c;</i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                </div>
+            </div>
+            <p id="errorText"></p>
+            <div id="UpImage" class="layui-upload-list">
+                <img id="Image" class="layui-upload-img width-max" src="@Model.ImagePath">
+            </div>
+            <input id="ImagePath" name="ImagePath" type="hidden" lay-verify="required" value="@Model.ImagePath" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">多图</label>
+        <div class="layui-input-block">
+            <div class="layui-upload">
+                <div class="layui-upload">
+                    <div id="ImagesUp" class="layui-upload-drag">
+                        <i class="layui-icon">&#xe67c;</i>
+                        <p>点击上传，或将文件拖拽到此处</p>
+                    </div>
+                </div>
+                <blockquote class="layui-elem-quote layui-quote-nm dgalaxy-tree-space">
+                    预览图：
+                    <div id="Images" class="layui-upload-list">
+                        @if (!String.IsNullOrEmpty(Model.ImagePaths))
+                        {
+                            string[] ImagePaths = Model.ImagePaths.Split('|');
+                            if ((null != ImagePaths) && (0 != ImagePaths.Length))
+                            {
+                                foreach (var temp in ImagePaths)
+                                {
+                                    if (!String.IsNullOrEmpty(temp))
+                                    {
+                                        <img class="layui-upload-img dgalaxy-thumbs" src="@temp" />
+                                    }
+                                    else { }
+                                }
+                            }
+                            else { }
+                        }
+                        else { }
+                    </div>
+                </blockquote>
+            </div>
+            <input id="ImagePaths" name="ImagePaths" type="hidden" value="@Model.ImagePaths" data-change="0" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序索引</label>
+        <div class="layui-input-block">
+            <input id="SortIndex" name="SortIndex" class="layui-input" type="text" lay-verify="required|number" placeholder="请输入排序索引" autocomplete="off" value="@Model.SortIndex" data-value="@Model.SortIndex">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">阳台</label>
+            <div class="layui-input-block">
+                @if (Model.Balcony)
+                {
+                    <input id="Balcony" name="Balcony" type="checkbox" autocomplete="off" lay-skin="switch" lay-text="有|无" value="true" checked>
+                }
+                else
+                {
+                    <input id="Balcony" name="Balcony" type="checkbox" autocomplete="off" lay-skin="switch" lay-text="有|无" value="true">
+                }
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">窗户</label>
+            <div class="layui-input-block">
+                @if (Model.Window)
+                {
+                    <input id="Window" name="Window" type="checkbox" autocomplete="off" lay-skin="switch" lay-text="有|无" value="true" checked>
+                }
+                else
+                {
+                    <input id="Window" name="Window" type="checkbox" autocomplete="off" lay-skin="switch" lay-text="有|无" value="true">
+                }
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">人数<span class="dgalaxy-required">*</span></label>
+            <div class="layui-input-block">
+                <input name="Guest" class="layui-input" type="text" lay-verify="required|number" placeholder="请输入人数" autocomplete="off" value="@Model.Guest">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">面积<span class="dgalaxy-required">*</span></label>
+            <div class="layui-input-block">
+                <input name="Area" class="layui-input" type="text" lay-verify="required|number" placeholder="请输入面积" autocomplete="off" value="@Model.Area">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">楼层数<span class="dgalaxy-required">*</span></label>
+            <div class="layui-input-block">
+                <input name="Floors" class="layui-input" type="text" lay-verify="required" placeholder="请输入楼层数" autocomplete="off" value="@Model.Floors">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">价格（元）<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input name="FloatPrice" class="layui-input" type="text" lay-verify="required|number" placeholder="请输入商品价格" autocomplete="off" value="@(Model.Price / 100.0)">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">简介</label>
+        <div class="layui-input-block">
+            <textarea id="Description" name="Description" class="layui-textarea" placeholder="请输入商品规格简介">@Model.Description</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" lay-filter="Save" lay-submit="">保存</button>
+        <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+    </div>
+}
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        //加载表单
+        layui.use(['form', 'upload'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                upload = layui.upload;
+
+            //上传图片
+            var uploadInst = upload.render({
+                elem: '#ImageUp',
+                url: '@Url.Action("UploadTempImage", "Upload")',
+                accept: 'images',
+                auto: true,
+                size: 2048,
+                choose: function (obj) {
+                    //预读本地文件（不支持ie8）
+                    obj.preview(function (index, file, result) {
+                        $('#Image').attr('src', result); //图片链接（base64）
+                    });
+                },
+                done: function (res) {
+                    if (200 != res.Code) {
+                        return layer.msg(res.Message);
+                    }
+                    else {
+                        $('#ImagePath').val(res.Data);
+                        $('#Image').attr('src', res.Data);
+                        return layer.msg(res.Message);
+                    }
+                },
+                error: function () {
+                    //演示失败状态，并实现重传
+                    var demoText = $('#errorText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+            //多图片上传
+            upload.render({
+                elem: '#ImagesUp',
+                url: '@Url.Action("UploadTempImage", "Upload")',
+                multiple: true,
+                accept: 'images',
+                size: 2048,
+                before: function (obj) {
+                    //判断多图是否被改变
+                    if ('0' == $('#ImagePaths').data('change')) {
+                        $('#ImagePaths').data('change','1');
+                        $('#Images').html('');
+                        $('#ImagePaths').val('');
+                    }
+                    else{ }
+                    //预读本地文件，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#Images').append('<img class="layui-upload-img dgalaxy-thumbs" src="' + result + '" alt="' + file.name + '">')
+                    });
+                },
+                done: function (res) {
+                    if (200 != res.Code) {
+                        return layer.msg(res.Message);
+                    }
+                    else {
+                        if ('' == $('#ImagePaths').val()) {
+                            $('#ImagePaths').val(res.Data);
+                        }
+                        else {
+                            $('#ImagePaths').val($('#ImagePaths').val() + '|' + res.Data);
+                        }
+                        return layer.msg(res.Message);
+                    }
+                }
+            });
+
+            //图片标题查看
+            layer.photos({
+                photos: '#UpImage',
+                anim: 0 //0-6的选择，指定弹出图片动画类型
+            });
+        });
+    </script>
+    <!-- 表单异步提交 -->
+    <script>
+        function Success(data) {
+            layui.use('layer', function () {
+                //弹出提示消息
+                layer.open({
+                    type: 0,
+                    title: '提示信息',
+                    content: data.Message,
+                    time: 5000,
+                    resize: false,
+                    end: function () {
+                        if (200 == data.Code) {
+                            //改变父级窗体值
+                            if ($('#SortIndex').val() != $('#SortIndex').data('value')) {
+                                //刷新父级页面
+                                parent.location.reload();
+                            }
+                            else {
+                                var id = $('#ID').val();
+                                var title = $('#Title').val();
+                                var description = $('#Description').val();
+                                if ('' == description) {
+                                    description = '暂无简介';
+                                }
+                                else { }
+                                parent.$('#SpecificationTitle_' + id).text(title);
+                                parent.$('#SpecificationDescription_' + id).text('简介：' + description);
+                                parent.layui.element.init('collapse');
+                            }
+
+                            //关闭父级弹出层
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        }
+                        else { }
+                    }
+                });
+            });
+        }
+    </script>
+}
+

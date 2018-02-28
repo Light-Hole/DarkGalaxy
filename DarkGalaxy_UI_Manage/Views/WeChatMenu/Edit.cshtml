@@ -1,0 +1,215 @@
+﻿@model DarkGalaxy_Model.WeChatMenu
+
+@{
+    ViewBag.Title = "修改WeChat菜单";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+@using (Ajax.BeginForm("Edit", "WeChatMenu", new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "Success",
+}, new
+{
+    @class = "layui-form layui-form-pane"
+}))
+{
+    <input id="ID" name="ID" type="hidden" value="@Model.ID" />
+    <input name="Employ" type="hidden" value="@Model.Employ" />
+    <!-- WeChat菜单 -->
+    <fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+        <legend>微信菜单信息</legend>
+    </fieldset>
+    <div id="GradeRow" class="layui-form-item">
+        <label class="layui-form-label">级别<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <select id="Grade" name="Grade" lay-filter="Grade" lay-verify="required">
+                <option value="" selected="">请选择菜单级别</option>
+                <option value="1">一级菜单</option>
+                <option value="2">二级菜单</option>
+            </select>
+        </div>
+    </div>
+    if (2 == Model.Grade)
+    {
+        @Html.Action("WeChatMenusTop", "WeChatMenu")
+    }
+    else { }
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <select id="Genre" name="Genre" lay-filter="Genre" lay-verify="required">
+                <option value="" selected="">请选择菜单类型</option>
+                <option value="click">点击</option>
+                <option value="view">网页链接</option>
+                <option value="scancode_push">扫描二维码</option>
+                <option value="scancode_waitmsg">扫描二维码（弹出消息框）</option>
+                <option value="pic_sysphoto">拍摄照片</option>
+                <option value="pic_photo_or_album">拍摄照片/相册图片</option>
+                <option value="pic_weixin">相册图片</option>
+                <option value="location_select">地理位置</option>
+                <option value="media_id">媒体消息</option>
+                <option value="view_limited">图文消息</option>
+                <option value="miniprogram">小程序</option>
+            </select>
+        </div>
+    </div>
+    <div id="TitleRow" class="layui-form-item">
+        <label class="layui-form-label">标题<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input id="Title" name="Title" class="layui-input" type="text" lay-verify="required" placeholder="请输入菜单标题" autocomplete="off" value="@Model.Title">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序索引</label>
+        <div class="layui-input-block">
+            <input id="SortIndex" name="SortIndex" class="layui-input" type="text" lay-verify="required|number" placeholder="请输入排序索引" autocomplete="off" value="@Model.SortIndex" data-value="@Model.SortIndex">
+        </div>
+    </div>
+    if (null != Model.DetailedContent)
+    {
+        var MenuButton = DarkGalaxy_Common.Helper.Helper_Serializer_Json.JsonDeserializer<DarkGalaxy_WeChat_Model.CustomizeMenu_Button>(Model.DetailedContent);
+        switch (Model.Genre)
+        {
+            case "view":
+                <div class="layui-form-item">
+                    <label class="layui-form-label">链接<span class="dgalaxy-required">*</span></label>
+                    <div class="layui-input-block">
+                        <input name="url" class="layui-input" type="text" lay-verify="required|url" placeholder="请输入链接地址" autocomplete="off" value="@MenuButton.url">
+                    </div>
+                </div>
+                break;
+            case "miniprogram":
+                <div class="layui-form-item">
+                    <label class="layui-form-label">链接<span class="dgalaxy-required">*</span></label>
+                    <div class="layui-input-block">
+                        <input name="url" class="layui-input" type="text" lay-verify="required" placeholder="请输入链接地址" autocomplete="off" value="@MenuButton.url">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">AppID<span class="dgalaxy-required">*</span></label>
+                    <div class="layui-input-block">
+                        <input name="appid" class="layui-input" type="text" lay-verify="required" placeholder="请输入小程序AppID" autocomplete="off" value="@MenuButton.appid">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面路径<span class="dgalaxy-required">*</span></label>
+                    <div class="layui-input-block">
+                        <input name="pagepath" class="layui-input" type="text" lay-verify="required" placeholder="请输入小程序页面路径" autocomplete="off" value="@MenuButton.pagepath">
+                    </div>
+                </div>
+                break;
+            case "click":
+            case "scancode_waitmsg":
+            case "scancode_push":
+            case "pic_sysphoto":
+            case "pic_photo_or_album":
+            case "pic_weixin":
+            case "location_select":
+                <div class="layui-form-item">
+                    <label class="layui-form-label">关键字<span class="dgalaxy-required">*</span></label>
+                    <div class="layui-input-block">
+                        <input name="key" class="layui-input" type="text" lay-verify="required" placeholder="请输入关键字" autocomplete="off" value="@MenuButton.key">
+                    </div>
+                </div>
+                break;
+            case "media_id":
+            case "view_limited":
+                <div class="layui-form-item">
+                    <label class="layui-form-label">素材ID<span class="dgalaxy-required">*</span></label>
+                    <div class="layui-input-block">
+                        <input name="media_id" class="layui-input" type="text" lay-verify="required" placeholder="请输入素材ID" autocomplete="off" value="@MenuButton.media_id">
+                    </div>
+                </div>
+                break;
+            default:
+                break;
+        }
+    }
+    else { }
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" lay-filter="Save" lay-submit="">保存</button>
+        <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+    </div>
+}
+
+@section Foot
+{
+    <!-- 初始化基本信息 -->
+    <script>
+        //初始化下拉列表选中值
+        $(function () {
+            $('#Grade').val('@Model.Grade');//初始化菜单级别
+            $('#Genre').val('@Model.Genre');//初始化菜单类型
+            $('#ParentID').val('@Model.ParentID');//初始化上级菜单
+        });
+    </script>
+    <!-- layui -->
+    <script>
+        //加载表单
+        layui.use(['form', 'upload','element'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                upload = layui.upload,
+                element = layui.element;
+
+            //监听菜单级别
+            form.on('select(Grade)', function (data) {
+                if (2 == data.value) {
+                    $.post('@Url.Action("WeChatMenusTop", "WeChatMenu")', { 'id': @Model.ID }, function (data) {
+                        $('#GradeRow').after(data);
+                        form.render('select');
+                    });
+                }
+                else {
+                    $('#ParentIDRow').remove();
+                }
+            });
+
+            //监听菜单类型
+            form.on('select(Genre)', function (data) {
+                $('#TitleRow').nextAll().remove();
+                $.post('@Url.Action("WeChatMenus", "WeChatMenu")', { 'Genre': data.value }, function (data) {
+                    $('#TitleRow').after(data);
+                    form.render();
+                });
+            });
+    });
+    </script>
+    <!-- 表单异步提交 -->
+    <script>
+        function Success(data) {
+            layui.use('layer', function () {
+                //弹出提示消息
+                layer.open({
+                    type: 0,
+                    title: '提示信息',
+                    content: data.Message,
+                    time: 5000,
+                    resize: false,
+                    end: function () {
+                        if (200 == data.Code) {//成功
+                            //改变父级窗体值
+                            if (($('#SortIndex').val() != $('#SortIndex').data('value')) || ('@Model.Grade' != $('#Grade').val()) || ('@Model.Genre' != $('#Genre').val())) {
+                                //重载父级表格
+                                parent.layui.table.reload('DataTable', {
+                                });
+                            }
+                            else {
+                                var id = $('#ID').val();
+                                var title = $('#Title').val();
+                                var genre = $('#Genre option:checked').text();
+                                parent.$('#Title_' + id).text(title);
+                                parent.$('#Genre_' + id).text(genre);
+                            }
+                            //关闭父级弹出层
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        }
+                        else{ }
+                    }
+                });
+            });
+        }
+    </script>
+}

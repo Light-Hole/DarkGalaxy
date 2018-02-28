@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "分类设置";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+<div class="layui-row">
+    <button class="layui-btn dgalaxy-tree-space create" data-id="0">
+        <i class="layui-icon">&#xe654;</i>&nbsp;添加顶级分类
+    </button>
+    <button id="Refresh" class="layui-btn layui-btn-warm dgalaxy-tree-space">
+        <i class="layui-icon">&#x1002;</i>&nbsp;刷新
+    </button>
+</div>
+<div class="layui-row dgalaxy-title">
+    <fieldset class="layui-elem-field dgalaxy-hint">
+        <legend>请注意</legend>
+        <div class="layui-field-box">
+            1、删除分类会删除全部的子级分类<br />
+            2、删除分类会分类下的产品
+        </div>
+    </fieldset>
+</div>
+<div id="ContentDiv">
+    @Html.Action("IndexPartial", "Category")
+</div>
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        layui.use(['element', 'layer'], function () {
+            var element = layui.element,
+                layer = layui.layer;
+
+            //监听面板折叠
+            element.on('collapse()', function (data) {
+            });
+
+            /*新建分类*/
+            $('.create').live('click', function () {
+                layer.open({
+                    id: 'CreateCategory',
+                    type: 2,
+                    title: '新建',
+                    content: '@Url.Action("Create", "Category")' + '?PID=' + $(this).data('id'),
+                    shadeClose: true,
+                    shade: 0.8,
+                    resize: false,
+                    area: ['90%', '90%']
+                });
+            });
+
+            //删除分类
+            $('.delete').live('click', function () {
+                var id = $(this).data('id');
+                layer.confirm('确认删除?（删除后无法还原）', { icon: 3, title: '提示信息' }, function (index) {
+                    $.post('@Url.Action("Delete", "Category")', { ID: id }, function (data) {
+                        layer.open({
+                            type: 0,
+                            title: '提示信息',
+                            content: data.Message,
+                            time: 5000,
+                            resize: false,
+                            end: function () {
+                                if (200 == data.Code) {
+                                    var categoryCount = $('#ContentDiv div:eq(0)').children('div').length;
+                                    if (1 != categoryCount) {
+                                        $('#Item_' + id).remove();
+                                        element.init('collapse');
+                                    }
+                                    else {
+                                        $('#ContentDiv').html('<p class="dgalaxy-tree-space">暂无子级分类</p>');
+                                    }
+                                }
+                                else { }
+                            }
+                        });
+                    });
+                });
+            });
+
+            /*编辑分类*/
+            $('.edit').live('click', function () {
+                layer.open({
+                    id: 'EditCategory',
+                    type: 2,
+                    title: '编辑',
+                    content: '@Url.Action("Edit", "Category")' + '?ID=' + $(this).data('id'),
+                    shadeClose: true,
+                    shade: 0.8,
+                    resize: false,
+                    area: ['90%', '90%']
+                });
+            });
+        });
+    </script>
+}

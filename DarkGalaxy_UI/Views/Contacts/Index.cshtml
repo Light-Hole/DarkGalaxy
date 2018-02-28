@@ -1,0 +1,55 @@
+﻿@model IEnumerable<DarkGalaxy_UI.Models.ContactsViewModel>
+
+<div id="Contacts" data-page="contacts" class="page no-tabbar dgalaxy-contacts">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a class="icon-only back dgalaxy-icon-back" href="@Url.Action("Index", "Hom")">
+                    <i class="f7-icons">chevron_left</i>
+                </a>
+            </div>
+            <div class="center dgalaxy-title">常用联系人</div>
+        </div>
+    </div>
+
+    <!-- 数据主体区域 -->
+    <div class="page-content">
+        @if (null != Model)
+        {
+            foreach (var temp in Model)
+            {
+                <div class="card dgalaxy-card-contacts">
+                    <div class="card-content dgalaxy-card-center">
+                        <div class="dgalaxy-info">
+                            <div class="float-left">@temp.ContactsModel.Name</div>
+                            <div class="float-right">@temp.ContactsModel.Phone</div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="txt-line-single-2 dgalaxy-address">@temp.RegionText @temp.ContactsModel.DetailedAddress</div>
+                    </div>
+                    <div class="card-footer width-full dgalaxy-card-footer">
+                        <div class="float-right dgalaxy-btn delete" data-id="@temp.ContactsModel.ID">
+                            <i class="iconfont icon-changyonggoupiaorenshanchu"></i>&nbsp;删除
+                        </div>
+                        <div class="float-right dgalaxy-btn">
+                            <a href="@Url.Action("Edit","Contacts")?id=@temp.ContactsModel.ID">
+                                <i class="iconfont icon-changyonggoupiaorenbianji"></i>&nbsp;编辑
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <!-- 联系人未找到提示 -->
+            <div class="dgalaxy-nofound-big dgalaxy-nofound-big-contacts">
+                <div class="dgalaxy-nofound-text">还没有联系人呢！</div>
+            </div>
+        }
+        <a href="@Url.Action("Create","Contacts")">
+            <div class="bg-blue color-white dgalaxy-btn-bottom">添加联系人</div>
+        </a>
+    </div>
+</div>

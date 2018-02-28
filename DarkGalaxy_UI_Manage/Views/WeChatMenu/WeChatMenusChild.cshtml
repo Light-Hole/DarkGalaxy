@@ -1,0 +1,266 @@
+﻿@model int
+
+@{
+    ViewBag.Title = "WeChat菜单";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+<!-- 主体工具栏 -->
+<div class="layui-row layui-elem-quote dgalaxy-tab-tool">
+    <div class="layui-row">
+        <div class="layui-inline dgalaxy-search-box">
+            <input id="Search" name="id" class="layui-input" placeholder="请输入标题" autocomplete="off">
+        </div>
+        <button id="SearchButton" class="layui-btn layui-btn-normal" data-type="Search">
+            <i class="layui-icon">&#xe615;</i>&nbsp;搜索
+        </button>
+        <button id="EmployButton" class="layui-btn layui-btn-normal" data-type="Employ">
+            <i class="layui-icon">&#x1005;</i>&nbsp;启用/禁用
+        </button>
+        <button id="Create" class="layui-btn">
+            <i class="layui-icon">&#xe61f;</i>&nbsp;新建
+        </button>
+        <button id="BatchRemove" class="layui-btn layui-btn-danger" data-type="BatchRemove">
+            <i class="layui-icon">&#xe640;</i>&nbsp;删除选中项
+        </button>
+        <button id="Refresh" class="layui-btn layui-btn-warm">
+            <i class="layui-icon">&#x1002;</i>&nbsp;刷新
+        </button>
+    </div>
+    <div class="layui-row dgalaxy-title">
+        <fieldset class="layui-elem-field dgalaxy-hint">
+            <legend>请注意</legend>
+            <div class="layui-field-box">
+                1、二级菜单不能超过五个<br />
+                2、二级菜单标题推荐七个汉字以内，多出部分会以"..."代替<br />
+                3、二级菜单启用数量超过五个，只会使用排序的前五个菜单
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<!-- 主体表格 -->
+<table id="Table" lay-filter="Table"></table>
+
+@section Foot
+{
+    <script src="/Script/SimpleFactory.js"></script>
+    <!-- layui -->
+    <script>
+        layui.use('table', function () {
+            var $ = layui.jquery,
+                layer = layui.layer,
+                table = layui.table,
+                active = {
+                    //数据表格重载（搜索）
+                    Search: function () {
+                        table.reload('DataTable', {
+                            where: {
+                                Search: $('#Search').val()
+                            }
+                        });
+                    },
+                    //数据表格删除选中数据
+                    BatchRemove: function () {
+                        var checkStatus = table.checkStatus('DataTable'),
+                            datas = checkStatus.data;
+                        if (0 == datas.length) {
+                            layer.open({
+                                type: 0,
+                                title: '提示信息',
+                                content: "请选择数据",
+                                time: 5000,
+                                resize: false
+                            });
+                        }
+                        else {
+                            var batchIDArray = [];
+                            for (var i = 0; i < datas.length; i++) {
+                                batchIDArray.push(datas[i].ID);
+                            }
+                            //批量删除
+                            $.post('@Url.Action("BatchDelete", "WeChatMenu")', { BatchIDArray: batchIDArray }, function (data) {
+                                //提示消息
+                                layer.open({
+                                    type: 0,
+                                    title: '提示信息',
+                                    content: data.Message,
+                                    time: 5000,
+                                    resize: false,
+                                    end: function () {
+                                        if (200 == data.Code) {
+                                            //重载表格
+                                            table.reload('DataTable', {
+                                            });
+                                        }
+                                        else{ }
+                                    }
+                                });
+                            });
+                        }
+                    },
+                    //启用二级WeChat菜单
+                    Employ: function () {
+                        var checkStatus = table.checkStatus('DataTable'),
+                            datas = checkStatus.data;
+                        if (0 == datas.length) {
+                            layer.open({
+                                type: 0,
+                                title: '提示信息',
+                                content: "请选择数据",
+                                time: 5000,
+                                resize: false
+                            });
+                        }
+                        else {
+                            var employIDArray = [];
+                            for (var i = 0; i < datas.length; i++) {
+                                employIDArray.push(datas[i].ID);
+                            }
+                            //启用二级WeChat菜单
+                            $.post('@Url.Action("Employ", "WeChatMenu")', { EmployIDArray: employIDArray }, function (data) {
+                                //提示消息
+                                layer.open({
+                                    type: 0,
+                                    title: '提示信息',
+                                    content: data.Message,
+                                    time: 5000,
+                                    resize: false,
+                                    end: function () {
+                                        if (200 == data.Code) {
+                                            //重载表格
+                                            table.reload('DataTable', {
+                                            });
+                                        }
+                                        else{ }
+                                    }
+                                });
+                            });
+                        }
+                    }
+                };
+
+            /*数据表格加载*/
+            table.render({ //其它参数在此省略
+                id: 'DataTable',
+                elem: '#Table',
+                cols: [[ //标题栏
+                    { fixed: 'left', checkbox: true },
+                    { fixed: 'left', field: 'ID', title: 'ID', width: 70, align: 'center', sort: true, unresize: true },
+                    { fixed: 'left', field: 'SortIndex', title: '排序', width: 70, align: 'center', sort: true, unresize: true },
+                    { field: 'Title', title: '标题', templet: '#Title', align: 'center' },
+                    { field: 'Genre', title: '类型', templet: '#Genre', align: 'center' },
+                    { field: 'Employ', title: '启用', templet: '#Employ', sort: true, align: 'center' },
+                    { field: 'CreateDateTime', title: '创建时间', width-min: 150, align: 'center', templet: '#CreateDateTime', sort: true },
+                    { fixed: 'right', title: '操作', width-min: 200, align: 'center', toolbar: '#Tools' }
+                ]],
+                url: '@Url.Action("IndexJson", "WeChatMenu")' + '?PID=' + @Model,
+                method: 'POST',
+                response: {
+                    statusName: 'Code',
+                    statusCode: 200, //成功的状态码
+                    msgName: 'Message', //状态信息的字段名称
+                    countName: 'Total', //数据总数的字段名称
+                    dataName: 'Datas' //数据列表的字段名称
+                },
+                initSort: {
+                    field: 'Employ', //排序字段，对应 cols 设定的各字段名
+                    type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+                }
+            });
+
+            /*新建WeChat菜单*/
+            $('#Create').live('click', function () {
+                layer.open({
+                    id: 'CreateWeChatMenu',
+                    type: 2,
+                    title: '新建',
+                    content: '@Url.Action("Create", "WeChatMenu")',
+                    anim: 1,
+                    shadeClose: true,
+                    shade: 0.8,
+                    resize: false,
+                    area: ['90%', '90%']
+                });
+            });
+
+            /*表格搜索*/
+            $('#SearchButton').live('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+            /*批量删除*/
+            $('#BatchRemove').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+            /*二级WeChat菜单启用*/
+            $('#EmployButton').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+            /*工具条监听*/
+            table.on('tool(Table)', function (obj) {
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+                if (layEvent === 'del') { //删除
+                    layer.confirm('确认删除?（删除后无法还原）', { icon: 3, title: '提示信息' }, function (index) {
+                        $.post('@Url.Action("Delete", "WeChatMenu")', { ID: data.ID }, function (data) {
+                            layer.open({
+                                type: 0,
+                                title: '提示信息',
+                                content: data.Message,
+                                time: 5000,
+                                resize: false,
+                                end: function () {
+                                    if (200 == data.Code) {
+                                        obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                                    }
+                                    else { }
+                                }
+                            });
+                        });
+                    });
+                }
+                else if (layEvent === 'edit') { //编辑
+                    layer.open({
+                        id: 'EditWeChatMenu',
+                        type: 2,
+                        title: '编辑',
+                        content: '@Url.Action("Edit", "WeChatMenu")' + '?ID=' + data.ID,
+                        anim: 1,
+                        shadeClose: true,
+                        shade: 0.8,
+                        resize: false,
+                        area: ['90%', '90%']
+                    });
+                }
+            });
+        });
+    </script>
+    <!-- 数据模版 -->
+    <script type="text/html" id="Title">
+        <div id="Title_{{ d.ID }}">{{ d.Title }}</div>
+    </script>
+    <script type="text/html" id="Genre">
+        <div id="Genre_{{ d.ID }}">
+            {{ wechatMenuGenreSimple(d.Genre) }}
+        </div>
+    </script>
+    <script type="text/html" id="Employ">
+        {{ wechatMenuEmploySimple(d.Employ) }}
+    </script>
+    <script type="text/html" id="CreateDateTime">
+        {{ toDate(d.CreateDateTime).pattern("yyyy-MM-dd HH:mm") }}
+    </script>
+    <!-- 工具栏模版 -->
+    <script type="text/html" id="Tools">
+        <button class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</button>
+        <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</button>
+    </script>
+}

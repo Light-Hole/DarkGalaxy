@@ -1,0 +1,404 @@
+﻿@model DarkGalaxy_UI_Manage.Models.AdminAccountViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>银河后台管理系统</title>
+    <link href="/Content/global.css" rel="stylesheet" />
+    <link href="/Content/layout.css" rel="stylesheet" />
+    <link href="/Plug/layui/css/layui.css" rel="stylesheet" />
+</head>
+<body class="layui-layout-body width-min height-min">
+    <div class="layui-layout layui-layout-admin">
+        <!-- 头部区域 -->
+        <div class="layui-header">
+            <div class="layui-logo">
+                <a class="logo" href="@Url.Action("Index","Home")">
+                    @*<img src="/Images/Logo.png" />*@
+                </a>
+            </div>
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item layui-this">
+                    <a id="HomeNavigation" href="javascript:;">
+                        <i class="layui-icon">&#xe68e;</i>&nbsp;&nbsp;首页
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a id="ColumnNavigation" href="javascript:;">
+                        <i class="layui-icon">&#xe705;</i>&nbsp;&nbsp;栏目
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a id="UserNavigation" href="javascript:;">
+                        <i class="layui-icon">&#xe613;</i>&nbsp;&nbsp;用户
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a id="SystemNavigation" href="javascript:;">
+                        <i class="layui-icon">&#xe614;</i>&nbsp;&nbsp;系统
+                    </a>
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <!-- 加载管理员用户头像、昵称（无昵称则显示帐号） -->
+                    <a id="DetailsAdminInfo" href="javascript:;">
+                        <span class="float-left">
+                            <img class="layui-nav-img" src="@Model.AdminInfoModel.PicturePath">
+                        </span>
+                        @if (String.IsNullOrEmpty(Model.AdminInfoModel.NickName))
+                        {
+                        <span class="dgalaxy-menu-user float-left" title="@Model.AdminAccountModel.UserName">
+                            @Model.AdminAccountModel.UserName
+                        </span>
+                        }
+                        else
+                        {
+                        <span class="dgalaxy-menu-user float-left" title="@Model.AdminInfoModel.NickName">
+                            @Model.AdminInfoModel.NickName
+                        </span>
+                        }
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd id="EditPitchOn"><a id="EditAdminInfo" href="javascript:void(0);">修改资料</a></dd>
+                        <dd><a href="@Url.Action("Logout","Login")">退出</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="@Url.Action("Logout","Login")">退出</a>
+                </li>
+            </ul>
+        </div>
+        <!-- 左侧导航区域 -->
+        <div class="layui-side layui-bg-black">
+            <div id="LeftNavigation" class="layui-side-scroll">
+                @Html.Action("HomeNavigation")
+            </div>
+        </div>
+        <!-- 内容主体区域 -->
+        <div class="layui-body">
+            <!-- 内容主体区域选项卡 -->
+            <div class="layui-tab layui-tab-brief" lay-filter="tab-control" lay-allowclose="true">
+                <ul id="Tab" class="layui-tab-title">
+                    <li id="HomeTab" class="layui-this" lay-id="0">
+                        <i class="layui-icon">&#xe68e;</i>&nbsp;&nbsp;欢迎使用
+                    </li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show dgalaxy-tab-home">
+                        <blockquote id="WelcomeTitle" class="layui-elem-quote layui-bg-green"></blockquote>
+                        <div class="layui-row layui-col-space25 dgalaxy-row">
+                            <!-- 统计图表 -->
+                            @*<div class="layui-col-xs6">
+                                <div class="layui-collapse">
+                                    <div class="layui-colla-item">
+                                        <h2 class="layui-colla-title dgalaxy-title">
+                                            统计图表
+                                        </h2>
+                                        <div class="layui-colla-content layui-show">
+                                            <div id="Chart" class="dgalaxy-chart"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                            <!-- 系统信息 -->
+                            <div @*class="layui-col-xs6"*@>
+                                <div class="layui-collapse">
+                                    <div class="layui-colla-item">
+                                        <h2 class="layui-colla-title dgalaxy-title">
+                                            系统信息
+                                        </h2>
+                                        <div class="layui-colla-content layui-show">
+                                            <div class="layui-row dgalaxy-title">
+                                                服务端信息：
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    CPU类型：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER")
+                                                </div>
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    CPU数量：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS")
+                                                </div>
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    主机名：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Environment.GetEnvironmentVariable("COMPUTERNAME")
+                                                </div>
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    IP地址：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Request.ServerVariables["LOCAL_ADDR"]
+                                                </div>
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    端口号：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Request.ServerVariables["SERVER_PORT"]
+                                                </div>
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    操作系统：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Environment.GetEnvironmentVariable("OS")
+                                                </div>
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    .NET版本号：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Environment.Version.ToString()
+                                                </div>
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    运行环境/版本号：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Request.ServerVariables["SERVER_SOFTWARE"]
+                                                </div>
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    区域语言：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Request.ServerVariables["HTTP_ACCEPT_LANGUAGE"]
+                                                </div>
+                                            </div>
+                                            <div class="layui-row dgalaxy-title dgalaxy-row">
+                                                客户端信息：
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    主机名：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Request.ServerVariables["REMOTE_HOST"]
+                                                </div>
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    IP地址：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Request.ServerVariables["REMOTE_ADDR"]
+                                                </div>
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    操作系统：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Request.Browser.Platform
+                                                </div>
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    浏览器：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Request.Browser.Browser
+                                                </div>
+                                            </div>
+                                            <div class="layui-row dgalaxy-row">
+                                                <div class="layui-col-xs6 dgalaxy-subtitle">
+                                                    浏览器版本号：
+                                                </div>
+                                                <div class="layui-col-xs6">
+                                                    @Request.Browser.MajorVersion
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部固定区域 -->
+        <div class="layui-footer">专注于品质，用心做好每一个细节</div>
+    </div>
+
+    <!-- 底部JavaScript代码区域 -->
+    <script src="/Script/jquery-1.8.3.min.js"></script>
+    <script src="/Script/jquery.unobtrusive-ajax.js"></script>
+    <script src="/Script/jquery.leoweather.min.js"></script>
+    <script src="/Script/echarts.js"></script>
+    <script src="/Plug/layui/layui.js"></script>
+    <!-- 初始化欢迎信息 -->
+    <script>
+        $(function () {
+            $('#WelcomeTitle').leoweather({
+                format:'@(((DarkGalaxy_Model.AdminAccount)Session["AdminAccount"]).UserName)，{时段}好！当前时间：{年}年{月}月{日}日 星期{周} {时}:{分}:{秒}'
+            });
+        });
+    </script>
+    <!-- 初始化图表 -->
+    <script>
+        //初始化echarts实例
+        var myChart = echarts.init(document.getElementById('Chart'));
+
+        //图表加载动画
+        myChart.showLoading();
+
+        //指定图表的配置项和数据
+        $.post('@Url.Action("Index", "ECharts")', function (data) {
+            var option = {
+                title: data.Data.title,
+                tooltip: data.Data.tooltip,
+                legend: data.Data.legend,
+                toolbox: data.Data.toolbox,
+                calculable: true,
+                xAxis: data.Data.xAxis,
+                yAxis: data.Data.yAxis,
+                series: data.Data.series
+            };
+
+            //使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+            //图表加载动画结束
+            myChart.hideLoading();
+        });
+
+        //浏览器大小改变时重置图表大小
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+    <!-- layui -->
+    <script>
+        layui.use(['element','layer'], function () {
+            var $ = layui.jquery,
+                layer = layui.layer,
+                element = layui.element;
+            var active = {
+                //新增选项卡
+                tabAdd: function (ID, Title, URL) {
+                    element.tabAdd('tab-control', {
+                        id: ID,
+                        title: Title,
+                        content: '<div class="dgalaxy-tab-parent" ><iframe src="' + URL + '" frameborder="0" class="dgalaxy-tab"></div>'
+                    })
+                },
+                //切换到指定选项卡
+                tabChange: function (ID) {
+                    element.tabChange('tab-control', ID);
+                }
+            };
+
+            //动态绑定左侧导航栏单击事件
+            $('.leftsidebar-active').live('click', function () {
+                //获取当前元素信息
+                var othis = $(this),
+                    id = othis.attr('id');
+
+                //判断当前选项卡是否存在
+                var isExist = false;
+                $('#Tab li').each(function () {
+                    if (id == $(this).attr('lay-id')) {
+                        isExist = true;
+                    };
+                });
+
+                //判断是否新增选项卡
+                if (isExist) {
+                    active['tabChange'] ? active['tabChange'](id) : '';
+                }
+                else {
+                    active['tabAdd'] ? active['tabAdd'](id, othis.html(), othis.data("url")) : '';
+                    active['tabChange'] ? active['tabChange'](id) : '';
+                }
+            });
+
+            //首页选项卡禁止删除
+            $('#HomeTab .layui-tab-close').attr('style','display:none;');
+
+            //首页选项卡切换
+            $('#HomeNavigation').live('click', function () {
+                element.tabChange('tab-control', '0')
+            });
+
+            //顶部导航切换
+            $('#HomeNavigation').live('click', function () {
+                $.post('@Url.Action("HomeNavigation")', function (data) {
+                    $("#LeftNavigation").html(data);
+                    element.init('nav');
+                });
+            });
+            $('#ColumnNavigation').live('click', function () {
+                $.post('@Url.Action("ColumnNavigation")', function (data) {
+                    $("#LeftNavigation").html(data);
+                    element.init('nav');
+                });
+            });
+            $('#UserNavigation').live('click', function () {
+                $.post('@Url.Action("UserNavigation")', function (data) {
+                    $('#LeftNavigation').html(data);
+                    element.init('nav');
+                });
+            });
+            $('#SystemNavigation').live('click', function () {
+                $.post('@Url.Action("SystemNavigation")', function (data) {
+                    $('#LeftNavigation').html(data);
+                    element.init('nav');
+                });
+            });
+
+            //查看管理员个人资料
+            $('#DetailsAdminInfo').live('click', function () {
+                layer.open({
+                    id: 'DetailsAdminInfomation',
+                    type: 2,
+                    title: '个人资料',
+                    content: '@Url.Action("Details", "AdminInfo")' + '?ID=@Model.AdminAccountModel.ID',
+                    shadeClose: true,
+                    shade: 0.8,
+                    resize: false,
+                    area: ['80%', '80%']
+                });
+            });
+
+            //编辑管理员个人资料
+            $('#EditAdminInfo').live('click', function () {
+                layer.open({
+                    id: 'EditAdminInfomation',
+                    type: 2,
+                    title: '修改资料',
+                    content: '@Url.Action("Edit", "AdminInfo")' + '?id=@Model.AdminAccountModel.ID',
+                    shadeClose: true,
+                    shade: 0.8,
+                    resize: false,
+                    area: ['80%', '80%'],
+                    end: function () {
+                        $('#EditPitchOn').removeClass('layui-this')
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F6F45115-6B26-4112-A11D-8C4041AC536E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DarkGalaxy_WeChat_Model</RootNamespace>
+    <AssemblyName>DarkGalaxy_WeChat_Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\DarkGalaxy_WeChat_Model.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CustomizeMenu\CustomizeMenuEvent_Base.cs" />
+    <Compile Include="CustomizeMenu\CustomizeMenuEvent_Click.cs" />
+    <Compile Include="CustomizeMenu\CustomizeMenuEvent_Location.cs" />
+    <Compile Include="CustomizeMenu\CustomizeMenuEvent_Photo.cs" />
+    <Compile Include="CustomizeMenu\CustomizeMenuEvent_Scancode.cs" />
+    <Compile Include="CustomizeMenu\CustomizeMenuEvent_View.cs" />
+    <Compile Include="CustomizeMenu\IndividuationMenu.cs" />
+    <Compile Include="CustomizeMenu\IndividuationMenu_Menuid.cs" />
+    <Compile Include="CustomizeMenu\IndividuationMenu_Test.cs" />
+    <Compile Include="DataStatistics\UserAnalyze\UserAnalyze.cs" />
+    <Compile Include="DataStatistics\UserAnalyze\UserAnalyze_ResultCumulate.cs" />
+    <Compile Include="DataStatistics\UserAnalyze\UserAnalyze_ResultSummary.cs" />
+    <Compile Include="JSSDK\JSApiConfig.cs" />
+    <Compile Include="JSApiTicket.cs" />
+    <Compile Include="Material\MaterialCount.cs" />
+    <Compile Include="Material\MaterialList.cs" />
+    <Compile Include="Material\MaterialList_ResultNews.cs" />
+    <Compile Include="Material\MaterialList_Result.cs" />
+    <Compile Include="Material\MaterialMediaid.cs" />
+    <Compile Include="Material\MaterialSelect_News.cs" />
+    <Compile Include="Material\MaterialSelect_Video.cs" />
+    <Compile Include="Material\Material_News.cs" />
+    <Compile Include="MessageManagement\ReceiveMessage\ReceiveMessage_ShortVideo.cs" />
+    <Compile Include="MessageManagement\ReplyPassiveMessage\ReplyPassiveMessage_Base.cs" />
+    <Compile Include="MessageManagement\ReceiveEvent\ReceiveEvent_CustomizeMenu.cs" />
+    <Compile Include="MessageManagement\ReceiveEvent\ReceiveEvent_Location.cs" />
+    <Compile Include="MessageManagement\ReceiveEvent\ReceiveEvent_Scancode.cs" />
+    <Compile Include="CustomizeMenu\CustomizeMenuSelect_Result.cs" />
+    <Compile Include="AccountManagement\QRCode\QRCode.cs" />
+    <Compile Include="AccountManagement\QRCode\QRCode_Ticket.cs" />
+    <Compile Include="JSSDK\JSPay.cs" />
+    <Compile Include="Pay\EnterprisePocket\EnterprisePocket.cs" />
+    <Compile Include="Pay\EnterprisePocket\EnterprisePocket_Result.cs" />
+    <Compile Include="Pay\Order\OrderClose.cs" />
+    <Compile Include="Pay\Order\OrderSelect.cs" />
+    <Compile Include="Pay\Order\OrderClose_Result.cs" />
+    <Compile Include="Pay\Order\OrderSelect_Result.cs" />
+    <Compile Include="Pay\RefundResultInfo.cs" />
+    <Compile Include="Pay\RefundResultMessage.cs" />
+    <Compile Include="Pay\PayResultMessage.cs" />
+    <Compile Include="Pay\PayResultCode.cs" />
+    <Compile Include="Pay\RedPacket\FissionRedPacket.cs" />
+    <Compile Include="Pay\RedPacket\RedPacketRecord_Result.cs" />
+    <Compile Include="Pay\RedPacket\RedPacket_Result.cs" />
+    <Compile Include="Pay\RedPacket\RedPacketSelect.cs" />
+    <Compile Include="Pay\Refund\Refund.cs" />
+    <Compile Include="Pay\Refund\RefundSelect.cs" />
+    <Compile Include="Pay\Refund\RefundSelect_Result.cs" />
+    <Compile Include="Pay\Refund\Refund_Result.cs" />
+    <Compile Include="Pay\UnifiedOrder\UnifiedOrder.cs" />
+    <Compile Include="Pay\UnifiedOrder\UnifiedOrder_Result.cs" />
+    <Compile Include="Pay\UnifiedOrder\UnifiedOrder_Scene.cs" />
+    <Compile Include="AccessToken.cs" />
+    <Compile Include="CustomizeMenu\CustomizeMenu.cs" />
+    <Compile Include="MessageManagement\ReceiveEvent\ReceiveEvent_Base.cs" />
+    <Compile Include="MessageManagement\ReceiveEvent\ReceiveEvent_Subscribe.cs" />
+    <Compile Include="MessageManagement\ReceiveMessage\ReceiveMessage_Video.cs" />
+    <Compile Include="MessageManagement\ReceiveMessage\ReceiveMessage_Location.cs" />
+    <Compile Include="MessageManagement\ReceiveMessage\ReceiveMessage_Link.cs" />
+    <Compile Include="MessageManagement\ReceiveMessage\ReceiveMessage_Image.cs" />
+    <Compile Include="MessageManagement\ReceiveMessage\ReceiveMessage_Text.cs" />
+    <Compile Include="MessageManagement\ReceiveMessage\ReceiveMessage_Voice.cs" />
+    <Compile Include="MessageManagement\ReceiveMessage\ReceiveMessage_Base.cs" />
+    <Compile Include="MessageManagement\ReplyPassiveMessage\ReplyPassiveMessage_NewsItem.cs" />
+    <Compile Include="MessageManagement\ReplyPassiveMessage\ReplyPassiveMessage_Voice.cs" />
+    <Compile Include="MessageManagement\ReplyPassiveMessage\ReplyPassiveMessage_Video.cs" />
+    <Compile Include="MessageManagement\ReplyPassiveMessage\ReplyPassiveMessage_Music.cs" />
+    <Compile Include="MessageManagement\ReplyPassiveMessage\ReplyPassiveMessage_News.cs" />
+    <Compile Include="MessageManagement\ReplyPassiveMessage\ReplyPassiveMessage_Image.cs" />
+    <Compile Include="MessageManagement\ReplyPassiveMessage\ReplyPassiveMessage_Text.cs" />
+    <Compile Include="Pay\RedPacket\RedPacket.cs" />
+    <Compile Include="Web\WebAuthorization_Verify.cs" />
+    <Compile Include="Web\WebAccessToken.cs" />
+    <Compile Include="Web\WebAuthorization_Code.cs" />
+    <Compile Include="Web\WebAuthorization_Token.cs" />
+    <Compile Include="Web\WebAuthorization_Refresh.cs" />
+    <Compile Include="WeChatEnum.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultCode.cs" />
+    <Compile Include="WeChatIP.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DarkGalaxy_Common\DarkGalaxy_Common.csproj">
+      <Project>{a5e8ba98-d9b3-45db-9224-265f735e130c}</Project>
+      <Name>DarkGalaxy_Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

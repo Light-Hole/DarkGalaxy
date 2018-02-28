@@ -1,0 +1,46 @@
+﻿<div id="Order" data-page="order" class="page with-subnavbar dgalaxy-order-detail">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="center dgalaxy-title">订单</div>
+            <!-- 二级导航 -->
+            <div class="subnavbar">
+                <div class="buttons-row">
+                    <a href="#tab1" class="tab-link subtab dgalaxy-tab-btn active">全部</a>
+                    <a href="#tab2" class="tab-link subtab dgalaxy-tab-btn">待付款</a>
+                    <a href="#tab3" class="tab-link subtab dgalaxy-tab-btn">已付款</a>
+                    <a href="#tab4" class="tab-link subtab dgalaxy-tab-btn">待退款</a>
+                    <a href="#tab5" class="tab-link subtab dgalaxy-tab-btn">待评价</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 数据主体区域 -->
+    <div class="page-content hide-bars-on-scroll infinite-scroll" data-distance="10">
+        <!-- 保存分页数据 -->
+        <input id="Page" type="hidden" value="1" />
+        <input id="Loading" type="hidden" value="1" />
+        <input id="TabID" type="hidden" value="#tab1" />
+        <input id="Status" type="hidden" value="0/20/50/60/61/62/63/64" />
+
+        <div class="tabs">
+            <div id="tab1" class="tab active" data-id="#tab1" data-status="0/20/50/60/61/62/63/64"></div>
+            <div id="tab2" class="tab" data-id="#tab2" data-status="0"></div>
+            <div id="tab3" class="tab" data-id="#tab3" data-status="20"></div>
+            <div id="tab4" class="tab" data-id="#tab4" data-status="60/61/62/63/64"></div>
+            <div id="tab5" class="tab" data-id="#tab5" data-status="50"></div>
+
+            <!-- 订单未找到提示 -->
+            <div class="dgalaxy-nofound-big dgalaxy-nofound-big-order">
+                <div class="dgalaxy-nofound-text">您还没有相关的订单</div>
+            </div>
+
+            <!-- 加载提示符 -->
+            <div class="infinite-scroll-preloader">
+                <div class="preloader"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

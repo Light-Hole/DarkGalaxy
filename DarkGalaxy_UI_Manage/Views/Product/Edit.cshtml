@@ -1,0 +1,274 @@
+﻿@model DarkGalaxy_UI_Manage.Models.ProductViewModel
+
+@{
+    ViewBag.Title = "编辑产品";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+@using (Ajax.BeginForm("Edit", "Product", new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "Success",
+}, new
+{
+    @class = "layui-form layui-form-pane"
+}))
+{
+    <input id="ID" name="ID" type="hidden" value="@Model.ProductModel.ID" />
+    <!-- SEO优化 -->
+    <fieldset class="layui-elem-field layui-field-title tab-title">
+        <legend>SEO优化</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">SEO标题</label>
+        <div class="layui-input-block">
+            <input name="SEO_Title" class="layui-input" type="text" placeholder="请输入SEO标题" autocomplete="off" value="@Model.ProductModel.SEO_Title">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">SEO关键词</label>
+        <div class="layui-input-block">
+            <input name="SEO_Keywords" class="layui-input" type="text" placeholder="请输入SEO关键词" autocomplete="off" value="@Model.ProductModel.SEO_Keywords">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">SEO描述</label>
+        <div class="layui-input-block">
+            <textarea name="SEO_Description" class="layui-textarea" placeholder="请输入SEO描述">@Model.ProductModel.SEO_Description</textarea>
+        </div>
+    </div>
+
+    <!-- 产品信息 -->
+    <fieldset class="layui-elem-field layui-field-title tab-title">
+        <legend>产品信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类<span class="tab-required">*</span></label>
+        <div class="layui-input-block">
+            <select id="Category_ID" name="Category_ID" lay-filter="aihao" lay-verify="required" data-value="@Model.ProductModel.Category_ID">
+                @if (null == Model.CategoryList)
+                {
+                    <option value="" selected="">请先添加分类</option>
+                }
+                else
+                {
+                    <option value="" selected="">请选择产品分类</option>
+                    foreach (var temp in Model.CategoryList)
+                    {
+                        <option value="@temp.ID">@temp.Title</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题(中)<span class="tab-required">*</span></label>
+        <div class="layui-input-block">
+            <input id="Title" name="Title" class="layui-input" type="text" lay-verify="required" placeholder="请输入产品标题（中文）" autocomplete="off" value="@Model.ProductModel.Title">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">副标题(中)</label>
+        <div class="layui-input-block">
+            <input id="SubTitle" name="SubTitle" class="layui-input" type="text" placeholder="请输入产品副标题（中文）" autocomplete="off" value="@Model.ProductModel.SubTitle">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题(英)</label>
+        <div class="layui-input-block">
+            <input name="Title_English" class="layui-input" type="text" placeholder="请输入产品标题（英文）" autocomplete="off" value="@Model.ProductModel.Title_English">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">副标题(英)</label>
+        <div class="layui-input-block">
+            <input name="SubTitle_English" class="layui-input" type="text" placeholder="请输入产品副标题（英文）" autocomplete="off" value="@Model.ProductModel.SubTitle_English">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">首图</label>
+        <div class="layui-input-block">
+            <div class="layui-upload">
+                <div id="ImageUp" class="layui-upload-drag">
+                    <i class="layui-icon">&#xe67c;</i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                </div>
+            </div>
+            <p id="errorText"></p>
+            <div id="UpImage" class="layui-upload-list">
+                <img id="Image" class="layui-upload-img width-max" src="@Model.ProductModel.ImagePath">
+            </div>
+            <input id="ImagePath" name="ImagePath" type="hidden" value="@Model.ProductModel.ImagePath" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序索引</label>
+        <div class="layui-input-block">
+            <input id="SortIndex" name="SortIndex" class="layui-input" type="text" lay-verify="required|number" placeholder="请输入排序索引" autocomplete="off" value="@Model.ProductModel.SortIndex" data-value="@Model.ProductModel.SortIndex">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发布时间</label>
+        <div class="layui-input-block">
+            <input id="ArticleTime" name="ArticleTime" class="layui-input" type="text" placeholder="请输入产品发布时间" autocomplete="off" value="@Model.ProductModel.ArticleTime.ToString("yyyy-MM-dd")">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">浏览次数</label>
+        <div class="layui-input-block">
+            <input name="BrowseCount" class="layui-input" type="text" lay-verify="number" placeholder="请输入浏览次数" autocomplete="off" value="@Model.ProductModel.BrowseCount">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">关键字</label>
+        <div class="layui-input-block">
+            <input name="Keywords" class="layui-input" type="text" placeholder="请输入产品关键字" autocomplete="off" value="@Model.ProductModel.Keywords">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">链接</label>
+        <div class="layui-input-block">
+            <input name="URL" class="layui-input" type="text" placeholder="请输入产品链接地址" autocomplete="off" value="@Model.ProductModel.URL">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">地址</label>
+        <div class="layui-input-block">
+            <input name="PhysicalAddress" class="layui-input" type="text" placeholder="请输入产品地址" autocomplete="off" value="@Model.ProductModel.PhysicalAddress">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">简介</label>
+        <div class="layui-input-block">
+            <textarea id="Description" name="Description" class="layui-textarea" placeholder="请输入产品简介">@Model.ProductModel.Description</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">详细介绍</label>
+        <div class="layui-input-block">
+            <textarea id="DetailedContent" name="DetailedContent" class="layui-textarea" placeholder="请输入产品详细介绍">@Model.ProductModel.DetailedContent</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" lay-filter="Save" lay-submit="">保存</button>
+        <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+    </div>
+}
+
+@section Foot
+{
+    <!-- 初始化基本信息 -->
+    <script>
+        //初始化下拉列表选中值
+        $(function () {
+            @{ 
+                string CategoryID = "";
+                if(null != Model.CategoryModel)
+                {
+                    CategoryID = Model.CategoryModel.ID.ToString();
+                }
+                else { }
+            }
+            $('#Category_ID').val('@CategoryID');
+        });
+    </script>
+    <!-- layui -->
+    <script>
+        layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                upload = layui.upload,
+                layedit = layui.layedit,
+                laydate = layui.laydate;
+
+            //富文本编辑器图片上传接口
+            layedit.set({
+                uploadImage: {
+                    url: '@Url.Action("RichEditor", "Upload")',
+                    type: 'post',
+                }
+            });
+            var index = layedit.build('DetailedContent');//构建富文本编辑器
+
+            //加载时间选择
+            laydate.render({
+                elem: '#ArticleTime'
+            });
+
+            //上传图片
+            var uploadInst = upload.render({
+                elem: '#ImageUp',
+                url: '@Url.Action("UploadTempImage", "Upload")',
+                accept: 'images',
+                auto: true,
+                size: 2048,
+                choose: function (obj) {
+                    //预读本地文件（不支持ie8）
+                    obj.preview(function (index, file, result) {
+                        $('#Image').attr('src', result); //图片链接（base64）
+                    });
+                },
+                done: function (res) {
+                    if (200 != res.Code) {
+                        return layer.msg(res.Message);
+                    }
+                    else {
+                        $('#ImagePath').val(res.Data);
+                        $('#Image').attr('src', res.Data);
+                        return layer.msg(res.Message);
+                    }
+                },
+                error: function () {
+                    //演示失败状态，并实现重传
+                    var demoText = $('#errorText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+            //图片标题查看
+            layer.photos({
+                photos: '#UpImage',
+                anim: 0 //0-6的选择，指定弹出图片动画类型
+            });
+        });
+    </script>
+    <!-- 表单异步提交 -->
+    <script>
+        function Success(data) {
+            layui.use('layer', function () {
+                //弹出提示消息
+                layer.open({
+                    type: 0,
+                    title: '提示信息',
+                    content: data.Message,
+                    time: 5000,
+                    resize: false,
+                    end: function () {
+                        if (200 == data.Code) {
+                            //改变父级窗体值
+                            if (($('#SortIndex').val() != $('#SortIndex').data('value')) || ($('#Category_ID').val() != $('#Category_ID').data('value'))) {
+                                //重载父级表格
+                                parent.layui.table.reload('DataTable', {
+                                });
+                            }
+                            else {
+                                var id = $('#ID').val();
+                                var title = $('#Title').val();
+                                var articleTime = $('#ArticleTime').val();
+                                parent.$('#Title_' + id).text(title);
+                                parent.$('#ArticleTime_' + id).text(articleTime);
+                            }
+                            //关闭父级弹出层
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        }
+                        else { }
+                    }
+                });
+            });
+        }
+    </script>
+}

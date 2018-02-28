@@ -1,0 +1,1365 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>首页</title>
+    <link href="/Content/global.css" rel="stylesheet" />
+    <link href="/Content/layout.css" rel="stylesheet" />
+    <link href="/Content/iconfont.css" rel="stylesheet" />
+    <link href="/Plug/framework7/css/framework7.ios.css" rel="stylesheet" />
+    <link href="/Plug/framework7/css/framework7.ios.colors.css" rel="stylesheet" />
+    <link href="/Plug/framework7-icons/css/framework7-icons.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="views">
+        <div class="view view-main">
+            <!-- 页面区域 -->
+            <div class="pages navbar-fixed toolbar-through">
+                <div id="Home" data-page="home" class="page dgalaxy-commodity">
+                    <!-- 保存分页数据 -->
+                    <input id="Page" type="hidden" value="1" />
+                    <input id="Loading" type="hidden" value="1" />
+
+                    <!-- 导航区域 -->
+                    <div class="navbar">
+                        <div class="navbar-inner">
+                            <div class="left">
+                                江山假期
+                            </div>
+                            <div class="center">
+                                <div class="searchbar searchbar-init dgalaxy-search-home">
+                                    <div class="searchbar-input dgalaxy-input">
+                                        <input id="SearchBox" class="open-panel" type="search" placeholder="输入出发地点/目的地点">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <a class="icon-only" href="@Url.Action("Index","MyCenter")">
+                                    <i class="f7-icons">person</i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 数据主体区域 -->
+                    <div class="page-content infinite-scroll" data-distance="50">
+                        <!-- 卡片列表 -->
+                        <div id="Content"></div>
+
+                        <!-- 加载提示符 -->
+                        <div class="infinite-scroll-preloader">
+                            <div class="preloader"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 工具栏区域 -->
+            <div id="Footer" class="toolbar tabbar tabbar-labels">
+                <div class="toolbar-inner">
+                    <a class="tab-link active" href="javascript:void(0);" data-route="@Url.Action("Index","Home")">
+                        <i class="icon iconfont icon-shouye dgalaxy-toolbar-icon "></i>
+                        <span class="tabbar-label">首页</span>
+                    </a>
+                    <a class="tab-link" href="javascript:void(0);" data-route="@Url.Action("Index","Discover")">
+                        <i class="icon iconfont icon-faxian dgalaxy-toolbar-icon "></i>
+                        <span class="tabbar-label">发现</span>
+                    </a>
+                    <a class="tab-link" href="javascript:void(0);" data-route="@Url.Action("Index","Order")">
+                        <i class="icon iconfont icon-dingdan dgalaxy-toolbar-icon "></i>
+                        <span class="tabbar-label">订单</span>
+                    </a>
+                    <a class="tab-link" href="javascript:void(0);" data-route="@Url.Action("Index","MyCenter")">
+                        <i class="icon iconfont icon-wode dgalaxy-toolbar-icon "></i>
+                        <span class="tabbar-label">个人中心</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部JavaScript代码区域 -->
+    <script src="/Scripts/jquery-1.8.3.min.js"></script>
+    <script src="/Scripts/jquery.validate.js"></script>
+    <script src="/Plug/framework7/js/framework7.js"></script>
+    <script src="/Scripts/global.js"></script>
+    <script src="/Scripts/factory-simple.js"></script>
+
+    <!-- 初始化视图 -->
+    <script>
+        var frameSeven = new Framework7({
+            dynamicNavbar: true,//启用动态导航栏
+            cacheIgnore: [//禁用页面缓存
+                '@Url.Action("Index","Contacts")',
+                '@Url.Action("Index","Passenger")',
+                '@Url.Action("Details","Commodity")',
+                '@Url.Action("Specification", "Commodity")',
+                '@Url.Action("Details","Order")',
+                '@Url.Action("Affirm","Order")',
+                '@Url.Action("Choose", "Contacts")',
+                '@Url.Action("Choose", "Passenger")',]
+        });
+        var mainView = frameSeven.addView('.view-main');
+    </script>
+    <!-- 设置工具栏 -->
+    <script>
+        $(function () {
+            //设置工具栏路由
+            f7Route('.toolbar .tab-link', mainView);
+
+            //设置工具栏点击样式
+            $('.toolbar .tab-link').live('click', function () {
+                $('.toolbar .tab-link').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+    </script>
+    <!-- 加载表单验证方法 -->
+    <script>
+        function loadFormValidate(selector) {
+            //添加手机号码验证规则
+            $.validator.addMethod("phone", function (value, element) {
+                var length = value.length;
+                var phone = /^1[34578]\d{9}$/;
+                return this.optional(element) || (length == 11 && phone.test(value));
+            }, "请填写正确的手机号码");
+
+            //添加身份证号码验证规则
+            $.validator.addMethod("idcard", function (value, element) {
+                var length = value.length;
+                var idcard = '/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$/';
+                return this.optional(element) || (length == 18 && idcard.test(value));
+            }, "请填写正确的身份证号码");
+
+            //表单验证
+            $(selector).validate({
+                onclick: false,//禁用点击触发验证
+                onfocusout: false,//禁用获取焦点验证
+                onkeyup: false,//禁用按键弹起验证
+                focusInvalid: false,//禁用获取焦点
+                ignore: '',//设置禁用验证的元素
+                rules: {
+                    Name: {
+                        required: true,
+                        maxlength: 5
+                    },
+                    Phone: {
+                        required: true,
+                        phone: true
+                    },
+                    Email: {
+                        email: true
+                    },
+                    RegionsID: {
+                        required: true
+                    },
+                    DetailedAddress: {
+                        required: true
+                    },
+                    Gender: {
+                        required: true
+                    },
+                    IDCard: {
+                        required: true,
+                        idcard: true
+                    },
+                    ChooseContacts: {
+                        required: true,
+                    }
+                },
+                messages: {
+                    Name: {
+                        required: '请输入姓名',
+                        maxlength: '联系人姓名请不要超过5个字'
+                    },
+                    Phone: {
+                        required: '请输入联系电话',
+                        phone: '请输入正确的手机号码'
+                    },
+                    Email: {
+                        required: '请输入邮箱',
+                        email: '请输入正确的邮箱格式'
+                    },
+                    RegionsID: {
+                        required: '请选择所在地区'
+                    },
+                    DetailedAddress: {
+                        required: '请输入详细地址'
+                    },
+                    Gender: {
+                        required: '请选择性别'
+                    },
+                    IDCard: {
+                        required: '请输入身份证号码',
+                        idcard: '请输入正确的身份证号码'
+                    },
+                    ChooseContacts: {
+                        required: '请选择联系人'
+                    }
+                },
+                showErrors: function (errorMap, errorList) {
+                    if (0 != errorList.length) {
+                        frameSeven.alert(errorList[0].message, '提示消息');
+                    }
+                    else { }
+                }
+            });
+        }
+    </script>
+    <!-- 加载省市区三级联动方法 -->
+    <script>
+        function loadPageRegion(selector, queryData) {
+            var pageSelector = selector + ' ';
+            var callbackUrl = queryData.regionCallbackUrl;
+
+            //解除绑定单击事件
+            $(pageSelector + '.item-link').die('click');
+
+            //设置路由
+            $(pageSelector + '.item-link').live('click', function () {
+                var url = null;
+                var id = $(this).data('id');
+                var title = $(this).data('title');
+                var titles = $(pageSelector + '#Titles').val();
+                var values = $(pageSelector + '#Values').val();
+                if ('' != values) {
+                    if (2 == values.split('/').length) {
+                        queryData.values = values;
+                        queryData.titles = titles + ' ' + title;
+                        mainView.router.back({
+                            url: callbackUrl,
+                            query: queryData,
+                            force: true,
+                        });
+                    }
+                    else {
+                        url = '@Url.Action("Index","Region")' + '?id=' + id + '&&title=' + title + '&&values=' + values + '/' + id + '&&titles=' + titles + ' ' + title;
+                        mainView.router.load({
+                            url: url,
+                            query: queryData,
+                            reload: true,
+                        });
+                    }
+                }
+                else {
+                    url = '@Url.Action("Index","Region")' + '?id=' + id + '&&title=' + title;
+                    mainView.router.load({
+                        url: url,
+                        query: queryData,
+                        reload: true,
+                    });
+                }
+            });
+        };
+    </script>
+    <!-- 加载订单操作方法 -->
+    <script>
+        function loadPageOrderOperate(selector) {
+            var pageSelector = selector + ' ';
+
+            //解除绑定单击事件
+            $(pageSelector + '.order-close').die('click');
+            $(pageSelector + '.order-payment').die('click');
+            $(pageSelector + '.order-details').die('click');
+            $(pageSelector + '.order-refund').die('click');
+            $(pageSelector + '.order-evaluate').die('click');
+
+            //订单关闭
+            $(pageSelector + '.order-close').live('click', function () {
+                var id = $(this).data('id');
+
+                //修改订单状态
+                $.post('@Url.Action("Close","Order")?id=' + id, function (data) {
+                    if (200 === data.Code) {
+                        frameSeven.alert(data.Message, '提示消息', function () {
+                            mainView.router.load({
+                                url: '@Url.Action("Index","Order")',
+                                reload: true,
+                            });
+                        });
+                    }
+                    else {
+                        frameSeven.alert(data.Message, '提示消息');
+                    }
+                });
+            });
+
+            //订单付款
+            $(pageSelector + '.order-payment').live('click', function () {
+                var id = $(this).data('id');
+                mainView.router.load({
+                    url: '@Url.Action("Payment", "Order")?id=' + id
+                });
+            });
+
+            //订单退款
+            $(pageSelector + '.order-refund').live('click', function () {
+                var id = $(this).data('id');
+
+                //修改订单状态
+                $.post('@Url.Action("Refund", "Order")?id=' + id, function (data) {
+                    if (200 === data.Code) {
+                        frameSeven.alert(data.Message, '提示消息', function () {
+                            mainView.router.load({
+                                url: '@Url.Action("Index","Order")',
+                                reload: true,
+                            });
+                        });
+                    }
+                    else {
+                        frameSeven.alert(data.Message, '提示消息');
+                    }
+                });
+            });
+
+            //订单详情
+            $(pageSelector + '.order-details').live('click', function () {
+                var id = $(this).data('id');
+                mainView.router.load({
+                    url: '@Url.Action("Details", "Order")?id=' + id
+                });
+            });
+
+            //订单评价
+            $(pageSelector + '.order-evaluate').live('click', function () {
+
+            });
+        }
+    </script>
+    <!-- 初始化首页方法 -->
+    <script>
+        function loadPageHome(selector, queryData) {
+            var pageSelector = selector + ' ';
+            var pageSize = 5;
+            var dataSearch = null;
+            var dataDepartureDate = null;
+            var dataRegressionDate = null;
+            if (null != queryData){
+                dataSearch = queryData.search;
+                dataDepartureDate = queryData.departureDate;
+                dataRegressionDate = queryData.regressionDate;
+            }
+            else { }
+
+            //搜索页面跳转
+            $(pageSelector + '#SearchBox').focus(function () {
+                mainView.router.load({
+                    url: '@Url.Action("Search", "Commodity")'
+                });
+            });
+
+            //加载数据
+            function addItems(page, pageSize) {
+                // 生成新条目的HTML
+                $.post('@Url.Action("IndexJson", "Commodity")', { page: page, pageSize: pageSize, search: dataSearch, departureDate: dataDepartureDate, regressionDate: dataRegressionDate }, function (data) {
+                    var html = '';
+                    if (200 === data.Code) {//请求成功
+                        for (var i = 0; i < data.Datas.length; i++) {
+                            var commodity = data.Datas[i];
+                            html += '<div class="card dgalaxy-card-commodity">';
+                            html += '   <a href="@Url.Action("Details", "Commodity")?id=' + commodity.ID + '">';
+                            html += '       <div class="card-header no-border dgalaxy-card-header" valign="bottom" style="background-image:url(' + commodity.ImagePath + ')" >'
+                            html += '           <div class="text-line-single dgalaxy-title">';
+                            html += '               「&nbsp;' + commodity.Title + '&nbsp;」';
+                            html += '           </div>';
+                            html += '      </div>';
+                            html += '      <div class="card-content dgalaxy-card-content">';
+                            html += '           <div class="text-line-single dgalaxy-title">';
+                            html += '               <div class="text-line-single dgalaxy-text">';
+                            html += '                   <span class="dgalaxy-price">￥' + commodity.Price / 100.0 + '/人</span>&nbsp;' + commodity.NightNumber + '晚' + commodity.DaytimeNumber + '日&nbsp;【' + commodity.Title + '】';
+                            html += '               </div>';
+                            html += '               <i class="f7-icons dgalaxy-icon">chevron_right</i>';
+                            html += '               <div class="clear"></div>';
+                            html += '           </div>';
+                            html += '           <div class="color-gray text-line-single dgalaxy-time">';
+                            html += '               ' + toDate(commodity.DepartureDate).pattern("yyyy-MM-dd") + '&nbsp;' + commodity.DepartureSite + '出发';
+                            html += '           </div>';
+                            html += '           <div class="text-line-single dgalaxy-subtitle">';
+                            html += '               <i class="iconfont icon-feiji dgalaxy-icon"></i>&nbsp;' + commodity.DaytimeNumber + '个白天&nbsp;玩转' + commodity.RegressionSite;
+                            html += '           </div>';
+                            html += '      </div>';
+                            html += '   </a>'
+                            html += '</div>';
+                        }
+
+                        //判断是否继续加载
+                        if (pageSize > data.Datas.length) {
+                            $(pageSelector + '#Loading').val('0');
+                            $(pageSelector + '.infinite-scroll-preloader').remove();//删除加载提示符
+                        }
+                        else { }
+                    }
+                    else if (404 === data.Code){
+                        $(pageSelector + '#Loading').val('0');
+                        $(pageSelector + '.infinite-scroll-preloader').remove();//删除加载提示符
+                    }
+                    else { }
+
+                    //加载数据
+                    $(pageSelector + '#Content').append(html);
+                });
+            }
+
+            //预加载数据
+            addItems(1, pageSize);
+
+            //注册'infinite'事件处理函数
+            $(pageSelector + '.infinite-scroll').on('infinite', function () {
+                if ('1' == $(pageSelector + '#Loading').val()) {
+                    //加载数据
+                    var page = parseInt($(pageSelector + '#Page').val()) + 1;//设置页码
+                    $(pageSelector + '#Page').val(page);
+                    addItems(page, pageSize);
+                }
+                else {
+                    frameSeven.detachInfiniteScroll($(pageSelector + '.infinite-scroll'));//注销无限加载
+                    $(pageSelector + '.infinite-scroll-preloader').remove();//删除加载提示符
+                }
+            });
+        }
+    </script>
+    <!-- 初始化发现页方法 -->
+    <script>
+        function loadPageDiscover(selector) {
+            var pageSelector = selector + ' ';
+            var pageSize = 20;
+
+            //加载数据
+            function addItems(page, pageSize) {
+                // 生成新条目的HTML
+                $.post('@Url.Action("IndexJson", "Product")', { page: page, pageSize: pageSize }, function (data) {
+                    var html = '';
+                    if (200 === data.Code) {//请求成功
+                        for (var i = 0; i < data.Datas.length; i++) {
+                            var product = data.Datas[i];
+                            html += '<a href="@Url.Action("Details","Product")?id=' + product.ID + '">';
+                            html += '    <div class="card dgalaxy-card-discover">';
+                            html += '        <div class="card-content dgalaxy-card-content">';
+                            html += '            <div class="dgalaxy-card-left">';
+                            html += '                <img src="' + product.ImagePath + '">';
+                            html += '            </div>';
+                            html += '            <div class="dgalaxy-card-right">';
+                            html += '                <div class="dgalaxy-title">' + product.Title + '</div>';
+                            html += '            </div>';
+                            html += '            <div class="clear"></div>';
+                            html += '        </div>';
+                            html += '    </div>';
+                            html += '</a>';
+                        }
+
+                        //判断是否继续加载
+                        if (pageSize > data.Datas.length) {
+                            $(pageSelector + '#Loading').val('0');
+                            $(pageSelector + '.infinite-scroll-preloader').remove();//删除加载提示符
+                        }
+                        else { }
+                    }
+                    else if (404 === data.Code) {
+                        $(pageSelector + '#Loading').val('0');
+                        $(pageSelector + '.infinite-scroll-preloader').remove();//删除加载提示符
+                    }
+                    else { }
+
+                    //加载数据
+                    $(pageSelector + '#Content').append(html);
+                });
+            }
+
+            //预加载数据
+            addItems(1, pageSize);
+
+            //注册'infinite'事件处理函数
+            $(pageSelector + '.infinite-scroll').on('infinite', function () {
+                if ('1' == $(pageSelector + '#Loading').val()) {
+                    //加载数据
+                    var page = parseInt($(pageSelector + '#Page').val()) + 1;//设置页码
+                    $(pageSelector + '#Page').val(page);
+                    addItems(page, pageSize);
+                }
+                else {
+                    frameSeven.detachInfiniteScroll($(pageSelector + '.infinite-scroll'));//注销无限加载
+                    $(pageSelector + '.infinite-scroll-preloader').remove();//删除加载提示符
+                }
+            });
+        };
+    </script>
+    <!-- 初始化常用联系人页方法 -->
+    <script>
+        function loadPageContacts(selector) {
+            var pageSelector = selector + ' ';
+
+            //解除绑定单击事件
+            $(pageSelector + '.delete').die('click');
+
+            //删除操作
+            $(pageSelector + '.delete').live('click', function () {
+                var id = $(this).data('id');
+                $.post('@Url.Action("Delete", "Contacts")', { id: id }, function (data) {
+                    frameSeven.alert(data.Message, '提示消息', function () {
+                        mainView.router.refreshPage();//刷新页面
+                    });
+                });
+            });
+        };
+    </script>
+    <!-- 初始化常用联系人新建/编辑页方法 -->
+    <script>
+        function loadPageContactsOperate(selector, formID, queryData) {
+            var pageSelector = selector + ' ';
+            var callbackUrl = queryData.callbackUrl;
+
+            //设置三级联动
+            if ((null != queryData) && (null != queryData.titles) && (null != queryData.values)) {
+                $(pageSelector + '#RegionsTitle').html(queryData.titles);
+                $(pageSelector + '#RegionsID').val(queryData.values);
+            }
+            else { }
+
+            //加载表单验证
+            loadFormValidate(pageSelector + formID);
+
+            //处理表单数据
+            $(pageSelector + '#Region').click(function () {
+                var formData = frameSeven.formToData(pageSelector + formID);
+                frameSeven.formStoreData(pageSelector + formID, formData);//保存表单数据
+            });
+            if ((null != queryData) && (null != queryData.titles) && (null != queryData.values)) {
+                var formData = frameSeven.formGetData(pageSelector + formID);//获取表单存储数据
+                formData.RegionsID = queryData.values;
+                frameSeven.formFromData(pageSelector + formID, formData);//设置表单数据
+                frameSeven.formDeleteData(pageSelector + formID);//删除表单存储数据
+                $(pageSelector + '#RegionsTitle').html(queryData.titles);//设置地区文本
+            }
+            else { }
+
+            //表单提交
+            $(pageSelector + formID).on('form:success', function (e) {
+                var data = JSON.parse(e.originalEvent.detail.data);
+                if (200 === data.Code) {
+                    frameSeven.alert(data.Message, '提示消息', function () {
+                        mainView.router.back({
+                            url: callbackUrl,
+                            query: { callbackUrl: queryData.chooseCallbackUrl },
+                            force: true
+                        });
+                    });
+                }
+                else {
+                    frameSeven.alert(data.Message, '提示消息');
+                }
+            });
+        };
+    </script>
+    <!-- 初始化常用联系人选择页方法 -->
+    <script>
+        function loadPageContactsChoose(selector, queryData) {
+            var pageSelector = selector + ' ';
+            var callbackUrl = queryData.callbackUrl;
+
+            //解除绑定单击事件
+            $(pageSelector + '.dgalaxy-card-contacts').die('click');
+
+            //常用联系人选择事件
+            $(pageSelector + '.dgalaxy-card-contacts').live('click', function () {
+                //获取联系人数据
+                var name = $(this).data('name');
+                var phone = $(this).data('phone');
+                var regionsID = $(this).data('regions');
+                var detailedAddress = $(this).data('detailedAddress');
+                var address = $(this).data('address');
+
+                //设置路由
+                mainView.router.back({
+                    url: callbackUrl,
+                    query: {
+                        name: name,
+                        phone: phone,
+                        regionsID: regionsID,
+                        detailedAddress: detailedAddress,
+                        address: address
+                    },
+                    force: true,
+                });
+            });
+
+            //设置新建常用联系人路由
+            $(pageSelector + '#CreateContacts').click(function () {
+                var url = '@Url.Action("Create","Contacts")';
+                mainView.router.load({
+                    url: url,
+                    query: {
+                        callbackUrl : '@Url.Action("Choose", "Contacts")',
+                        chooseCallbackUrl: callbackUrl
+                    }
+                });
+            });
+        }
+    </script>
+    <!-- 初始化常用旅客页方法 -->
+    <script>
+        function loadPagePassenger(selector) {
+            var pageSelector = selector + ' ';
+
+            //解除绑定单击事件
+            $(pageSelector + '.delete').die('click');
+
+            //删除操作
+            $(pageSelector + '.delete').live('click', function () {
+                var id = $(this).data('id');
+                $.post('@Url.Action("Delete", "Passenger")', { id: id }, function(data) {
+                    frameSeven.alert(data.Message, '提示消息', function () {
+                        mainView.router.refreshPage();//刷新页面
+                    });
+                });
+            });
+        };
+    </script>
+    <!-- 初始化常用旅客新建/编辑页方法 -->
+    <script>
+        function loadPagePassengerOperate(selector, formID, queryData) {
+            var pageSelector = selector + ' ';
+            var callbackUrl = queryData.callbackUrl;
+
+            //加载表单验证
+            loadFormValidate(pageSelector + formID);
+
+            //表单提交
+            $(pageSelector + formID).on('form:success', function (e) {
+                var data = JSON.parse(e.originalEvent.detail.data);
+                if (200 === data.Code) {
+                    frameSeven.alert(data.Message, '提示消息', function () {
+                        mainView.router.back({
+                            url: callbackUrl,
+                            query: {
+                                callbackUrl: queryData.chooseCallbackUrl,
+                                id: queryData.id
+                            },
+                            force: true
+                        });
+                    });
+                }
+                else {
+                    frameSeven.alert(data.Message, '提示消息');
+                }
+            });
+        };
+    </script>
+    <!-- 初始化常用旅客选择页 -->
+    <script>
+        function loadPagePassengerChoose(selector, queryData) {
+            var pageSelector = selector + ' ';
+            var callbackUrl = queryData.callbackUrl;
+
+            //解除绑定单击事件
+            $(pageSelector + '.dgalaxy-card-contacts').die('click');
+
+            //常用旅客选择事件
+            $(pageSelector + '.dgalaxy-card-contacts').live('click', function () {
+                //获取旅客数据
+                var id = queryData.id;
+                var name = $(this).data('name');
+                var gender = $(this).data('gender');
+                var idCard = $(this).data('idcard');
+                var genderText = $(this).data('genderText');
+
+                //设置路由
+                mainView.router.back({
+                    url: callbackUrl,
+                    query: {
+                        id: id,
+                        name: name,
+                        gender: gender,
+                        idCard: idCard,
+                        genderText: genderText
+                    },
+                    force: true,
+                });
+            });
+
+            //设置新建常用联系人路由
+            $(pageSelector + '#CreatePassenger').click(function () {
+                var url = '@Url.Action("Create", "Passenger")';
+                mainView.router.load({
+                    url: url,
+                    query: {
+                        callbackUrl : '@Url.Action("Choose", "Passenger")',
+                        chooseCallbackUrl: callbackUrl,
+                        id: queryData.id
+                    }
+                });
+            });
+        }
+    </script>
+    <!-- 初始化商品详情页方法  -->
+    <script>
+        function loadPageCommodityDetails(selector) {
+            var pageSelector = selector + ' ';
+
+            //绑定轮播
+            var swiperObject = frameSeven.swiper(pageSelector + '.swiper-container', {
+                speed: 400,
+                spaceBetween: 100
+            });
+
+            //绑定图片浏览器
+            var myPhotoBrowser = frameSeven.photoBrowser({
+                zoom: 400,
+                photos: ['path/to/image1.jpg', 'path/to/image2.jpg']
+            });
+        };
+    </script>
+    <!-- 初始化商品搜索页方法  -->
+    <script>
+        function loadPageCommoditySearch(selector) {
+            var pageSelector = selector + ' ';
+
+           //搜索框获取焦点
+            $(pageSelector + '#SearchBox').focus();
+
+           //加载日历控件
+           var monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+           var dayNamesShort = ['日', '一', '二', '三', '四', '五', '六'];
+           frameSeven.calendar({
+               input: pageSelector + '#DepartureDate',
+               minDate: '@DateTime.Now.ToString("yyyy-MM-dd")',
+               monthNames: monthNames,
+               dayNamesShort: dayNamesShort
+           });
+           frameSeven.calendar({
+               input: pageSelector + '#RegressionDate',
+               minDate: '@DateTime.Now.ToString("yyyy-MM-dd")',
+               monthNames: monthNames,
+               dayNamesShort: dayNamesShort
+           });
+
+           //搜索点击事件
+           $(pageSelector + '#SearchBtn').click(function () {
+               var search = $(pageSelector + '#SearchBox').val();
+               var departureDate = $(pageSelector + '#DepartureDate').val();
+               var regressionDate = $(pageSelector + '#RegressionDate').val();
+               var url = '@Url.Action("Index", "Home")';
+               var query = null;
+
+               //设置参数
+               if ('' != search) {
+                   if (null == query) {
+                       query = ('?search=' + search);
+                   }
+                   else {
+                       query += ('&&search=' + search);
+                   }
+               }
+               else { }
+               if ('' != departureDate) {
+                   if (null == query) {
+                       query = ('?departureDate=' + departureDate);
+                   }
+                   else {
+                       query += ('&&departureDate=' + departureDate);
+                   }
+               }
+               else { }
+               if ('' != regressionDate) {
+                   if (null == query) {
+                       query = ('?regressionDate=' + regressionDate);
+                   }
+                   else {
+                       query += ('&&regressionDate=' + regressionDate);
+                   }
+               }
+               else { }
+               if (null != query) {
+                   url += query;
+               }
+               else { }
+
+               mainView.router.load({
+                   url: url
+               });
+           });
+        }
+    </script>
+    <!-- 初始化商品规格页方法  -->
+    <script>
+        function loadPageCommoditySpec(selector) {
+            var pageSelector = selector + ' ';
+
+            //解除绑定单击事件
+            $(pageSelector + '.subtract').die('click');
+            $(pageSelector + '.add').die('click');
+
+            //绑定轮播
+            var swiperObject = frameSeven.swiper(pageSelector + '.swiper-container', {
+                speed: 400,
+                spaceBetween: 100
+            });
+
+            //计算商品规格数量
+            function calculationNumber() {
+                //计算商品数量
+                var intSumNumber = 0;
+                $(pageSelector + '.number').each(function (index, elem) {
+                    var intNumber = parseInt($(this).html());
+                    intSumNumber += intNumber;
+                });
+                $(pageSelector + '#Number').html(intSumNumber);//设置商品规格数量
+            }
+
+            //计算商品数量
+            calculationNumber();
+
+            //商品数量操作
+            $(pageSelector + '.subtract').live('click', function () {
+                //修改商品数量
+                var domNumber = $(this).next();
+                var intNumber = parseInt(domNumber.html());
+                if (0 !== intNumber) {
+                    domNumber.html(intNumber - 1);
+                }
+                else { }
+                calculationNumber();//计算商品数量
+            });
+            $(pageSelector + '.add').live('click', function () {
+                //修改商品数量
+                var domNumber = $(this).prev();
+                var intNumber = parseInt(domNumber.html());
+                domNumber.html(intNumber + 1);
+                calculationNumber();//计算商品规格数量
+            });
+
+            //结算操作
+            $(pageSelector + '#Denominate').click(function () {
+                var sumNumber = parseInt($(pageSelector + '#Number').html());//获取商品规格数量
+                if (0 === sumNumber) {
+                    frameSeven.alert('请选择商品', '提示消息');
+                }
+                else {
+                    //设置路由URL
+                    var url = '@Url.Action("Affirm", "Order")';
+                    $(pageSelector + '.number').each(function (index, elem) {
+                        var arrayName = 'denominates[' + index + ']';
+                        if (0 !== index) {
+                            url += '&&';
+                        }
+                        else {
+                            url += '?'
+                        }
+                        url += arrayName + '.SpecID=' + $(this).data('id') + '&&' + arrayName + '.SpecNumber=' + $(this).html();
+                    });
+
+                    //路由跳转
+                    mainView.router.load({
+                        url: url,
+                        query: { EmptyForm: '1' }
+                    });
+                }
+            });
+        }
+    </script>
+    <!-- 初始化订单页方法  -->
+    <script>
+        function loadPageOrder(selector) {
+            var pageSelector = selector + ' ';
+            var pageSize = 5;
+            var tabID = $(pageSelector + '#TabID').val();
+            var status = $(pageSelector + '#Status').val();
+            var statues = status.split('/');
+
+            //加载数据
+            function addItems(page, pageSize, statues, tabID) {
+                //初始化页面状态
+                if (1 === page) {
+                    $(pageSelector + tabID).html('');
+                    $(pageSelector + '#Page').val('1');
+                    $(pageSelector + '#Loading').val('1');
+                    $(pageSelector + '.infinite-scroll-preloader').show();//显示加载提示符
+                    $(pageSelector + '.dgalaxy-nofound-big').hide();//隐藏订单未找到提示
+                }
+                else { }
+
+                //生成新条目的HTML
+                $.post('@Url.Action("IndexJson","Order")', { page: page, pageSize: pageSize, statues: statues }, function (data) {
+                    var html = '';
+                    if (200 === data.Code) {//请求成功
+                        for (var i = 0; i < data.Datas.length; i++) {
+                            var viewModel = data.Datas[i];
+                            html += '<div class="card dgalaxy-card-order-detail">';
+                            html += '    <a href="@Url.Action("Details","Order")?id=' + viewModel.OrderModel.ID + '">';
+                            html += '        <div class="card-header dgalaxy-card-header">订单号：' + viewModel.OrderModel.OrderNumber + '</div>';
+                            html += '        <div class="card-content dgalaxy-card-content">';
+                            for (var j = 0; j < viewModel.OrderDetailList.length; j++){
+                                var detailViewModel = viewModel.OrderDetailList[j];
+                                html += '            <div class="dgalaxy-card-commodity">';
+                                html += '                <div class="dgalaxy-card-left">';
+                                html += '                    <img src="' + detailViewModel.CommodityModel.ImagePath + '" />';
+                                html += '                </div>';
+                                html += '                <div class="dgalaxy-card-right">';
+                                html += '                    <div class="txt-line-single-2 dgalaxy-title">' + detailViewModel.CommodityModel.Title + '</div>';
+                                html += '                    <div class="txt-line-single dgalaxy-price">￥' + (detailViewModel.OrderDetailModel.Price /100.00) + '</div>';
+                                html += '                    <div class="txt-line-single dgalaxy-price-original"><s>￥' + (detailViewModel.OrderDetailModel.Price / 100.00) + '</s></div>';
+                                html += '                    <div class="clear"></div>';
+                                html += '                    <div class="txt-line-single-2 dgalaxy-subtitle">' + detailViewModel.SpecificationModel.Title + '</div>';
+                                html += '                    <div class="txt-line-single dgalaxy-number">x' + detailViewModel.OrderDetailModel.Quantity + '</div>';
+                                html += '                    <div class="clear"></div>';
+                                html += '                </div>';
+                                html += '                <div class="clear"></div>';
+                                html += '            </div>';
+                            }
+                            html += '            <div class="txt-line-single dgalaxy-total">共' + viewModel.OrderModel.TotalQuantity + '件商品&nbsp;&nbsp;合计：￥' + (viewModel.OrderModel.ActualPrice / 100.00) + '</div>';
+                            html += '        </div>';
+                            html += '    </a>';
+                            html += '    <div class="card-footer dgalaxy-card-footer">';
+                            html += '        ' + orderStatusBtuuonSimple(viewModel.OrderModel.ID, viewModel.OrderModel.Status);
+                            html += '    </div>';
+                            html += '</div>';
+                        }
+
+                        //判断是否继续加载
+                        if (pageSize > data.Datas.length) {
+                            $(pageSelector + '#Loading').val('0');
+                            $(pageSelector + '.infinite-scroll-preloader').hide();//隐藏加载提示符
+                        }
+                        else { }
+                    }
+                    else if (404 === data.Code) {
+                        $(pageSelector + '#Loading').val('0');
+                        $(pageSelector + '.infinite-scroll-preloader').hide();//隐藏加载提示符
+
+                        //显示订单未找到提示
+                        if ((1 === data.PageIndex) && ($(pageSelector + '.dgalaxy-nofound-big').is(':hidden'))) {
+                            $(pageSelector + '.dgalaxy-nofound-big').show();
+                        }
+                        else { }
+                    }
+                    else { }
+
+                    //加载数据
+                    $(pageSelector + tabID).append(html);
+                });
+            }
+
+            //预加载数据
+            addItems(1, pageSize, statues, tabID);
+
+            //监听二级导航切换事件
+            $(pageSelector + '.tab').on('show', function () {
+                //修改分页数据
+                tabID = $(this).data('id');
+                status = $(this).data('status').toString();
+                statues = status.split('/');
+                $(pageSelector + '#TabID').val(tabID);
+                $(pageSelector + '#Status').val(status);
+                addItems(1, pageSize, statues, tabID);
+
+                //注册无限加载
+                frameSeven.attachInfiniteScroll($(pageSelector + '.infinite-scroll'));
+            });
+
+            //注册'infinite'事件处理函数
+            $(pageSelector + '.infinite-scroll').on('infinite', function () {
+                if ('1' === $(pageSelector + '#Loading').val()) {
+                    //查询、修改分页数据
+                    var page = parseInt($(pageSelector + '#Page').val()) + 1;//设置页码
+                    tabID = $(pageSelector + '#TabID').val();
+                    status = $(pageSelector + '#Status').val();
+                    statues = status.split('/');
+                    $(pageSelector + '#Page').val(page);
+
+                    //加载数据
+                    addItems(page, pageSize, statues, tabID);
+                }
+                else {
+                    frameSeven.detachInfiniteScroll($(pageSelector + '.infinite-scroll'));//注销无限加载
+                    $(pageSelector + '.infinite-scroll-preloader').hide();//隐藏加载提示符
+                }
+            });
+        };
+    </script>
+    <!-- 初始化订单详情页方法  -->
+    <script>
+        function loadPageOrderDetails(selector) {
+            var pageSelector = selector + ' ';
+
+            //生成订单状态文本
+            var status = $(pageSelector + '#OrderStatusText').data('status');
+            $(pageSelector + '#OrderStatusText').html(orderStatusTextSimple(status));
+
+            //生成订单状态按钮
+            var id = $(pageSelector + '#OrderStatusBtu').data('id');
+            status = $(pageSelector + '#OrderStatusBtu').data('status');
+            switch (status) {
+                case 60:
+                case 61:
+                case 62:
+                case 63:
+                case 64:
+                    break;
+                default:
+                    $(pageSelector + '#OrderStatusBtu').html(orderStatusBtuuonSimple(id, status));
+                    break;
+            }
+        }
+    </script>
+    <!-- 初始化订单确认页方法 -->
+    <script>
+        function loadPageOrderAffirm(selector, formID, queryData) {
+            var pageSelector = selector + ' ';
+            var callbackUrl = queryData.callbackUrl;
+
+            //判断是否清空表单保存数据
+            var storedData = undefined;
+            if (undefined !== queryData.EmptyForm) {
+                frameSeven.formDeleteData(pageSelector + formID);//删除表单存储数据
+            }
+            else {
+                storedData = frameSeven.formGetData(pageSelector + formID);//获取表单存储数据
+            }
+
+            //解除绑定单击事件
+            $(pageSelector + '.passenger-choose').die('click');
+
+            //加载表单验证
+            loadFormValidate(pageSelector + formID);
+
+            //常用联系人选择数据
+            var name = queryData.name;
+            var phone = queryData.phone;
+            var regionsID = queryData.regionsID;
+            var detailedAddress = queryData.detailedAddress;
+            var address = queryData.address;
+            if ((undefined !== name) && (undefined !== phone) && (undefined !== regionsID) && (undefined !== detailedAddress) && (undefined !== address)) {
+                //设置常用联系人选择数据
+                $(pageSelector + '#Name').html(name);
+                $(pageSelector + '#Phone').html(phone);
+                $(pageSelector + '#Address').html(address);
+                $(pageSelector + '#NameValue').val(name);
+                $(pageSelector + '#PhoneValue').val(phone);
+                $(pageSelector + '#RegionsIDValue').val(regionsID);
+                $(pageSelector + '#DetailedAddressValue').val(detailedAddress);
+
+                //设置常用联系人选择状态
+                $(pageSelector + '#ChooseContacts').val('1');
+                $(pageSelector + '#ContactsChooseHint').hide();
+                $(pageSelector + '#ContactsChoose').show();
+
+                //保存表单数据
+                if (undefined != storedData) {
+                    frameSeven.formDeleteData(pageSelector + formID);
+                    storedData.name = name;
+                    storedData.phone = phone;
+                    storedData.regionsID = regionsID;
+                    storedData.detailedAddress = detailedAddress;
+                    storedData.address = address;
+                    frameSeven.formStoreData(pageSelector + formID, storedData);
+                }
+                else {
+                    frameSeven.formStoreData(pageSelector + formID, {
+                        name: name,
+                        phone: phone,
+                        regionsID: regionsID,
+                        detailedAddress: detailedAddress,
+                        address: address
+                    });
+                }
+            }
+            else { }
+
+            //常用旅客选择数据
+            var id = queryData.id;
+            var gender = queryData.gender;
+            var idCard = queryData.idCard;
+            var genderText = queryData.genderText;
+            if ((undefined !== id) && (undefined !== name) && (undefined !== gender) && (undefined !== idCard) && (undefined !== genderText)) {
+                //设置常用旅客选择数据
+                $(pageSelector + '#Name' + id).html(name);
+                $(pageSelector + '#GenderText' + id).html(genderText);
+                $(pageSelector + '#IDCard' + id).html(idCard);
+                $(pageSelector + '#NameValue' + id).val(name);
+                $(pageSelector + '#GenderValue' + id).val(gender);
+                $(pageSelector + '#IDCardValue' + id).val(idCard);
+
+                //设置常用联系人选择状态
+                $(pageSelector + '#PassengerChooseHint' + id).hide();
+                $(pageSelector + '#PassengerChoose' + id).show();
+
+                //保存表单数据
+                var dictionary = [];
+                var jsonName = 'name|' + id;
+                var jsonGender = 'gender|' + id;
+                var jsonIDCard = 'idCard|' + id;
+                var jsonGenderText = 'genderText|' + id;
+                var dictionaryData = { };
+                dictionaryData[jsonName] = name;
+                dictionaryData[jsonGender] = gender;
+                dictionaryData[jsonIDCard] = idCard;
+                dictionaryData[jsonGenderText] = genderText;
+                if (undefined != storedData) {
+                    frameSeven.formDeleteData(pageSelector + formID);
+                    if ((undefined != storedData.dictionary) && (0 != storedData.dictionary.length)) {
+                        dictionary = storedData.dictionary;
+                    }
+                    else { }
+                }
+                else {
+                    storedData = { };
+                }
+                dictionary.push(dictionaryData);
+                storedData.dictionary = dictionary;
+                frameSeven.formStoreData(pageSelector + formID, storedData);
+            }
+            else { }
+
+            //设置表单存储数据
+            if (undefined !== storedData) {
+                //设置常用联系人选择数据
+                if ((undefined !== storedData.name) && (undefined !== storedData.phone) && (undefined !== storedData.address) && (undefined !== storedData.regionsID) && (undefined !== storedData.detailedAddress)) {
+                    $(pageSelector + '#Name').html(storedData.name);
+                    $(pageSelector + '#Phone').html(storedData.phone);
+                    $(pageSelector + '#Address').html(storedData.address);
+                    $(pageSelector + '#NameValue').val(storedData.name);
+                    $(pageSelector + '#PhoneValue').val(storedData.phone);
+                    $(pageSelector + '#RegionsIDValue').val(storedData.regionsID);
+                    $(pageSelector + '#DetailedAddressValue').val(storedData.detailedAddress);
+
+                    //设置常用联系人选择状态
+                    $(pageSelector + '#ChooseContacts').val('1');
+                    $(pageSelector + '#ContactsChooseHint').hide();
+                    $(pageSelector + '#ContactsChoose').show();
+                }
+                else { }
+
+                //设置常用旅客选择数据
+                if ((undefined !== storedData.dictionary) && (0 !== storedData.dictionary.length)) {
+                    $.each(storedData.dictionary, function () {
+                        var dictionaryData = $(this)[0];
+                        var keyID = 0;
+                        $.each(dictionaryData, function (key, value) {
+                            var keys = key.split('|');
+                            keyID = keys[1];
+                            var keyName = keys[0];
+
+                            //设置常用旅客选择数据
+                            if ('name' === keyName) {
+                                $(pageSelector + '#Name' + keyID).html(value);
+                                $(pageSelector + '#NameValue' + keyID).val(value);
+                            }
+                            else { }
+                            if ('gender' === keyName) {
+                                $(pageSelector + '#GenderValue' + keyID).val(value);
+                            }
+                            else { }
+                            if ('idCard' === keyName) {
+                                $(pageSelector + '#IDCard' + keyID).html(value);
+                                $(pageSelector + '#IDCardValue' + keyID).val(value);
+                            }
+                            else { }
+                            if ('genderText' === keyName){
+                                $(pageSelector + '#GenderText' + keyID).html(value);
+                            }
+                            else { }
+                        });
+                        //设置常用联系人选择状态
+                        $(pageSelector + '#PassengerChooseHint' + keyID).hide();
+                        $(pageSelector + '#PassengerChoose' + keyID).show();
+                    });
+                }
+                else { }
+            }
+            else { }
+
+            //常用联系人选择
+            $(pageSelector + '#ContactsChoose').click(function () {
+                var url = '@Url.Action("Choose", "Contacts")';
+                mainView.router.load({
+                    url: url,
+                    query: { callbackUrl: callbackUrl }
+                });
+            });
+
+            //常用旅客选择
+            $(pageSelector + '.passenger-choose').live('click', function () {
+                var id = $(this).data('id');
+                var url = '@Url.Action("Choose", "Passenger")';
+                mainView.router.load({
+                    url: url,
+                    query: {
+                        id: id,
+                        callbackUrl: callbackUrl,
+                    }
+                });
+            });
+
+            //表单提交
+            $(pageSelector + '#SubmitOrder').click(function () {
+                $(pageSelector + '#Submit').click();
+            });
+            $(pageSelector + formID).on('form:success', function (e) {
+                var data = JSON.parse(e.originalEvent.detail.data);
+                if (200 === data.Code) {
+                    mainView.router.load({
+                        url: '@Url.Action("Payment", "Order")?id=' + data.Data
+                    });
+                }
+                else {
+                    frameSeven.alert(data.Message, '提示消息');
+                }
+            });
+        }
+    </script>
+    <!-- 初始化订单支付页方法 -->
+    <script>
+        function loadPageOrderPayment(selector, queryData) {
+            var pageSelector = selector + ' ';
+
+            $(pageSelector + '#ConfirmPaymen').click(function () {
+                //加载WeChat支付
+                $.post('@Url.Action("WeChatPay", "Payment")', { orderID: queryData.ID }, function (data) {
+                    if (200 === data.Code) {
+                        //设置JSApi配置
+                        wx.config({
+                            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                            appId: data.Data.JSConfigModel.appId, // 必填，公众号的唯一标识
+                            timestamp: data.Data.JSConfigModel.timestamp, // 必填，生成签名的时间戳
+                            nonceStr: data.Data.JSConfigModel.nonceStr, // 必填，生成签名的随机串
+                            signature: data.Data.JSConfigModel.signature,// 必填，签名，见附录1
+                            jsApiList: [data.Data.JSConfigModel.jsApiList[0]] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                        });
+
+                        //调用WeChat支付
+                        wx.chooseWXPay({
+                            appId: data.Data.JSPayModel.appId,
+                            timestamp: data.Data.JSPayModel.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                            nonceStr: data.Data.JSPayModel.nonceStr, // 支付签名随机串，不长于 32 位
+                            package: data.Data.JSPayModel.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                            signType: data.Data.JSPayModel.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                            paySign: data.Data.JSPayModel.paySign, // 支付签名
+                            success: function (res) {
+                                // 支付成功后的回调函数
+                            }
+                        });
+                    }
+                    else { }
+                });
+            });
+        }
+    </script>
+    <!-- 初始化页面控件、加载页面数据 -->
+    <script>
+        $(function () {
+            loadPageHome('#Home', null);//初始化主页
+
+            //主页加载
+            frameSeven.onPageBeforeInit('home', function (page) {
+                loadPageHome('#Home', page.query);//初始化主页
+            });
+
+            //发现页加载
+            frameSeven.onPageBeforeInit('discover', function (page) {
+                loadPageDiscover('#Discover');//初始化发现页
+            });
+
+            //商品详情页加载
+            frameSeven.onPageBeforeInit('commodityDetails', function (page) {
+                loadPageCommodityDetails('#CommodityDetails');//初始化商品详情页
+            });
+
+            //商品搜索页加载
+            frameSeven.onPageAfterAnimation('commoditySearch', function (page) {
+                loadPageCommoditySearch('#CommoditySearch');//初始化商品搜索页
+            });
+
+            //商品规格页加载
+            frameSeven.onPageBeforeInit('commoditySpec', function (page) {
+                loadPageCommoditySpec('#CommoditySpec');//初始化商品规格页
+            });
+
+            //订单页加载
+            frameSeven.onPageBeforeInit('order', function (page) {
+                loadPageOrder('#Order');//初始化订单页
+                loadPageOrderOperate('#Order');//加载订单操作方法
+            });
+
+            //订单详情页加载
+            frameSeven.onPageBeforeInit('orderDetails', function (page) {
+                loadPageOrderDetails('#OrderDetails');//初始化订单详情页
+                loadPageOrderOperate('#OrderDetails');//加载订单操作方法
+            });
+
+            //订单确认页加载
+            frameSeven.onPageBeforeInit('orderAffirm', function (page) {
+                page.query.callbackUrl = page.url;
+                loadPageOrderAffirm('#OrderAffirm', '#OrderAffirmForm', page.query);//初始化订单确认页
+            });
+
+            //订单支付页加载
+            frameSeven.onPageBeforeInit("orderPayment", function (page) {
+                loadPageOrderPayment('#OrderPayment', page.query);//初始化订单支付页
+            });
+
+            //常用联系人页加载
+            frameSeven.onPageBeforeInit('contacts', function (page) {
+                loadPageContacts('#Contacts');//初始化常用联系人页
+            });
+
+            //常用联系人新建页加载
+            frameSeven.onPageBeforeInit('contactsCreate', function (page) {
+                //初始化常用联系人新建页
+                if (null == page.query.chooseCallbackUrl) {
+                    page.query.callbackUrl = '@Url.Action("Index", "Contacts")';
+                }
+                else { }
+                loadPageContactsOperate('#ContactsCreate', '#ContactsCreateForm', page.query);
+
+                //加载省市区三级联动
+                page.query.regionCallbackUrl = page.url;
+                loadPageRegion('#Region', page.query);
+            });
+
+            //常用联系人编辑页加载
+            frameSeven.onPageBeforeInit('contactsEdit', function (page) {
+                //初始化常用联系人编辑页
+                page.query.callbackUrl = '@Url.Action("Index", "Contacts")';
+                loadPageContactsOperate('#ContactsEdit', '#ContactsEditForm', page.query);
+
+                //加载省市区三级联动
+                page.query.regionCallbackUrl = page.url;
+                loadPageRegion('#Region', page.query);
+            });
+
+            //常用联系人选择页加载
+            frameSeven.onPageBeforeInit('contactsChoose', function (page) {
+                loadPageContactsChoose('#ContactsChoose', page.query);//初始化联系人选择页
+            });
+
+            //常用旅客页加载
+            frameSeven.onPageBeforeInit('passenger', function (page) {
+                loadPagePassenger('#Passenger');//初始化常用旅客页
+            });
+
+            //常用旅客新建页加载
+            frameSeven.onPageBeforeInit('passengerCreate', function (page) {
+                //初始化常用旅客新建页
+                if (null == page.query.chooseCallbackUrl) {
+                    page.query.callbackUrl = '@Url.Action("Index", "Passenger")';
+                }
+                else { }
+                loadPagePassengerOperate('#PassengerCreate', '#PassengerCreateForm', page.query);
+            });
+
+            //常用旅客编辑页加载
+            frameSeven.onPageBeforeInit('passengerEdit', function (page) {
+                page.query.callbackUrl = '@Url.Action("Index", "Passenger")';
+                loadPagePassengerOperate('#PassengerEdit', '#PassengerEditForm', page.query);//初始化常用旅客编辑页
+            });
+
+            //常用旅客选择页加载
+            frameSeven.onPageBeforeInit('passengerChoose', function (page) {
+                loadPagePassengerChoose('#PassengerChoose', page.query);//初始化常用旅客选择页
+            });
+        });
+    </script>
+</body>
+</html>

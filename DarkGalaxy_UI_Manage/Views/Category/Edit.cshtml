@@ -1,0 +1,188 @@
+﻿@model DarkGalaxy_Model.Category
+
+@{
+    ViewBag.Title = "编辑分类";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+@using (Ajax.BeginForm("Edit", "Category", new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "Success",
+}, new
+{
+    @class = "layui-form layui-form-pane"
+}))
+{
+    <input id="ID" name="ID" type="hidden" value="@Model.ID" />
+    <!-- SEO优化 -->
+    <fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+        <legend>SEO优化</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">SEO标题</label>
+        <div class="layui-input-block">
+            <input name="SEO_Title" class="layui-input" type="text" placeholder="请输入SEO标题" autocomplete="off" value="@Model.SEO_Title">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">SEO关键词</label>
+        <div class="layui-input-block">
+            <input name="SEO_Keywords" class="layui-input" type="text" placeholder="请输入SEO关键词" autocomplete="off" value="@Model.SEO_Keywords">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">SEO描述</label>
+        <div class="layui-input-block">
+            <textarea name="SEO_Description" class="layui-textarea" placeholder="请输入SEO描述">@Model.SEO_Description</textarea>
+        </div>
+    </div>
+
+    <!-- 分类信息 -->
+    <fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+        <legend>分类信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题(中)<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input id="Title" name="Title" class="layui-input" type="text" lay-verify="required" placeholder="请输入分类标题（中文）" autocomplete="off" value="@Model.Title">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题(英)</label>
+        <div class="layui-input-block">
+            <input name="Title_English" class="layui-input" type="text" placeholder="请输入分类标题（英文）" autocomplete="off" value="@Model.Title_English">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">首图</label>
+        <div class="layui-input-block">
+            <div class="layui-upload">
+                <div class="layui-upload-drag" id="ImageUp">
+                    <i class="layui-icon">&#xe67c;</i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                </div>
+            </div>
+            <p id="errorText"></p>
+            <div id="UpImage" class="layui-upload-list">
+                <img id="Image" class="layui-upload-img width-max" src="@Model.ImagePath">
+            </div>
+            <input id="ImagePath" name="ImagePath" type="hidden" value="@Model.ImagePath" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序索引</label>
+        <div class="layui-input-block">
+            <input id="SortIndex" name="SortIndex" class="layui-input" type="text" lay-verify="required|number" placeholder="请输入排序索引" autocomplete="off" value="@Model.SortIndex" data-value="@Model.SortIndex">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">链接</label>
+        <div class="layui-input-block">
+            <input name="URL" class="layui-input" type="text" placeholder="请输入分类链接地址" autocomplete="off" value="@Model.URL">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">简介</label>
+        <div class="layui-input-block">
+            <textarea id="Description" name="Description" class="layui-textarea" placeholder="请输入分类简介">@Model.Description</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" lay-filter="Save" lay-submit="">保存</button>
+        <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+    </div>
+}
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        //加载表单
+        layui.use(['form', 'upload'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                upload = layui.upload;
+
+            //上传图片
+            var uploadInst = upload.render({
+                elem: '#ImageUp',
+                url: '@Url.Action("UploadTempImage", "Upload")',
+                accept: 'images',
+                auto: true,
+                size: 2048,
+                choose: function (obj) {
+                    //预读本地文件（不支持ie8）
+                    obj.preview(function (index, file, result) {
+                        $('#Image').attr('src', result); //图片链接（base64）
+                    });
+                },
+                done: function (res) {
+                    if (200 != res.Code) {
+                        return layer.msg(res.Message);
+                    }
+                    else {
+                        $('#ImagePath').val(res.Data);
+                        $('#Image').attr('src', res.Data);
+                        return layer.msg(res.Message);
+                    }
+                },
+                error: function () {
+                    //演示失败状态，并实现重传
+                    var demoText = $('#errorText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+            //图片标题查看
+            layer.photos({
+                photos: '#UpImage',
+                anim: 0 //0-6的选择，指定弹出图片动画类型
+            });
+        });
+    </script>
+    <!-- 表单异步提交 -->
+    <script>
+        function Success(data) {
+            layui.use('layer', function () {
+                //弹出提示消息
+                layer.open({
+                    type: 0,
+                    title: '提示信息',
+                    content: data.Message,
+                    time: 5000,
+                    resize: false,
+                    end: function () {
+                        if (200 == data.Code) {
+                            //改变父级窗体值
+                            if ($('#SortIndex').val() != $('#SortIndex').data('value')) {
+                                //刷新父级页面
+                                parent.location.reload();
+                            }
+                            else {
+                                var id = $('#ID').val();
+                                var title = $('#Title').val();
+                                var description = $('#Description').val();
+                                if ('' == description){
+                                    description = '暂无简介';
+                                }
+                                else{ }
+                                parent.$('#Title_' + id).text(title);
+                                parent.$('#Description_' + id).text('简介：' + description);
+                                parent.layui.element.init('collapse');
+                            }
+
+                            //关闭父级弹出层
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        }
+                        else { }
+                    }
+                });
+            });
+        }
+    </script>
+}

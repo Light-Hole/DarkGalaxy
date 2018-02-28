@@ -1,0 +1,57 @@
+﻿@model IEnumerable<DarkGalaxy_Model.Passenger>
+
+<div id="PassengerChoose" data-page="passengerChoose" class="page no-tabbar dgalaxy-contacts">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a class="icon-only back dgalaxy-icon-back" href="@Url.Action("Index", "Home")">
+                    <i class="f7-icons">chevron_left</i>
+                </a>
+            </div>
+            <div class="center dgalaxy-title">选择旅客</div>
+        </div>
+    </div>
+
+    <!-- 数据主体区域 -->
+    <div class="page-content">
+        @if (null != Model)
+        {
+            foreach (var temp in Model)
+            {
+                string strGender = "保密";
+                switch (temp.Gender)
+                {
+                    case DarkGalaxy_Model.GenderType.Female:
+                        strGender = "女士";
+                        break;
+                    case DarkGalaxy_Model.GenderType.Male:
+                        strGender = "先生";
+                        break;
+                    default:
+                        break;
+                }
+                <div class="card dgalaxy-card-contacts" data-name="@temp.Name" data-gender="@temp.Gender" data-idcard="@temp.IDCard" data-gender-text="@strGender">
+                    <div class="card-content dgalaxy-card-center">
+                        <div class="dgalaxy-info">
+                            <div class="float-left">@temp.Name</div>
+                            <div class="float-right">@strGender</div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="txt-line-single-2 dgalaxy-address">@temp.IDCard</div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <!-- 旅客未找到提示 -->
+            <div class="dgalaxy-nofound-big dgalaxy-nofound-big-contacts">
+                <div class="dgalaxy-nofound-text">还没有旅客呢！</div>
+            </div>
+        }
+        <a id="CreatePassenger" href="javascript:void(0);">
+            <div class="bg-blue color-white dgalaxy-btn-bottom">添加旅客</div>
+        </a>
+    </div>
+</div>

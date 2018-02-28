@@ -1,0 +1,154 @@
+﻿@model DarkGalaxy_Model.FriendLink
+
+@{
+    ViewBag.Title = "编辑友情链接";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+@using (Ajax.BeginForm("Edit", "FriendLink", new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "Success",
+}, new
+{
+    @class = "layui-form layui-form-pane"
+}))
+{
+    <input id="ID" name="ID" type="hidden" value="@Model.ID" />
+    <fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+        <legend>友情链接信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题(中)<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input id="Title" name="Title" class="layui-input" type="text" lay-verify="required" placeholder="请输入友情链接标题（中文）" autocomplete="off" value="@Model.Title">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题(英)</label>
+        <div class="layui-input-block">
+            <input name="Title_English" class="layui-input" type="text" placeholder="请输入友情链接标题（英文）" autocomplete="off" value="@Model.Title_English">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题(图)</label>
+        <div class="layui-input-block">
+            <div class="layui-upload">
+                <div id="ImageUp" class="layui-upload-drag">
+                    <i class="layui-icon">&#xe67c;</i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                </div>
+            </div>
+            <p id="errorText"></p>
+            <div id="UpImage" class="layui-upload-list">
+                <img id="Image" class="layui-upload-img width-max" src="@Model.Title_ImagePath">
+            </div>
+            <input id="Title_ImagePath" name="Title_ImagePath" type="hidden" value="@Model.Title_ImagePath" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序索引</label>
+        <div class="layui-input-block">
+            <input id="SortIndex" name="SortIndex" class="layui-input" type="text" lay-verify="required|number" placeholder="请输入排序索引" autocomplete="off" value="@Model.SortIndex" data-value="@Model.SortIndex">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">地址<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input id="URL" name="URL" class="layui-input" type="text" lay-verify="required|url" placeholder="请输入友情链接地址" autocomplete="off" value="@Model.URL">
+        </div>
+    </div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" lay-filter="Save" lay-submit="">保存</button>
+        <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+    </div>
+}
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        //加载表单
+        layui.use(['form', 'upload'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                upload = layui.upload;
+
+            //上传图片
+            var uploadInst = upload.render({
+                elem: '#ImageUp',
+                url: '@Url.Action("UploadTempImage", "Upload")',
+                accept: 'images',
+                auto: true,
+                size: 2048,
+                choose: function (obj) {
+                    //预读本地文件（不支持ie8）
+                    obj.preview(function (index, file, result) {
+                        $('#Image').attr('src', result); //图片链接（base64）
+                    });
+                },
+                done: function (res) {
+                    if (200 != res.Code) {
+                        return layer.msg(res.Message);
+                    }
+                    else {
+                        $('#Title_ImagePath').val(res.Data);
+                        $('#Image').attr('src', res.Data);
+                        return layer.msg(res.Message);
+                    }
+                },
+                error: function () {
+                    //演示失败状态，并实现重传
+                    var demoText = $('#errorText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+            //图片标题查看
+            layer.photos({
+                photos: '#UpImage',
+                anim: 0 //0-6的选择，指定弹出图片动画类型
+            });
+        });
+    </script>
+    <!-- 表单异步提交 -->
+    <script>
+        function Success(data) {
+            layui.use('layer', function () {
+                //弹出提示消息
+                layer.open({
+                    type: 0,
+                    title: '提示信息',
+                    content: data.Message,
+                    time: 5000,
+                    resize: false,
+                    end: function () {
+                        if (200 == data.Code) {
+                            //改变父级窗体值
+                            if ($('#SortIndex').val() != $('#SortIndex').data('value')) {
+                                //重载父级表格
+                                parent.layui.table.reload('DataTable', {
+                                });
+                            }
+                            else {
+                                var id = $('#ID').val();
+                                var title = $('#Title').val();
+                                var url = $('#URL').val();
+                                parent.$('#Title_' + id).text(title);
+                                parent.$('#URL_' + id).text(url);
+                            }
+
+                            //关闭父级弹出层
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        }
+                        else { }
+                    }
+                });
+            });
+        }
+    </script>
+}

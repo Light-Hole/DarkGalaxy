@@ -1,0 +1,240 @@
+﻿@{
+    ViewBag.Title = "订单管理";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+<!-- 主体工具栏 -->
+<div class="layui-row layui-elem-quote layui-form dgalaxy-tab-tool">
+    <div class="layui-input-inline">
+        <select id="OrderStatus" lay-filter="OrderStatus">
+            <option value="-1">全部</option>
+            <option value="20">已支付</option>
+            <option value="10">订单关闭</option>
+            <option value="50">待评价</option>
+            <option value="52">已评价</option>
+            <option value="60">待退款</option>
+            <option value="62">已退款</option>
+            <option value="64">未退款</option>
+        </select>
+    </div>
+    <div class="layui-inline dgalaxy-search-shortbox dgalaxy-space">
+        <input id="StartDate" type="text" placeholder="起始时间" autocomplete="off" class="layui-input datetime">
+    </div>
+    <div class="layui-inline">
+        -
+    </div>
+    <div class="layui-inline dgalaxy-search-shortbox">
+        <input id="EndDate" type="text" placeholder="结束时间" autocomplete="off" class="layui-input datetime">
+    </div>
+    <div class="layui-inline dgalaxy-search-box dgalaxy-space">
+        <input id="Search" class="layui-input" placeholder="请输入订单号/微信订单号" autocomplete="off">
+    </div>
+    <button id="SearchButton" class="layui-btn layui-btn-normal" data-type="Search">
+        <i class="layui-icon">&#xe615;</i>&nbsp;搜索
+    </button>
+    <button id="Refresh" class="layui-btn layui-btn-warm">
+        <i class="layui-icon">&#x1002;</i>&nbsp;刷新
+    </button>
+</div>
+
+<!-- 主体表格 -->
+<table id="Table" lay-filter="Table"></table>
+
+@section Foot
+{
+    <script src="/Script/factory-simple.js"></script>
+    <!-- layui -->
+    <script>
+        layui.use(['table', 'form', 'laydate'], function () {
+            var $ = layui.jquery,
+                layer = layui.layer,
+                table = layui.table,
+                form = layui.form,
+                laydate = layui.laydate,
+                active = {
+                    //数据表格重载（搜索）
+                    Search: function () {
+                        //订单号搜索
+                        if ('' != $('#Search').val()){
+                            table.reload('DataTable', {
+                                where: {
+                                    OrderNumber: $('#Search').val()
+                                }
+                            });
+                        }
+                        else {
+                            //条件搜索
+                            if (('' != $('#StartDate').val()) && ('' != $('#EndDate').val()) && ($('#EndDate').val() <= $('#StartDate').val())) {
+                                //弹出提示消息
+                                layer.open({
+                                    type: 0,
+                                    title: '提示信息',
+                                    content: '时间范围错误',
+                                    time: 5000,
+                                    resize: false
+                                });
+                            }
+                            else {
+                                table.reload('DataTable', {
+                                    where: {
+                                        OrderStatus: $('#OrderStatus').val(),
+                                        StartDate: $('#StartDate').val(),
+                                        EndDate: $('#EndDate').val()
+                                    }
+                                });
+                            }
+                        }
+                    }
+                };
+
+            //绑定日期控件
+            lay('.datetime').each(function () {
+                laydate.render({
+                    elem: this,
+                    calendar: true
+                });
+            });
+
+            /*数据表格加载*/
+            table.render({ //其它参数在此省略
+                id: 'DataTable',
+                elem: '#Table',
+                height: 'full-120',
+                cols: [[ //标题栏
+                    { fixed: 'left', field: 'ID', title: 'ID', width: 70, align: 'center' },
+                    { field: 'OrderNumber', title: '订单号', align: 'center' },
+                    { field: 'WeChatOrderNumber', title: '微信订单号', align: 'center' },
+                    { field: 'Status', title: '状态', align: 'center', templet: '#Status' },
+                    { field: 'CreateDateTime', title: '创建时间', minWidth: 150, align: 'center', templet: '#CreateDateTime', sort: true },
+                    { fixed: 'right', title: '操作', minWidth: 200, align: 'center', toolbar: '#Tools' }
+                ]],
+                url: '@Url.Action("IndexJson", "Order")',
+                method: 'POST',
+                request: {
+                    pageName: 'Page', //页码的参数名称
+                    limitName: 'PageSize' //每页数据量的参数名
+                },
+                response: {
+                    statusName: 'Code',
+                    statusCode: 200, //成功的状态码
+                    msgName: 'Message', //状态信息的字段名称
+                    countName: 'Total', //数据总数的字段名称
+                    dataName: 'Datas' //数据列表的字段名称
+                },
+                page: true,
+                limits: [5, 10, 15, 20, 30],
+                limit: 15,
+                initSort: {
+                    field: 'CreateDateTime', //排序字段，对应 cols 设定的各字段名
+                    type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+                }
+            });
+
+            /*表格搜索*/
+            $('#SearchButton').live('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+            /*监听select选择*/
+            form.on('select(OrderStatus)', function (data) {
+                if (-1 != data.value) {
+                    $('#Search').val('');
+                }
+                else{ }
+            });
+
+            /*监听搜索工具栏*/
+            $('#Search').live('focus', function () {
+                $('#OrderStatus').val('-1');
+                form.render('select');
+                $('#StartDate').val('');
+                $('#EndDate').val('');
+            });
+
+            /*工具条监听*/
+            table.on('tool(Table)', function (obj) {
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+                if (layEvent === 'details') { //查看详细信息
+                    layer.open({
+                        id: 'DetailsOrder',
+                        type: 2,
+                        title: '详细信息',
+                        content: '@Url.Action("Details", "Order")' + '?ID=' + data.ID,
+                        anim: 1,
+                        shadeClose: true,
+                        shade: 0.8,
+                        resize: false,
+                        area: ['90%', '90%']
+                    });
+                }
+                else if (layEvent === 'evaluateAudit') {//评价审核
+                    layer.open({
+                        id: 'EvaluateAudit',
+                        type: 2,
+                        title: '评价审核',
+                        content: '@Url.Action("Details", "OrderEvaluate")' + '?ID=' + data.ID,
+                        anim: 1,
+                        shadeClose: true,
+                        shade: 0.8,
+                        resize: false,
+                        area: ['90%', '90%'],
+                        end: function () {
+                            table.reload('DataTable', {
+                                where: {
+                                }
+                            });
+                        }
+                    });
+                }
+                else if (layEvent === 'refundAudit') {//退款审核
+                    layer.open({
+                        id: 'RefundAudit',
+                        type: 2,
+                        title: '退款审核',
+                        content: '@Url.Action("Details", "OrderRefund")' + '?ID=' + data.ID,
+                        anim: 1,
+                        shadeClose: true,
+                        shade: 0.8,
+                        resize: false,
+                        area: ['90%', '90%'],
+                        end: function () {
+                            table.reload('DataTable', {
+                                where: {
+                                }
+                            });
+                        }
+                    });
+                }
+                else if (layEvent === 'detailsRefund') {//退款详情
+                    layer.open({
+                        id: 'DetailsRefund',
+                        type: 2,
+                        title: '退款详情',
+                        content: '@Url.Action("Details", "OrderRefund")' + '?ID=' + data.ID,
+                        anim: 1,
+                        shadeClose: true,
+                        shade: 0.8,
+                        resize: false,
+                        area: ['90%', '90%']
+                    });
+                }
+                else{ }
+            });
+        });
+    </script>
+    <!-- 数据模版 -->
+    <script type="text/html" id="Status">
+        {{ orderStatusSimple(d.Status) }}
+    </script>
+    <script type="text/html" id="CreateDateTime">
+        {{ toDate(d.CreateDateTime).pattern("yyyy-MM-dd HH:mm") }}
+    </script>
+    <!-- 工具栏模版 -->
+    <script type="text/html" id="Tools">
+        {{ orderStatusButtonSimple(d.Status) }}
+    </script>
+}

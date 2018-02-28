@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "导航设置";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+<div class="layui-row">
+    <button class="layui-btn dgalaxy-tree-space create" data-id="0">
+        <i class="layui-icon">&#xe654;</i>&nbsp;添加顶级导航
+    </button>
+    <button id="Refresh" class="layui-btn layui-btn-warm dgalaxy-tree-space">
+        <i class="layui-icon">&#x1002;</i>&nbsp;刷新
+    </button>
+</div>
+<div class="layui-row dgalaxy-title">
+    <fieldset class="layui-elem-field dgalaxy-hint">
+        <legend>请注意</legend>
+        <div class="layui-field-box">
+            1、删除导航会删除全部的子级导航
+        </div>
+    </fieldset>
+</div>
+<div id="ContentDiv">
+    @Html.Action("IndexPartial", "Navigation")
+</div>
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        layui.use(['element', 'layer'], function () {
+            var element = layui.element,
+                layer = layui.layer;
+
+            //监听面板折叠
+            element.on('collapse()', function (data) {
+            });
+
+            /*新建导航*/
+            $('.create').live('click', function () {
+                layer.open({
+                    id: 'CreateNavigation',
+                    type: 2,
+                    title: '新建',
+                    content: '@Url.Action("Create", "Navigation")' + '?PID=' + $(this).data('id'),
+                    shadeClose: true,
+                    shade: 0.8,
+                    resize: false,
+                    area: ['90%', '90%']
+                });
+            });
+
+            //删除导航
+            $('.delete').live('click', function () {
+                var id = $(this).data('id');
+                layer.confirm('确认删除?（删除后无法还原）', { icon: 3, title: '提示信息' }, function (index) {
+                    $.post('@Url.Action("Delete", "Navigation")', { ID: id }, function (data) {
+                        layer.open({
+                            type: 0,
+                            title: '提示信息',
+                            content: data.Message,
+                            time: 5000,
+                            resize: false,
+                            end: function () {
+                                if (200 == data.Code) {
+                                    var navigationCount = $('#ContentDiv div:eq(0)').children('div').length;
+                                    if (1 != navigationCount){
+                                        $('#Item_' + id).remove();
+                                        element.init('collapse');
+                                    }
+                                    else {
+                                        $('#ContentDiv').html('<p class="dgalaxy-tree-space">暂无子级导航</p>');
+                                    }
+                                }
+                                else {
+
+                                }
+                            }
+                        });
+                    });
+                });
+            });
+
+            /*编辑导航*/
+            $('.edit').live('click', function () {
+                layer.open({
+                    id: 'EditNavigation',
+                    type: 2,
+                    title: '编辑',
+                    content: '@Url.Action("Edit", "Navigation")' + '?ID=' + $(this).data('id'),
+                    shadeClose: true,
+                    shade: 0.8,
+                    resize: false,
+                    area: ['90%', '90%'],
+                    end: function () {
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,427 @@
+﻿@model DarkGalaxy_UI_Manage.Models.CommodityViewModel
+
+@{
+    ViewBag.Title = "新建商品";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+@using (Ajax.BeginForm("Edit", "Commodity", new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnBegin = "Begin",
+    OnSuccess = "Success",
+}, new
+{
+    @class = "layui-form layui-form-pane"
+}))
+{
+    <input id="ID" name="ID" type="hidden" value="@Model.CommodityModel.ID" />
+    <fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+        <legend>商品信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题(中)<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input name="Title" class="layui-input" type="text" lay-verify="required" placeholder="请输入商品标题" autocomplete="off" value="@Model.CommodityModel.Title">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题(英)</label>
+        <div class="layui-input-block">
+            <input name="Title_English" class="layui-input" type="text" placeholder="请输入商品标题（英文）" autocomplete="off" value="@Model.CommodityModel.Title_English">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">首图<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <div class="layui-upload">
+                <div id="ImageUp" class="layui-upload-drag">
+                    <i class="layui-icon">&#xe67c;</i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                </div>
+            </div>
+            <p id="errorText"></p>
+            <div id="UpImage" class="layui-upload-list">
+                <img id="Image" class="layui-upload-img width-max" src="@Model.CommodityModel.ImagePath">
+            </div>
+            <input id="ImagePath" name="ImagePath" type="hidden" lay-verify="required" value="@Model.CommodityModel.ImagePath" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">多图</label>
+        <div class="layui-input-block">
+            <div class="layui-upload">
+                <div class="layui-upload">
+                    <div id="ImagesUp" class="layui-upload-drag">
+                        <i class="layui-icon">&#xe67c;</i>
+                        <p>点击上传，或将文件拖拽到此处</p>
+                    </div>
+                </div>
+                <blockquote class="layui-elem-quote layui-quote-nm dgalaxy-tree-space">
+                    预览图：
+                    <div id="Images" class="layui-upload-list">
+                        @if (!String.IsNullOrEmpty(Model.CommodityModel.ImagePaths))
+                        {
+                            string[] ImagePaths = Model.CommodityModel.ImagePaths.Split('|');
+                            if ((null != ImagePaths) && (0 != ImagePaths.Length))
+                            {
+                                foreach (var temp in ImagePaths)
+                                {
+                                    if (!String.IsNullOrEmpty(temp))
+                                    {
+                                        <img class="layui-upload-img dgalaxy-thumbs" src="@temp" />
+                                    }
+                                    else { }
+                                }
+                            }
+                            else { }
+                        }
+                        else { }
+                    </div>
+                </blockquote>
+            </div>
+            <input id="ImagePaths" name="ImagePaths" type="hidden" value="@Model.CommodityModel.ImagePaths" data-change="0" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序索引</label>
+        <div class="layui-input-block">
+            <input id="SortIndex" name="SortIndex" class="layui-input" type="text" lay-verify="required|number" placeholder="请输入排序索引" autocomplete="off" value="@Model.CommodityModel.SortIndex" data-value="@Model.CommodityModel.SortIndex">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">出发地点<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input id="DepartureSite" name="DepartureSite" type="text" lay-verify="required" placeholder="请输入出发地点" autocomplete="off" class="layui-input" value="@Model.CommodityModel.DepartureSite">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">目的地点<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input id="RegressionSite" name="RegressionSite" type="text" lay-verify="required" placeholder="请输入目的地点" autocomplete="off" class="layui-input" value="@Model.CommodityModel.RegressionSite">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">白天<span class="dgalaxy-required">*</span></label>
+            <div class="layui-input-block">
+                <input id="DaytimeNumber" name="DaytimeNumber" type="text" lay-verify="required|number" placeholder="请输入游玩白天数" autocomplete="off" class="layui-input" value="@Model.CommodityModel.DaytimeNumber">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">夜晚<span class="dgalaxy-required">*</span></label>
+            <div class="layui-input-block">
+                <input id="NightNumber" name="NightNumber" type="text" lay-verify="required|number" placeholder="请输入游玩夜晚数" autocomplete="off" class="layui-input" value="@Model.CommodityModel.NightNumber">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">出发日期<span class="dgalaxy-required">*</span></label>
+            <div class="layui-input-block">
+                <input id="DepartureDate" name="DepartureDate" type="text" lay-verify="required|date|departure" placeholder="请输入出发日期" autocomplete="off" class="layui-input" value="@Model.CommodityModel.DepartureDate.ToString("yyyy-MM-dd")">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">返回日期<span class="dgalaxy-required">*</span></label>
+            <div class="layui-input-block">
+                <input id="RegressionDate" name="RegressionDate" type="text" lay-verify="required|date|regression" placeholder="请输入返回日期" autocomplete="off" class="layui-input" value="@Model.CommodityModel.RegressionDate.ToString("yyyy-MM-dd")">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">价格（元）<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input id="Price" name="FloatPrice" class="layui-input" type="text" lay-verify="required|number" placeholder="请输入商品价格（元）" autocomplete="off" value="@(Model.CommodityModel.Price / 100.0)">
+        </div>
+    </div>
+    <input id="Details" name="Details" type="hidden" />
+    <div id="DetailsDom">
+        @{
+            for (int i = 0; i < Model.CommodityDetailsList.Count; i++)
+            {
+                var temp = Model.CommodityDetailsList[i];
+                <div class="detail">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">行程时间<span class="dgalaxy-required">*</span></label>
+                            <div class="layui-input-block">
+                                <input type="text" lay-verify="required" placeholder="请输入行程时间" autocomplete="off" class="layui-input detail-date" value="@temp.Date">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">行程标题<span class="dgalaxy-required">*</span></label>
+                            <div class="layui-input-block">
+                                <input type="text" lay-verify="required" placeholder="请输入行程标题" autocomplete="off" class="layui-input detail-title" value="@temp.Title">
+                            </div>
+                        </div>
+                        @if (0 != i)
+                        {
+                            <div class="layui-inline">
+                                <button class="layui-btn layui-btn-sm layui-btn-danger delete" type="button">
+                                    <i class="layui-icon">&#xe640;</i>删除行程
+                                </button>
+                            </div>
+                        }
+                        else { }
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">行程内容<span class="dgalaxy-required">*</span></label>
+                        <div class="layui-input-block">
+                            <textarea class="layui-textarea detail-content" lay-verify="required" placeholder="请输入行程内容">@temp.Content</textarea>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div class="layui-form-item">
+        <button id="AddDetails" class="layui-btn" type="button">
+            <i class="layui-icon">&#xe654;</i>&nbsp;添加行程
+        </button>
+    </div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" lay-filter="Save" lay-submit="">保存</button>
+        <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+    </div>
+}
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        //加载表单
+        layui.use(['form', 'upload','laydate'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                upload = layui.upload,
+                laydate = layui.laydate;
+
+            //绑定出发日期
+            laydate.render({
+                elem: '#DepartureDate',
+                calendar: true,
+                min: 1
+            });
+
+            //绑定返回日期
+            laydate.render({
+                elem: '#RegressionDate',
+                calendar: true,
+                min: 2
+            });
+
+            //绑定行程时间
+            laydate.render({
+                elem: '.detail-date',
+                type: 'datetime',
+                format: 'MM/dd HH:mm',
+                calendar: true,
+                min: 1,
+            });
+
+            //上传图片
+            var uploadInst = upload.render({
+                elem: '#ImageUp',
+                url: '@Url.Action("UploadTempImage", "Upload")',
+                accept: 'images',
+                auto: true,
+                size: 2048,
+                choose: function (obj) {
+                    //预读本地文件（不支持ie8）
+                    obj.preview(function (index, file, result) {
+                        $('#Image').attr('src', result); //图片链接（base64）
+                    });
+                },
+                done: function (res) {
+                    if (200 != res.Code) {
+                        return layer.msg(res.Message);
+                    }
+                    else {
+                        $('#ImagePath').val(res.Data);
+                        $('#Image').attr('src', res.Data);
+                        return layer.msg(res.Message);
+                    }
+                },
+                error: function () {
+                    //演示失败状态，并实现重传
+                    var demoText = $('#errorText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+            //多图片上传
+            upload.render({
+                elem: '#ImagesUp',
+                url: '@Url.Action("UploadTempImage", "Upload")',
+                multiple: true,
+                accept: 'images',
+                size: 2048,
+                before: function (obj) {
+                    //判断多图是否被改变
+                    if ('0' == $('#ImagePaths').data('change')) {
+                        $('#ImagePaths').data('change','1');
+                        $('#Images').html('');
+                        $('#ImagePaths').val('');
+                    }
+                    else{ }
+                    //预读本地文件，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#Images').append('<img class="layui-upload-img dgalaxy-thumbs" src="' + result + '" alt="' + file.name + '">')
+                    });
+                },
+                done: function (res) {
+                    if (200 != res.Code) {
+                        return layer.msg(res.Message);
+                    }
+                    else {
+                        if ('' == $('#ImagePaths').val()) {
+                            $('#ImagePaths').val(res.Data);
+                        }
+                        else {
+                            $('#ImagePaths').val($('#ImagePaths').val() + '|' + res.Data);
+                        }
+                        return layer.msg(res.Message);
+                    }
+                }
+            });
+
+            //图片标题查看
+            layer.photos({
+                photos: '#UpImage',
+                anim: 0 //0-6的选择，指定弹出图片动画类型
+            });
+
+            //出发日期、返回日期校验
+            form.verify({
+                departure: function (value, item) { //value：表单的值、item：表单的DOM对象
+                    var regression = $('#RegressionDate').val();
+                    if (('' != regression) && (value >= regression)) {
+                        return '出发时间不能大于或等于返回时间';
+                    }
+                    else { }
+                },
+                regression: function (value, item) { //value：表单的值、item：表单的DOM对象
+                    var departure = $('#DepartureDate').val();
+                    if (('' != departure) && (value <= departure)) {
+                        return '返回时间不能小于或等于出发时间';
+                    }
+                    else { }
+                }
+            });
+
+            //添加行程
+            $('#AddDetails').click(function () {
+                var html = '';
+                var id = new Date().getTime();
+                id = 'Dgalaxy' + id;
+                html += '<div class="detail">';
+                html += '    <div class="layui-form-item">';
+                html += '        <div class="layui-inline">';
+                html += '            <label class="layui-form-label">行程时间<span class="dgalaxy-required">*</span></label>';
+                html += '            <div class="layui-input-block">';
+                html += '                <input id="' + id + '" type="text" lay-verify="required" placeholder="请输入行程时间" autocomplete="off" class="layui-input detail-date">';
+                html += '            </div>';
+                html += '        </div>';
+                html += '        <div class="layui-inline">';
+                html += '            <label class="layui-form-label">行程标题<span class="dgalaxy-required">*</span></label>';
+                html += '            <div class="layui-input-block">';
+                html += '                <input type="text" lay-verify="required" placeholder="请输入行程标题" autocomplete="off" class="layui-input detail-title">';
+                html += '            </div>';
+                html += '        </div>';
+                html += '        <div class="layui-inline">';
+                html += '            <button class="layui-btn layui-btn-sm layui-btn-danger delete" type="button">';
+                html += '                <i class="layui-icon">&#xe640;</i>删除行程';
+                html += '            </button>';
+                html += '        </div>';
+                html += '    </div>';
+                html += '    <div class="layui-form-item layui-form-text">';
+                html += '        <label class="layui-form-label">行程内容<span class="dgalaxy-required">*</span></label>';
+                html += '        <div class="layui-input-block">';
+                html += '            <textarea class="layui-textarea detail-content" lay-verify="required" placeholder="请输入行程内容"></textarea>';
+                html += '        </div>';
+                html += '    </div>';
+                html += '</div>';
+                $('#DetailsDom').append(html);
+
+                //绑定行程时间
+                laydate.render({
+                    elem: '#' + id,
+                    type: 'datetime',
+                    format: 'MM-dd HH:mm',
+                    calendar: true,
+                    min: 1,
+                });
+            });
+
+            //删除行程
+            $('.delete').live('click', function () {
+                $(this).parents('.detail').remove();
+            });
+        });
+    </script>
+    <!-- 表单异步提交 -->
+    <script>
+        function Begin(event, httpRequest, ajaxOptions) {
+            var details = new Array();
+            //获取商品详细信息数据
+            $('.detail').each(function () {
+                var detailDate = $(this).find('.detail-date').first().val();
+                var detailTitle = $(this).find('.detail-title').first().val();
+                var detailContent = $(this).find('.detail-content').first().val();
+
+                //设置商品详细信息数据
+                var detail = { Date: detailDate, Title: detailTitle, Content: detailContent };
+                details.push(detail);
+            });
+
+            //设置商品详细信息数据
+            httpRequest.data = httpRequest.data.replace('Details=', 'Details=' + JSON.stringify(details));
+        }
+        function Success(data) {
+            layui.use('layer', function () {
+
+                //弹出提示消息
+                layer.open({
+                    type: 0,
+                    title: '提示信息',
+                    content: data.Message,
+                    time: 5000,
+                    resize: false,
+                    end: function () {
+                        if (200 == data.Code) {//成功
+                            //改变父级窗体值
+                            if ($('#SortIndex').val() != $('#SortIndex').data('value')) {
+                                //重载父级表格
+                                parent.layui.table.reload('DataTable', {
+                                });
+                            }
+                            else {
+                                var id = $('#ID').val();
+                                var title = $('#Title').val();
+                                var departureSite = $('#DepartureSite').val();
+                                var regressionSite = $('#RegressionSite').val();
+                                var departureDate = $('#DepartureDate').val();
+                                var regressionDate = $('#RegressionDate').val();
+                                var daytimeNumber = $('#DaytimeNumber').val();
+                                var nightNumber = $('#NightNumber').val();
+                                var price = $('#Price').val();
+                                parent.$('#Date_' + id).text(title);
+                                parent.$('#Site_' + id).text(departureSite + ' / ' + regressionSite);
+                                parent.$('#Time_' + id).text(departureDate + ' / ' + regressionDate);
+                                parent.$('#Number_' + id).text(daytimeNumber + '天' + nightNumber + '晚');
+                                parent.$('#Price_' + id).text(price);
+                            }
+                        }
+                        else { }
+
+                        //关闭父级弹出层
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    }
+                });
+            });
+        }
+    </script>
+}

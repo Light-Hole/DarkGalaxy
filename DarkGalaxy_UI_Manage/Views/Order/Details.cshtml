@@ -1,0 +1,153 @@
+﻿@model DarkGalaxy_UI_Manage.Models.OrderViewModel
+
+@{
+    ViewBag.Title = "订单详细信息";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+<div class="layui-form layui-form-pane">
+    <!-- 订单 -->
+    <fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+        <legend>订单信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单号</label>
+        <div class="layui-input-block">
+            <input class="layui-input" type="text" autocomplete="off" value="@Model.OrderModel.OrderNumber" disabled>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">微信订单号</label>
+        <div class="layui-input-block">
+            <input class="layui-input" type="text" autocomplete="off" value="@Model.OrderModel.WeChatOrderNumber" disabled>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">总价格</label>
+        <div class="layui-input-block">
+            <input class="layui-input" type="text" autocomplete="off" value="@(Model.OrderModel.TotalPrice/100.0) 元" disabled>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">支付价格</label>
+        <div class="layui-input-block">
+            <input class="layui-input" type="text" autocomplete="off" value="@(Model.OrderModel.ActualPrice/100.0) 元" disabled>
+        </div>
+    </div>
+    <!-- 订单详情 -->
+    <fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+        <legend>订单详情</legend>
+    </fieldset>
+    <div class="layui-collapse dgalaxy-tree-space">
+        @{
+            foreach (var temp in Model.OrderDetailList)
+            {
+                <div class="layui-colla-item">
+                    @if (String.IsNullOrEmpty(temp.CommodityModel.Title_English))
+                    {
+                        <h2 class="layui-colla-title">@temp.CommodityModel.Title（无英文标题）</h2>
+                    }
+                    else
+                    {
+                        <h2 class="layui-colla-title">@temp.CommodityModel.Title（@temp.CommodityModel.Title_English）</h2>
+                    }
+                    <div class="layui-colla-content">
+                        <p class="dgalaxy-tree-space">出发地点 / 目的地点：@temp.CommodityModel.DepartureSite / @temp.CommodityModel.RegressionSite</p>
+                        <p class="dgalaxy-tree-space">出发时间 / 返回时间：@temp.CommodityModel.DepartureDate.ToString("yyyy-MM-dd") / @temp.CommodityModel.RegressionDate.ToString("yyyy-MM-dd")</p>
+                        <p class="dgalaxy-tree-space">游玩时间：@temp.CommodityModel.DaytimeNumber 天 @temp.CommodityModel.NightNumber 晚</p>
+                        <p class="dgalaxy-tree-space">商品规格分类：@temp.SpecCategoryModel.Title</p>
+                        <p class="dgalaxy-tree-space">商品规格：@temp.SpecificationModel.Title</p>
+                        <p class="dgalaxy-tree-space">商品单价：@(temp.SpecificationModel.Price / 100.0) 元</p>
+                        <p class="dgalaxy-tree-space">商品数量：@temp.OrderDetailModel.Quantity</p>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <!-- 联系人 -->
+    <fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+        <legend>联系人信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-block">
+            <input class="layui-input" type="text" autocomplete="off" value="@Model.OrderModel.Name" disabled>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机</label>
+        <div class="layui-input-block">
+            <input class="layui-input" type="text" autocomplete="off" value="@Model.OrderModel.Phone" disabled>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-block">
+            <input class="layui-input" type="text" autocomplete="off" value="@Model.OrderModel.Email" disabled>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">所在地区</label>
+        <div class="layui-input-block">
+            <input class="layui-input" type="text" autocomplete="off" value="@Model.RegionText" disabled>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">详细地址</label>
+        <div class="layui-input-block">
+            <input class="layui-input" type="text" autocomplete="off" value="@Model.OrderModel.DetailedAddress" disabled>
+        </div>
+    </div>
+    <!-- 旅客详情 -->
+    <fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+        <legend>旅客详情</legend>
+    </fieldset>
+    <div class="layui-collapse dgalaxy-tree-space dgalaxy-tree-bottom">
+        @{
+            foreach (var temp in Model.OrderPassengerList)
+            {
+                string Gender = null;
+                switch (temp.Gender)
+                {
+                    case DarkGalaxy_Model.GenderType.Secrecy:
+                        Gender = "保密";
+                        break;
+                    case DarkGalaxy_Model.GenderType.Male:
+                        Gender = "男";
+                        break;
+                    case DarkGalaxy_Model.GenderType.Female:
+                        Gender = "女";
+                        break;
+                    default:
+                        Gender = "未知数据";
+                        break;
+                }
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">@temp.Name</h2>
+                    <div class="layui-colla-content">
+                        <p class="dgalaxy-tree-space">姓名：@temp.Name</p>
+                        <p class="dgalaxy-tree-space">性别：@Gender</p>
+                        <p class="dgalaxy-tree-space">身份证号码：@temp.IDCard</p>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        //加载表单
+        layui.use(['form', 'element', 'layer'], function () {
+            var element = layui.element,
+                layer = layui.layer,
+                form = layui.form;
+
+            //监听面板折叠
+            element.on('collapse()', function (data) {
+            });
+        });
+    </script>
+}

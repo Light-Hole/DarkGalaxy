@@ -1,0 +1,175 @@
+﻿@model DarkGalaxy_UI.Models.SpecCategoryViewModel
+
+<div id="CommoditySpec" data-page="commoditySpec" class="page no-tabbar dgalaxy-commodity-spec">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a class="icon-only back dgalaxy-icon-back" href="@Url.Action("Index", "Hom")">
+                    <i class="f7-icons">chevron_left</i>
+                </a>
+            </div>
+            <div class="center dgalaxy-title">商品规格</div>
+        </div>
+    </div>
+    <!-- 数据主体区域 -->
+    <div class="page-content">
+        <div class="card dgalaxy-card-spec">
+            <div class="card-content dgalaxy-card-content">
+                <div class="dgalaxy-attribute">
+                    <i class="iconfont icon-renyuanguanli"></i>&nbsp;&nbsp;可住<span>@Model.SpecCategoryModel.GuestMin</span>-<span>@Model.SpecCategoryModel.GuestMax</span>人
+                </div>
+                @if (Model.SpecCategoryModel.Window)
+                {
+                    <div class="dgalaxy-attribute">
+                        <i class="iconfont icon-chuanghu"></i>&nbsp; &nbsp; 有窗户
+                    </div>
+                }
+                else
+                {
+                    <div class="dgalaxy-attribute">
+                        <i class="iconfont icon-chuanghu"></i>&nbsp; &nbsp; 无窗户
+                    </div>
+                }
+                @if (Model.SpecCategoryModel.Balcony)
+                {
+                    <div class="dgalaxy-attribute">
+                        <i class="iconfont icon-yangtai"></i>&nbsp;&nbsp;有阳台
+                    </div>
+                }
+                else
+                {
+                    <div class="dgalaxy-attribute">
+                        <i class="iconfont icon-yangtai"></i>&nbsp;&nbsp;无阳台
+                    </div>
+                }
+                <div class="clear"></div>
+                <div class="dgalaxy-title">舱房简介</div>
+                @if (String.IsNullOrEmpty(Model.SpecCategoryModel.Description))
+                {
+                    <div class="dgalaxy-desc">暂无简介</div>
+                }
+                else
+                {
+                    <div class="dgalaxy-desc">@Model.SpecCategoryModel.Description</div>
+                }
+            </div>
+        </div>
+        <div class="list-block dgalaxy-list-spec">
+            <ul>
+                @{
+                    foreach (var temp in Model.SpecificationList)
+                    {
+                        string strPopupClass = "data-popup-spec" + temp.ID;
+                        string strSubTitle = "";
+                        if (true == temp.Window)
+                        {
+                            strSubTitle += "有窗,";
+                        }
+                        else
+                        {
+                            strSubTitle += "无窗,";
+                        }
+                        if (true == temp.Balcony)
+                        {
+                            strSubTitle += "有阳台,";
+                        }
+                        else
+                        {
+                            strSubTitle += "无阳台,";
+                        }
+                        strSubTitle += "入住" + temp.Guest + "人";
+                        <li class="item-content dgalaxy-list-content">
+                            <div class="item-inner dgalaxy-list-inner">
+                                <div class="dgalaxy-list-left">
+                                    <img src="@temp.ImagePath" />
+                                </div>
+                                <div class="dgalaxy-list-right">
+                                    <div class="dgalaxy-title">
+                                        <div class="dgalaxy-title-left text-line-single">@temp.Title</div>
+                                        <div class="dgalaxy-title-right open-popup" data-popup=".@strPopupClass">查看详情&nbsp;></div>
+                                        <div class="clear"></div>
+
+                                        <!-- 弹出层区域 -->
+                                        <div class="popup dgalaxy-popup-commodity-spec @strPopupClass">
+                                            <div class="swiper-container dgalaxy-banner">
+                                                <img src="@temp.ImagePath" />
+                                            </div>
+                                            <div class="dgalaxy-popup-content">
+                                                <div class="dgalaxy-attribute">
+                                                    <i class="iconfont icon-renyuanguanli"></i>&nbsp;&nbsp;可住<span>@temp.Guest</span>人
+                                                </div>
+                                                @if (temp.Window)
+                                                {
+                                                    <div class="dgalaxy-attribute">
+                                                        <i class="iconfont icon-chuanghu"></i>&nbsp; &nbsp; 有窗户
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="dgalaxy-attribute">
+                                                        <i class="iconfont icon-chuanghu"></i>&nbsp; &nbsp; 无窗户
+                                                    </div>
+                                                }
+                                                @if (temp.Balcony)
+                                                {
+                                                    <div class="dgalaxy-attribute">
+                                                        <i class="iconfont icon-yangtai"></i>&nbsp;&nbsp;有阳台
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="dgalaxy-attribute">
+                                                        <i class="iconfont icon-yangtai"></i>&nbsp;&nbsp;无阳台
+                                                    </div>
+                                                }
+                                                <div class="dgalaxy-attribute">
+                                                    <i class="iconfont icon-fangwumianji"></i>&nbsp;&nbsp;<span>@temp.Area</span>m<sup>2</sup>
+                                                </div>
+                                                <div class="dgalaxy-attribute">
+                                                    <i class="iconfont icon-dituleilouti"></i>&nbsp;&nbsp;<span>@temp.Floors</span>层
+                                                </div>
+                                                <div class="clear"></div>
+                                                <div class="dgalaxy-title">舱房简介</div>
+                                                @if (String.IsNullOrEmpty(temp.Description))
+                                                {
+                                                    <div class="dgalaxy-desc txt-line-single-3">暂无简介</div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="txt-line-single-4 dgalaxy-desc">@temp.Description</div>
+                                                }
+                                                <div class="dgalaxy-title">舱房价格</div>
+                                                <div class="dgalaxy-price">
+                                                    <span class="price">@(temp.Price / 100.00)</span>/人起
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="dgalaxy-subtitle">@strSubTitle</div>
+                                    <div class="dgalaxy-btn">
+                                        <i class="iconfont icon-jian subtract"></i>
+                                        <div class="number" data-id="@temp.ID">0</div>
+                                        <i class="iconfont icon-jia add"></i>
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div class="dgalaxy-price"><span class="price">￥@(temp.Price / 100.00)</span>&nbsp;/人</div>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+
+    <!-- 底部按钮区域 -->
+    <div class="bg-white dgalaxy-btn-bottom">
+        <div class="dgalaxy-btn-left">
+            <i class="iconfont icon-caigou-xianxing"></i>&nbsp;<span id="Number">0</span>&nbsp;间
+        </div>
+        <div id="Denominate" class="bg-red color-white dgalaxy-btn-right">立即购买</div>
+        <div class="clear"></div>
+    </div>
+</div>

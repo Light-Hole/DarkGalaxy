@@ -1,0 +1,32 @@
+﻿<div id="OrderPayment" data-page="orderPayment" class="page no-tabbar dgalaxy-payment">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a class="title-color icon-only back" href="/Default.aspx">
+                    <i class="f7-icons">chevron_left</i>
+                </a>
+            </div>
+            <div class="center dgalaxy-title">订单支付</div>
+        </div>
+    </div>
+
+    <!-- 页面主体区域 -->
+    <div class="page-content">
+        <div class="dgalaxy-total">需支付：<span id="OrderTotal" class="total">@ViewData["ActualPrice"]</span>&nbsp;元</div>
+        <div class="list-block dgalaxy-list-payment">
+            <ul>
+                <li>
+                    <label class="label-radio item-content">
+                        <input name="payment" type="radio" value="WeChat" checked="checked">
+                        <div class="item-inner">
+                            <i class="iconfont icon-wxpay dgalaxy-icon-wechat"></i>
+                            <div class="dgalaxy-title">微信支付</div>
+                        </div>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div id="ConfirmPaymen" class="bg-red color-white dgalaxy-btn-bottom">确认支付</div>
+    </div>
+</div>

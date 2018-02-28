@@ -1,0 +1,120 @@
+﻿@{
+    ViewBag.Title = "新建WeChat菜单";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+@using (Ajax.BeginForm("Create", "WeChatMenu", new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "Success",
+}, new
+{
+    @class = "layui-form layui-form-pane"
+}))
+{
+    <!-- WeChat菜单 -->
+    <fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+        <legend>微信菜单信息</legend>
+    </fieldset>
+    <div id="GradeRow" class="layui-form-item">
+        <label class="layui-form-label">级别<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <select name="Grade" lay-filter="Grade" lay-verify="required">
+                <option value="" selected="">请选择菜单级别</option>
+                <option value="1">一级菜单</option>
+                <option value="2">二级菜单</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <select id="Genre" name="Genre" lay-filter="Genre" lay-verify="required">
+                <option value="" selected="">请选择菜单类型</option>
+                <option value="click">点击</option>
+                <option value="view">网页链接</option>
+                <option value="scancode_push">扫描二维码</option>
+                <option value="scancode_waitmsg">扫描二维码（弹出消息框）</option>
+                <option value="pic_sysphoto">拍摄照片</option>
+                <option value="pic_photo_or_album">拍摄照片/相册图片</option>
+                <option value="pic_weixin">相册图片</option>
+                <option value="location_select">地理位置</option>
+                <option value="media_id">媒体消息</option>
+                <option value="view_limited">图文消息</option>
+                <option value="miniprogram">小程序</option>
+            </select>
+        </div>
+    </div>
+    <div id="TitleRow" class="layui-form-item">
+        <label class="layui-form-label">标题<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input name="Title" class="layui-input" type="text" lay-verify="required" placeholder="请输入菜单标题" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" lay-filter="Save" lay-submit="">保存</button>
+        <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+    </div>
+}
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        //加载表单
+        layui.use(['form', 'upload','element'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                upload = layui.upload,
+                element = layui.element;
+
+            //监听菜单级别
+            form.on('select(Grade)', function (data) {
+                if (2 == data.value) {
+                    $.post('@Url.Action("WeChatMenusTop", "WeChatMenu")', function (data) {
+                        $('#GradeRow').after(data);
+                        form.render('select');
+                    });
+                }
+                else {
+                    $('#ParentIDRow').remove();
+                }
+            });
+
+            //监听菜单类型
+            form.on('select(Genre)', function (data) {
+                $('#TitleRow').nextAll().remove();
+                $.post('@Url.Action("WeChatMenus", "WeChatMenu")', { 'Genre': data.value }, function (data) {
+                    $('#TitleRow').after(data);
+                    form.render();
+                });
+            });
+    });
+    </script>
+    <!-- 表单异步提交 -->
+    <script>
+        function Success(data) {
+            layui.use('layer', function () {
+                //弹出提示消息
+                layer.open({
+                    type: 0,
+                    title: '提示信息',
+                    content: data.Message,
+                    time: 5000,
+                    resize: false,
+                    end: function () {
+                        if (200 == data.Code) {
+                            //重载父级表格
+                            parent.layui.table.reload('DataTable', {
+                            });
+                            //关闭父级弹出层
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        }
+                        else { }
+                    }
+                });
+            });
+        }
+    </script>
+}

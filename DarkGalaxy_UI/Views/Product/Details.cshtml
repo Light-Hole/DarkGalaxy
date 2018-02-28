@@ -1,0 +1,23 @@
+﻿@model DarkGalaxy_Model.Product
+
+<div id="ProductDetails" data-page="productDetails" class="page no-tabbar">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a class="icon-only back dgalaxy-icon-back" href="@Url.Action("Index", "Hom")">
+                    <i class="f7-icons">chevron_left</i>
+                </a>
+            </div>
+            <div class="center dgalaxy-title">发现之旅</div>
+        </div>
+    </div>
+
+    <!-- 数据主体区域 -->
+    <div class="page-content">
+        <div class="dgalaxy-product-details">
+            <div class="txt-line-single-2 dgalaxy-title">@Model.Title</div>
+            <div class="dgalaxy-content">@Html.Raw(Model.DetailedContent)</div>
+        </div>
+    </div>
+</div>

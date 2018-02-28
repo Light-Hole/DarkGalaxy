@@ -1,0 +1,205 @@
+﻿@model DarkGalaxy_Model.BasicInformation
+
+@{
+    ViewBag.Title = "基本信息";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+@using (Ajax.BeginForm("Edit", "BasicInformation", new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "Success",
+}, new
+{
+    @class = "layui-form layui-form-pane"
+}))
+{
+    <input name="ID" type="hidden" value="@Model.ID" />
+    <!-- SEO优化 -->
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>SEO优化</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">SEO标题</label>
+        <div class="layui-input-block">
+            <input name="SEO_Title" class="layui-input" type="text" placeholder="请输入SEO标题" autocomplete="off" value="@Model.SEO_Title">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">SEO关键词</label>
+        <div class="layui-input-block">
+            <input name="SEO_Keywords" class="layui-input" type="text" placeholder="请输入SEO关键词" autocomplete="off" value="@Model.SEO_Keywords">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">SEO描述</label>
+        <div class="layui-input-block">
+            <textarea name="SEO_Description" class="layui-textarea" placeholder="请输入SEO描述">@Model.SEO_Description</textarea>
+        </div>
+    </div>
+
+    <!-- 网站基本信息 -->
+    <fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+        <legend>网站信息</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">LOGO</label>
+        <div class="layui-input-block">
+            <div class="layui-upload">
+                <div id="LogoUp" class="layui-upload-drag">
+                    <i class="layui-icon">&#xe67c;</i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                </div>
+            </div>
+            <p id="errorText"></p>
+            <div id="UpImage" class="layui-upload-list">
+                <img id="Logo" class="layui-upload-img width-max" src="@Model.LogoPath">
+            </div>
+            <input id="LogoPath" name="LogoPath" type="hidden" value="@Model.LogoPath" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题(中)<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input name="Title" class="layui-input" type="text" lay-verify="required" placeholder="请输入网站标题（中文）" autocomplete="off" value="@Model.Title">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题(英)</label>
+        <div class="layui-input-block">
+            <input name="Title_English" class="layui-input" type="text" placeholder="请输入网站标题（英文）" autocomplete="off" value="@Model.Title_English">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">电话</label>
+        <div class="layui-input-block">
+            <input name="Telephone" class="layui-input" type="text" placeholder="请输入企业电话" autocomplete="off" value="@Model.Telephone">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">QQ</label>
+        <div class="layui-input-block">
+            <input name="QQ" class="layui-input" type="text" lay-verify="number" placeholder="请输入企业QQ" autocomplete="off" value="@Model.QQ">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-block">
+            <input name="EMail" class="layui-input" lay-verify="email" type="text" placeholder="请输入企业邮箱" autocomplete="off" value="@Model.EMail">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">地址</label>
+        <div class="layui-input-block">
+            <input name="PlaceAddress" class="layui-input" type="text" placeholder="请输入企业地址" autocomplete="off" value="@Model.PlaceAddress">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">地图经度</label>
+            <div class="layui-input-inline">
+                <input name="Longitude" class="layui-input" type="text" lay-verify="number" placeholder="请输入地图经度" autocomplete="off" value="@Model.Longitude">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">地图纬度</label>
+            <div class="layui-input-inline">
+                <input name="Latitude" class="layui-input" type="text" lay-verify="number" placeholder="请输入地图纬度" autocomplete="off" value="@Model.Latitude">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">简介</label>
+        <div class="layui-input-block">
+            <textarea name="Description" class="layui-textarea" placeholder="请输入企业简介">@Model.Description</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">详细介绍</label>
+        <div class="layui-input-block">
+            <textarea id="DetailedContent" name="DetailedContent" class="layui-textarea" placeholder="请输入企业详细介绍">@Model.DetailedContent</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <button class="layui-btn" lay-filter="Save" lay-submit="">保存</button>
+        <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+    </div>
+}
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        //加载表单、富文本编辑器，图片上传
+        layui.use(['form', 'layedit', 'upload'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                upload = layui.upload,
+                layedit = layui.layedit;
+
+            //富文本编辑器图片上传接口
+            layedit.set({
+                uploadImage: {
+                    url: '@Url.Action("RichEditor", "Upload")',
+                    type: 'post'
+                }
+            });
+            var index = layedit.build('DetailedContent');//构建富文本编辑器
+
+            //上传图片
+            var uploadInst = upload.render({
+                elem: '#LogoUp',
+                url: '@Url.Action("UploadTempImage", "Upload")',
+                accept: 'images',
+                auto: true,
+                size: 2048,
+                drag: true,
+                choose: function (obj) {
+                    //预读本地文件（不支持ie8）
+                    obj.preview(function (index, file, result) {
+                        $('#Logo').attr('src', result); //图片链接（base64）
+                    });
+                },
+                done: function (res) {
+                    if (200 != res.Code) {
+                        return layer.msg(res.Message);
+                    }
+                    else {
+                        $('#LogoPath').val(res.Data);
+                        $('#Logo').attr('src', res.Data);
+                        return layer.msg(res.Message);
+                    }
+                },
+                error: function () {
+                    //演示失败状态，并实现重传
+                    var demoText = $('#errorText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+
+            //图片标题查看
+            layer.photos({
+                photos: '#UpImage',
+                anim: 0 //0-6的选择，指定弹出图片动画类型
+            });
+        });
+    </script>
+    <!-- 表单异步提交 -->
+    <script>
+        function Success(data) {
+            layui.use('layer', function () {
+                //弹出提示消息
+                layer.open({
+                    type: 0,
+                    title: '提示信息',
+                    content: data.Message,
+                    time: 5000,
+                    resize: false
+                });
+            });
+        }
+    </script>
+}

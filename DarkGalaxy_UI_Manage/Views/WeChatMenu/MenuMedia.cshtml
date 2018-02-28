@@ -1,0 +1,9 @@
+﻿@model IEnumerable<DarkGalaxy_WeChat_Model.NewsList>
+
+<div class="layui-form-item">
+    <label class="layui-form-label">素材ID<span class="dgalaxy-required">*</span></label>
+    <div class="layui-input-block">
+        <input name="media_id" class="layui-input" type="text" lay-verify="required" placeholder="请输入素材ID" autocomplete="off">
+    </div>
+</div>
+@Html.Partial("MenuSubmit")

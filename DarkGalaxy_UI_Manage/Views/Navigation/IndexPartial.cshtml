@@ -1,0 +1,39 @@
+﻿@model IEnumerable<DarkGalaxy_Model.Navigation>
+
+@if (null != Model)
+{
+    <div class="layui-collapse dgalaxy-tree-space">
+        @foreach (var temp in Model)
+        {
+            <div id="Item_@temp.ID" class="layui-colla-item">
+                <h2 id="Title_@temp.ID" class="layui-colla-title">
+                    @if (String.IsNullOrEmpty(temp.Title_English))
+                    {
+                        @temp.Title<span>（无英文标题）</span>
+                    }
+                    else
+                    {
+                        @temp.Title<span>（@temp.Title_English）</span>
+                    }
+                </h2>
+                <div class="layui-colla-content">
+                    <button class="layui-btn layui-btn-sm create" data-id="@temp.ID">
+                        <i class="layui-icon">&#xe654;</i>添加子导航
+                    </button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm edit" data-id="@temp.ID">
+                        <i class="layui-icon">&#xe642;</i>编辑导航
+                    </button>
+                    <button class="layui-btn layui-btn-danger layui-btn-sm delete" data-id="@temp.ID">
+                        <i class="layui-icon">&#xe640;</i>删除导航
+                    </button>
+                    <p id="URL_@temp.ID" class="dgalaxy-tree-space">链接：@temp.URL</p>
+                    @Html.Action("IndexPartial", "Navigation", new { id = temp.ID })
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="dgalaxy-tree-space">暂无子级导航</p>
+}

@@ -1,0 +1,35 @@
+﻿<div id="CommoditySearch" data-page="commoditySearch" class="page no-tabbar dgalaxy-commodity-search">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a class="icon-only back dgalaxy-icon-back" href="@Url.Action("Index", "Hom")">
+                    <i class="f7-icons">chevron_left</i>
+                </a>
+            </div>
+            <div class="center">
+                <div class="searchbar dgalaxy-search">
+                    <div class="searchbar-input dgalaxy-input">
+                        <input id="SearchBox" type="search" placeholder="输入出发地点/目的地点">
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <a id="SearchBtn" class="icon-only dgalaxy-icon-back" href="javascript:void(0);">
+                    <i class="f7-icons">search</i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 数据主体区域 -->
+    <div class="page-content">
+        <div class="dgalaxy-title">旅行日期</div>
+        <div class="dgalaxy-row">
+            <input id="DepartureDate" class="dgalaxy-input-short" type="text" placeholder="出发日期" />
+            <span class="dgalaxy-input-symbol">--</span>
+            <input id="RegressionDate" class="dgalaxy-input-short" type="text" placeholder="返回日期" />
+        </div>
+    </div>
+</div>
+

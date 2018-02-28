@@ -1,0 +1,174 @@
+﻿@model IEnumerable<DarkGalaxy_UI.Models.SpecificationViewModel>
+
+<div id="OrderAffirm" data-page="orderAffirm" class="page no-tabbar  dgalaxy-order-affirm">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a class="icon-only back dgalaxy-icon-back" href="/Default.aspx">
+                    <i class="f7-icons">chevron_left</i>
+                </a>
+            </div>
+            <div class="center dgalaxy-title">订单确认</div>
+        </div>
+    </div>
+
+    <!-- 页面主体区域 -->
+    <div class="page-content">
+        <form id="OrderAffirmForm" class="ajax-submit" method="post" action="@Url.Action("Affirm", "Order")">
+            <input id="Submit" style="display:none;" type="submit" />
+            <div class="card dgalaxy-card-order-affirm">
+                <div id="ContactsChoose" class="card-content dgalaxy-card-content">
+                    <div class="dgalaxy-card-contacts">
+                        <div class="dgalaxy-card-left">
+                            <i class="iconfont icon-dizhiguanli font-25"></i>
+                        </div>
+                        <div class="dgalaxy-card-center">
+                            <div id="ContactsChooseHint" class="dgalaxy-hint-choose">请选择联系人</div>
+                            <div id="ContactsChoose" style="display:none;">
+                                <div class="dgalaxy-info">
+                                    <div class="float-left text-line-single dgalaxy-name">收货人：<span id="Name"></span></div>
+                                    <div id="Phone" class="float-left text-line-single dgalaxy-phone"></div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="txt-line-single-2 dgalaxy-address">收货地址：<span id="Address"></span></div>
+                            </div>
+
+                            <!-- 保存选择联系人数据 -->
+                            <input id="ChooseContacts" type="hidden" name="ChooseContacts" />
+                            <input id="NameValue" type="hidden" name="Name" />
+                            <input id="PhoneValue" type="hidden" name="Phone" />
+                            <input id="RegionsIDValue" type="hidden" name="RegionsID" />
+                            <input id="DetailedAddressValue" type="hidden" name="DetailedAddress" />
+                        </div>
+                        <div class="dgalaxy-card-right">
+                            <i class="f7-icons font-15">chevron_right</i>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="dgalaxy-card-adorn"></div>
+                </div>
+            </div>
+            <div class="card dgalaxy-card-order-affirm">
+                <div class="card-header dgalaxy-card-header">商品详情</div>
+                <div class="card-content dgalaxy-card-content">
+                    @{
+                        int intIndex = -1;
+                        int intSubNumber = 0;
+                        double dblSubTotal = 0;
+                        foreach (var temp in Model)
+                        {
+                            if (0 != temp.Number)
+                            {
+                                intIndex++;
+                                intSubNumber += temp.Number;
+                                dblSubTotal += (temp.SpecificationModel.Price / 100.00) * temp.Number;
+                                <div class="dgalaxy-card-commodity">
+                                    <div class="dgalaxy-card-left">
+                                        <img src="@temp.CommodityModel.ImagePath" />
+                                    </div>
+                                    <div class="dgalaxy-card-right">
+                                        <div class="txt-line-single-2 dgalaxy-title">@temp.CommodityModel.Title</div>
+                                        <div class="txt-line-single-2 dgalaxy-subtitle">@temp.SpecificationModel.Title</div>
+                                        <div class="txt-rowhide dgalaxy-shipments">出发时间：@temp.CommodityModel.DepartureDate.ToString("yyyy-MM-dd")</div>
+                                        <div class="dgalaxy-subtotal">
+                                            <div class="dgalaxy-cost">￥<span class="price">@(temp.SpecificationModel.Price / 100.00)</span></div>
+                                            <div class="dgalaxy-number">x<span class="num">@temp.Number</span></div>
+                                        </div>
+
+                                        <!-- 保存规格数据 -->
+                                        <input type="hidden" name="denominates[@intIndex].SpecID" value="@temp.SpecificationModel.ID" />
+                                        <input type="hidden" name="denominates[@intIndex].SpecNumber" value="@temp.Number" />
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            }
+                        }
+                    }
+                    <div class="list-block dgalaxy-btn">
+                        <ul>
+                            <li>
+                                <a href="#" class="item-link item-content open-popup" data-popup=".data-popup-coupon">
+                                    <div class="item-inner">
+                                        <div class="item-title">优惠卷</div>
+                                        <div class="item-after">不使用优惠</div>
+                                    </div>
+                                </a>
+                                <div class="popup data-popup-coupon dgalaxy-popup-choose">
+                                    <div class="dgalaxy-title">优惠卷</div>
+                                    <div class="list-block dgalaxy-list-choose">
+                                        <ul>
+                                            <li>
+                                                <label class="label-radio item-content">
+                                                    <input type="radio" name="my-radio" value="Books" checked="checked">
+                                                    <div class="item-inner">
+                                                        <div class="item-title">不使用优惠</div>
+                                                    </div>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="dgalaxy-btn-row">
+                                        <div class="close-popup dgalaxy-btn-short">取消</div>
+                                        <div class="close-popup dgalaxy-btn-short">确定</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer dgalaxy-card-footer">
+                    <div class="dgalaxy-subtotal">共<span class="subTotalNum">@intSubNumber</span>件商品&nbsp;&nbsp;小计：<span class="color-orange">￥<span class="subTotal">@dblSubTotal</span></span></div>
+                </div>
+            </div>
+            <div class="card dgalaxy-card-order-affirm">
+                <div class="card-content dgalaxy-card-content">
+                    @for (int i = 0; i < intSubNumber; i++)
+                    {
+                        string strPassengerChooseHint = "PassengerChooseHint" + i;
+                        string strPassengerChoose = "PassengerChoose" + i;
+                        string strName = "Name" + i;
+                        string strGenderText = "GenderText" + i;
+                        string strIDCard = "IDCard" + i;
+                        string strNameValue = "NameValue" + i;
+                        string strGenderValue = "GenderValue" + i;
+                        string strIDCardValue = "IDCardValue" + i;
+                        <div class="dgalaxy-card-contacts passenger-choose" data-id="@i">
+                            <div class="dgalaxy-card-left">
+                                <i class="iconfont icon-renyuanguanli font-25"></i>
+                            </div>
+                            <div class="dgalaxy-card-center">
+                                <div id="@strPassengerChooseHint" class="dgalaxy-hint-choose">请选择旅客</div>
+                                <div id="@strPassengerChoose" style="display:none;">
+                                    <div class="dgalaxy-info">
+                                        <div class="float-left text-line-single dgalaxy-name">姓名：<span id="@strName"></span></div>
+                                        <div id="@strGenderText" class="float-left text-line-single dgalaxy-phone"></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="txt-line-single-2 dgalaxy-address">身份证号码：<span id="@strIDCard"></span></div>
+                                </div>
+
+                                <!-- 保存选择旅客数据 -->
+                                <input id="@strNameValue" type="hidden" name="orderPassengers[@i].Name" required/>
+                                <input id="@strGenderValue" type="hidden" name="orderPassengers[@i].Gender" required/>
+                                <input id="@strIDCardValue" type="hidden" name="orderPassengers[@i].IDCard" required/>
+                            </div>
+                            <div class="dgalaxy-card-right">
+                                <i class="f7-icons font-15">chevron_right</i>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    }
+                    <div class="dgalaxy-card-adorn"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- 底部按钮区域 -->
+    <div class="bg-white dgalaxy-btn-bottom">
+        <div class="dgalaxy-btn-left">合计：<span class="color-orange">￥<span id="Total">@dblSubTotal</span></span></div>
+        <input id="SubmitOrder" class="bg-orange color-white dgalaxy-btn-right" type="button" value="提交订单" />
+        <div class="clear"></div>
+    </div>
+</div>

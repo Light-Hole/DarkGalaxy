@@ -1,0 +1,80 @@
+﻿@model DarkGalaxy_UI.Models.ContactsViewModel
+
+<div id="ContactsEdit" data-page="contactsEdit" class="page no-tabbar dgalaxy-contacts">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a class="icon-only back dgalaxy-icon-back" href="@Url.Action("Index","Home")">
+                    <i class="f7-icons">chevron_left</i>
+                </a>
+            </div>
+            <div class="center dgalaxy-title">编辑联系人</div>
+        </div>
+    </div>
+
+    <!-- 数据主体区域 -->
+    <div class="page-content">
+        <form id="ContactsEditForm" class="ajax-submit dgalaxy-form-contacts" method="post" action="@Url.Action("Edit", "Contacts")">
+            <!-- 保存联系人主键信息 -->
+            <input id="ID" name="ID" type="hidden" value="@Model.ContactsModel.ID" />
+
+            <div class="list-block no-margin">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label dgalaxy-title">联系人</div>
+                                <div class="item-input">
+                                    <input name="Name" type="text" value="@Model.ContactsModel.Name" >
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label dgalaxy-title">联系电话</div>
+                                <div class="item-input">
+                                    <input name="Phone" type="text" value="@Model.ContactsModel.Phone" >
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label dgalaxy-title">邮箱</div>
+                                <div class="item-input">
+                                    <input name="Email" type="text" value="@Model.ContactsModel.Email" >
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a id="Region" href="@Url.Action("Index","Region")" class="item-link item-content">
+                            <div class="item-inner">
+                                <div class="item-title dgalaxy-title">所在地区</div>
+                                <div id="RegionsTitle" class="item-after dgalaxy-regions">@Model.RegionText</div>
+                            </div>
+                        </a>
+                        <input id="RegionsID" name="RegionsID" type="hidden" value="@Model.ContactsModel.RegionsID" >
+                    </li>
+                    <li class="align-top">
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <textarea name="DetailedAddress" class="dgalaxy-address" placeholder="详细地址" >@Model.ContactsModel.DetailedAddress</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="dgalaxy-btn-submit">
+                    <input class="button bg-blue color-white" type="submit" value="保存" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

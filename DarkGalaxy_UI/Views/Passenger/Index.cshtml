@@ -1,0 +1,69 @@
+﻿@model IEnumerable<DarkGalaxy_Model.Passenger>
+
+<div id="Passenger" data-page="passenger" class="page no-tabbar dgalaxy-contacts">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a class="icon-only back dgalaxy-icon-back" href="@Url.Action("Index", "Hom")">
+                    <i class="f7-icons">chevron_left</i>
+                </a>
+            </div>
+            <div class="center dgalaxy-title">常用旅客</div>
+        </div>
+    </div>
+
+    <!-- 页面主体区域 -->
+    <div class="page-content">
+        @if (null != Model)
+        {
+            foreach (var temp in Model)
+            {
+                <div class="card dgalaxy-card-contacts">
+                    <div class="card-content dgalaxy-card-center">
+                        <div class="dgalaxy-info">
+                            <div class="float-left">@temp.Name</div>
+                            @{
+                                string strGender = "保密";
+                                switch (temp.Gender)
+                                {
+                                    case DarkGalaxy_Model.GenderType.Female:
+                                        strGender = "女士";
+                                        break;
+                                    case DarkGalaxy_Model.GenderType.Male:
+                                        strGender = "先生";
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            <div class="float-right">@strGender</div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="txt-line-single-2 dgalaxy-address">@temp.IDCard</div>
+                    </div>
+                    <div class="card-footer width-full dgalaxy-card-footer">
+                        <div class="float-right dgalaxy-btn delete" data-id="@temp.ID">
+                            <i class="iconfont icon-changyonggoupiaorenshanchu"></i>&nbsp;删除
+                        </div>
+                        <div class="float-right dgalaxy-btn">
+                            <a href="@Url.Action("Edit","Passenger")?id=@temp.ID">
+                                <i class="iconfont icon-changyonggoupiaorenbianji"></i>&nbsp;编辑
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <!-- 旅客未找到提示 -->
+            <div class="dgalaxy-nofound-big dgalaxy-nofound-big-contacts">
+                <div class="dgalaxy-nofound-text">还没有旅客呢！</div>
+            </div>
+        }
+        <a href="@Url.Action("Create", "Passenger")">
+            <div class="bg-blue color-white dgalaxy-btn-bottom">添加旅客</div>
+        </a>
+    </div>
+</div>

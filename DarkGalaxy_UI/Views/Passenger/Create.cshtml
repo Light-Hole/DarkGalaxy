@@ -1,0 +1,61 @@
+﻿<div id="PassengerCreate" data-page="passengerCreate" class="page no-tabbar dgalaxy-contacts">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a class="icon-only back dgalaxy-icon-back" href="@Url.Action("Index","Home")">
+                    <i class="f7-icons">chevron_left</i>
+                </a>
+            </div>
+            <div class="center dgalaxy-title">添加旅客</div>
+        </div>
+    </div>
+
+    <!-- 页面主体区域 -->
+    <div class="page-content">
+        <form id="PassengerCreateForm" class="ajax-submit dgalaxy-form-contacts" method="post" action="@Url.Action("Create", "Passenger")">
+            <div class="list-block no-margin">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label dgalaxy-title">姓名</div>
+                                <div class="item-input">
+                                    <input name="Name" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label dgalaxy-title">性别</div>
+                                <div class="item-input">
+                                    <select name="Gender" class="dgalaxy-gender">
+                                        <option value="">请选择性别</option>
+                                        <option value="2">保密</option>
+                                        <option value="1">男</option>
+                                        <option value="0">女</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label dgalaxy-title">身份证号</div>
+                                <div class="item-input">
+                                    <input name="IDCard" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="dgalaxy-btn-submit">
+                    <input class="button bg-blue color-white" type="submit" value="保存" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

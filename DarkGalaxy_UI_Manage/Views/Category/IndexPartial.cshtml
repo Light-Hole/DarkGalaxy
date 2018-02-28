@@ -1,0 +1,37 @@
+﻿@model IEnumerable<DarkGalaxy_Model.Category>
+
+@if (null != Model)
+{
+    <div class="layui-collapse dgalaxy-tree-space">
+        @foreach (var temp in Model)
+        {
+            <div id="Item_@temp.ID" class="layui-colla-item">
+                <h2 id="Title_@temp.ID" class="layui-colla-title">@temp.Title</h2>
+                <div class="layui-colla-content">
+                    <button class="layui-btn layui-btn-sm create" data-id="@temp.ID">
+                        <i class="layui-icon">&#xe654;</i>添加子分类
+                    </button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm edit" data-id="@temp.ID">
+                        <i class="layui-icon">&#xe642;</i>编辑分类
+                    </button>
+                    <button class="layui-btn layui-btn-danger layui-btn-sm delete" data-id="@temp.ID">
+                        <i class="layui-icon">&#xe640;</i>删除分类
+                    </button>
+                    @if (String.IsNullOrEmpty(temp.Description))
+                    {
+                        <p id="Description_@temp.ID" class="dgalaxy-tree-space">简介：暂无简介</p>
+                    }
+                    else
+                    {
+                        <p id="Description_@temp.ID" class="dgalaxy-tree-space">简介：@temp.Description</p>
+                    }
+                    @Html.Action("IndexPartial", "Category", new { id = temp.ID })
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="dgalaxy-tree-space">暂无子级分类</p>
+}

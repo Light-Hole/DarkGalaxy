@@ -1,0 +1,161 @@
+﻿@model DarkGalaxy_UI.Models.CommodityViewModel
+
+<div id="CommodityDetails" data-page="commodityDetails" class="page no-tabbar dgalaxy-commodity-details">
+    <!-- 导航区域 -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a class="icon-only back dgalaxy-icon-back" href="@Url.Action("Index", "Hom")">
+                    <i class="f7-icons">chevron_left</i>
+                </a>
+            </div>
+            <div class="center dgalaxy-title">商品详情</div>
+        </div>
+    </div>
+
+    <!-- 数据主体区域 -->
+    <div class="page-content">
+        <!-- 轮播区域 -->
+        <div class="swiper-container dgalaxy-banner">
+            <div class="swiper-wrapper">
+                @{
+                    if (String.IsNullOrEmpty(Model.CommodityModel.ImagePaths))
+                    {
+                        <div class="swiper-slide"><img src="@Model.CommodityModel.ImagePath" /></div>
+                    }
+                    else
+                    {
+                        string[] arrImagePath = Model.CommodityModel.ImagePaths.Split('|');
+                        foreach (var temp in arrImagePath)
+                        {
+                            <div class="swiper-slide"><img src="@temp" /></div>
+                        }
+                    }
+                }
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+
+        <!-- 标题区域 -->
+        <div class="card dgalaxy-card-title">
+            <div class="card-content dgalaxy-card-content">
+                <div class="dgalaxy-title">@Model.CommodityModel.Title</div>
+                <div class="dgalaxy-price"><span class="price">￥@(Model.CommodityModel.Price / 100.00)</span>&nbsp;/人&nbsp;起</div>
+            </div>
+        </div>
+
+        <!-- 时间区域 -->
+        <div class="card dgalaxy-card-time">
+            <div class="card-content dgalaxy-card-content">
+                <div class="dgalaxy-icon">
+                    <i class="iconfont icon-yanchurili"></i>
+                </div>
+                <div class="dgalaxy-times">
+                    <span class="dgalaxy-time">@Model.CommodityModel.DepartureDate.ToString("yyyy-MM-dd")</span>&nbsp;出发
+                    &nbsp;&nbsp;
+                    <span class="dgalaxy-time">@Model.CommodityModel.RegressionDate.ToString("yyyy-MM-dd")</span>&nbsp;返回
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <!-- 规格分类区域 -->
+        <div class="card dgalaxy-card-spec-category">
+            <div class="card-header dgalaxy-card-header">
+                <div class="dgalaxy-icon">
+                    <i class="iconfont icon-tishishuoming"></i>
+                </div>
+                <div class="dgalaxy-title">船舱信息</div>
+            </div>
+            <div class="card-content dgalaxy-card-content">
+                @{
+                    if (null != Model.SpecCategoryList)
+                    {
+                        foreach (var temp in Model.SpecCategoryList)
+                        {
+                            string strSubTitle = "";
+                            if (true == temp.Window)
+                            {
+                                strSubTitle += "有窗,";
+                            }
+                            else
+                            {
+                                strSubTitle += "无窗,";
+                            }
+                            if (true == temp.Balcony)
+                            {
+                                strSubTitle += "有阳台,";
+                            }
+                            else
+                            {
+                                strSubTitle += "无阳台,";
+                            }
+                            strSubTitle += "入住" + temp.GuestMin + "-" + temp.GuestMax + "人";
+                            <a href="@Url.Action("Specification","Commodity")?id=@temp.ID">
+                                <div class="dgalaxy-card-category">
+                                    <div class="dgalaxy-card-left">
+                                        <img src="@temp.ImagePath" />
+                                    </div>
+                                    <div class="dgalaxy-card-center">
+                                        <div class="dgalaxy-title">@temp.Title</div>
+                                        <div class="dgalaxy-subtitle">@strSubTitle</div>
+                                        <div class="dgalaxy-price"><span class="price">￥@(temp.Price / 100.00)</span>&nbsp;/人起</div>
+                                    </div>
+                                    <div class="dgalaxy-card-right">
+                                        <i class="f7-icons font-15">chevron_right</i>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <div class="dgalaxy-hint">暂无规格分类</div>
+                    }
+                }
+            </div>
+        </div>
+
+        <!-- 评论区域 -->
+        <div class="card dgalaxy-card-evaluate">
+            <div class="card-header dgalaxy-card-header">
+                <div class="dgalaxy-icon">
+                    <i class="iconfont icon-chat"></i>
+                </div>
+                <div class="dgalaxy-title">游客评论</div>
+            </div>
+            <div class="card-content dgalaxy-card-content">
+                <div class="dgalaxy-hint">暂无评论</div>
+            </div>
+            <div class="card-footer dgalaxy-card-footer">
+                <a>查看更多评价</a>
+            </div>
+        </div>
+
+        <!-- 行程区域 -->
+        <div class="card dgalaxy-card-journey">
+            <div class="card-header dgalaxy-card-header">
+                <div class="dgalaxy-icon">
+                    <i class="iconfont icon-shijian"></i>
+                </div>
+                <div class="dgalaxy-title">行程介绍</div>
+            </div>
+            <div class="card-content dgalaxy-card-content">
+                <div class="timeline dgalaxy-timeline">
+                    @foreach (var temp in Model.CommodityDetailsList)
+                    {
+                        <div class="timeline-item">
+                            <div class="timeline-item-date">@temp.Date</div>
+                            <div class="timeline-item-divider"></div>
+                            <div class="timeline-item-content">
+                                <div class="dgalaxy-title">@temp.Title</div>
+                                <div class="dgalaxy-content">@temp.Content</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

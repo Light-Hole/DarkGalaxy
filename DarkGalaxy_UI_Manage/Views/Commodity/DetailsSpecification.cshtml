@@ -1,0 +1,224 @@
+﻿@model IEnumerable<DarkGalaxy_UI_Manage.Models.SpecCategoryViewModel>
+
+@{
+    ViewBag.Title = "新建商品";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+<div class="layui-row">
+    <button id="CreateCategory" class="layui-btn dgalaxy-tree-space" data-id="0">
+        <i class="layui-icon">&#xe654;</i>&nbsp;添加规格分类
+    </button>
+    <button id="Refresh" class="layui-btn layui-btn-warm dgalaxy-tree-space">
+        <i class="layui-icon">&#x1002;</i>&nbsp;刷新
+    </button>
+</div>
+<div class="layui-row dgalaxy-title">
+    <fieldset class="layui-elem-field dgalaxy-hint">
+        <legend>请注意</legend>
+        <div class="layui-field-box">
+            1、删除规格分类会删除全部的规格
+        </div>
+    </fieldset>
+</div>
+
+@if (null != Model)
+{
+    <div id="CategoryContentDiv">
+        <div class="layui-collapse dgalaxy-tree-space">
+            @foreach (var temp in Model)
+            {
+                <div id="Item_@temp.SpecCategoryModel.ID" class="layui-colla-item">
+                    <h2 id="Title_@temp.SpecCategoryModel.ID" class="layui-colla-title">@temp.SpecCategoryModel.Title</h2>
+                    <div class="layui-colla-content">
+                        <button class="layui-btn layui-btn-normal layui-btn-sm edit-category" data-id="@temp.SpecCategoryModel.ID">
+                            <i class="layui-icon">&#xe642;</i>编辑规格分类
+                        </button>
+                        <button class="layui-btn layui-btn-danger layui-btn-sm delete-category" data-id="@temp.SpecCategoryModel.ID">
+                            <i class="layui-icon">&#xe640;</i>删除规格分类
+                        </button>
+                        <button class="layui-btn layui-btn-sm create-specification" style="margin-left:30px;" data-category="@temp.SpecCategoryModel.ID" data-commodity="@temp.SpecCategoryModel.Commodity_ID">
+                            <i class="layui-icon">&#xe61f;</i>新建商品规格
+                        </button>
+                        @if (String.IsNullOrEmpty(temp.SpecCategoryModel.Description))
+                        {
+                            <p id="Description_@temp.SpecCategoryModel.ID" class="dgalaxy-tree-space">简介：暂无简介</p>
+                        }
+                        else
+                        {
+                            <p id="Description_@temp.SpecCategoryModel.ID" class="dgalaxy-tree-space">简介：@temp.SpecCategoryModel.Description</p>
+                        }
+                        <div id="SpecificationContentDiv_@temp.SpecCategoryModel.ID">
+                            @if (null != temp.SpecificationList)
+                            {
+                                <div class="layui-collapse dgalaxy-tree-space">
+                                    @foreach (var tempSpecification in temp.SpecificationList)
+                                    {
+                                        <div id="SpecificationItem_@tempSpecification.ID" class="layui-colla-item">
+                                            <h2 id="SpecificationTitle_@tempSpecification.ID" class="layui-colla-title">@tempSpecification.Title</h2>
+                                            <div class="layui-colla-content">
+                                                <button class="layui-btn layui-btn-normal layui-btn-sm edit-specification" data-id="@tempSpecification.ID">
+                                                    <i class="layui-icon">&#xe642;</i>编辑商品规格
+                                                </button>
+                                                <button class="layui-btn layui-btn-danger layui-btn-sm delete-specification" data-id="@tempSpecification.ID" data-content="@temp.SpecCategoryModel.ID">
+                                                    <i class="layui-icon">&#xe640;</i>删除商品规格
+                                                </button>
+                                                @if (String.IsNullOrEmpty(tempSpecification.Description))
+                                                {
+                                                    <p id="SpecificationDescription_@tempSpecification.ID" class="dgalaxy-tree-space">简介：暂无简介</p>
+                                                }
+                                                else
+                                                {
+                                                    <p id="SpecificationDescription_@tempSpecification.ID" class="dgalaxy-tree-space">简介：@tempSpecification.Description</p>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="dgalaxy-tree-space">暂无商品规格</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <p class="dgalaxy-tree-space">暂无规格分类</p>
+}
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        layui.use(['element', 'layer'], function () {
+            var element = layui.element,
+                layer = layui.layer;
+
+            //监听面板折叠
+            element.on('collapse()', function (data) {
+            });
+
+            /*新建商品规格分类*/
+            $('#CreateCategory').live('click', function () {
+                layer.open({
+                    id: 'CreateSpecificationCategory',
+                    type: 2,
+                    title: '新建',
+                    content: '@Url.Action("Create", "SpecCategory")' + '?CommodityID=@ViewData["CommodityID"]',
+                    shadeClose: true,
+                    shade: 0.8,
+                    resize: false,
+                    area: ['90%', '90%']
+                });
+            });
+
+            /*编辑商品规格分类*/
+            $('.edit-category').live('click', function () {
+                layer.open({
+                    id: 'EditSpecificationCategory',
+                    type: 2,
+                    title: '编辑',
+                    content: '@Url.Action("Edit", "SpecCategory")' + '?ID=' + $(this).data('id'),
+                    shadeClose: true,
+                    shade: 0.8,
+                    resize: false,
+                    area: ['90%', '90%']
+                });
+            });
+
+            /*删除商品规格分类*/
+            $('.delete-category').live('click', function () {
+                var id = $(this).data('id');
+                layer.confirm('确认删除?（删除后无法还原）', { icon: 3, title: '提示信息' }, function (index) {
+                    $.post('@Url.Action("Delete", "SpecCategory")', { ID: id }, function (data) {
+                        layer.open({
+                            type: 0,
+                            title: '提示信息',
+                            content: data.Message,
+                            time: 5000,
+                            resize: false,
+                            end: function () {
+                                if (200 == data.Code){
+                                    var categoryCount = $('#CategoryContentDiv div:eq(0)').children('div').length;
+                                    if (1 != categoryCount) {
+                                        $('#Item_' + id).remove();
+                                        element.init('collapse');
+                                    }
+                                    else {
+                                        $('#CategoryContentDiv').html('<p class="dgalaxy-tree-space">暂无规格分类</p>');
+                                    }
+                                }
+                                else { }
+                            }
+                        });
+                    });
+                });
+            });
+
+            /*新建商品规格*/
+            $('.create-specification').live('click', function () {
+                layer.open({
+                    id: 'CreateSpecification',
+                    type: 2,
+                    title: '新建',
+                    content: '@Url.Action("Create", "Specification")' + '?CategoryID=' + $(this).data('category') + '&CommodityID=' + $(this).data('commodity'),
+                    shadeClose: true,
+                    shade: 0.8,
+                    resize: false,
+                    area: ['90%', '90%']
+                });
+            });
+
+            /*编辑商品规格*/
+            $('.edit-specification').live('click', function () {
+                layer.open({
+                    id: 'EditSpecification',
+                    type: 2,
+                    title: '编辑',
+                    content: '@Url.Action("Edit", "Specification")' + '?ID=' + $(this).data('id'),
+                    shadeClose: true,
+                    shade: 0.8,
+                    resize: false,
+                    area: ['90%', '90%']
+                });
+            });
+
+            /*删除商品规格*/
+            $('.delete-specification').live('click', function () {
+                var id = $(this).data('id');
+                var content = $(this).data('content');
+                layer.confirm('确认删除?（删除后无法还原）', { icon: 3, title: '提示信息' }, function (index) {
+                    $.post('@Url.Action("Delete", "Specification")', { ID: id }, function (data) {
+                        layer.open({
+                            type: 0,
+                            title: '提示信息',
+                            content: data.Message,
+                            time: 5000,
+                            resize: false,
+                            end: function () {
+                                if (200 == data.Code){
+                                    var specificationCount = $('#SpecificationContentDiv_' + content + ' div:eq(0)').children('div').length;
+                                    if (1 != specificationCount) {
+                                        $('#SpecificationItem_' + id).remove();
+                                        element.init('collapse');
+                                    }
+                                    else {
+                                        $('#SpecificationContentDiv_' + content).html('<p class="dgalaxy-tree-space">暂无商品规格</p>');
+                                    }
+                                }
+                                else { }
+                            }
+                        });
+                    });
+                });
+            });
+
+        });
+    </script>
+}

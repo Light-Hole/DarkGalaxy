@@ -1,0 +1,144 @@
+﻿@model IEnumerable<DarkGalaxy_UI_Manage.Models.EvaluateViewModel>
+
+@{
+    ViewBag.Title = "评价";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+<fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+    <legend>评价</legend>
+</fieldset>
+<div id="Images" class="layui-collapse dgalaxy-tree-space">
+    @foreach (var temp in Model)
+    {
+        <div class="layui-colla-item">
+            @if (String.IsNullOrEmpty(temp.CommodityModel.Title_English))
+            {
+                <h2 class="layui-colla-title">@temp.CommodityModel.Title（无英文标题）</h2>
+            }
+            else
+            {
+                <h2 class="layui-colla-title">@temp.CommodityModel.Title（@temp.CommodityModel.Title_English）</h2>
+            }
+            <div class="layui-colla-content layui-show">
+                <p class="dgalaxy-tree-space">
+                    <div class="layui-form layui-form-pane">
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">图片</label>
+                            <div class="layui-input-block">
+                                <blockquote class="layui-elem-quote layui-quote-nm">
+                                    <div class="layui-upload-list">
+                                        @if (!String.IsNullOrEmpty(temp.EvaluateModel.ImagePaths))
+                                        {
+                                            string[] ImagePaths = temp.EvaluateModel.ImagePaths.Split('|');
+                                            if ((null != ImagePaths) && (0 != ImagePaths.Length))
+                                            {
+                                                foreach (var path in ImagePaths)
+                                                {
+                                                    if (!String.IsNullOrEmpty(path))
+                                                    {
+                                                        <img class="layui-upload-img dgalaxy-thumbs" src="@path" />
+                                                    }
+                                                    else { }
+                                                }
+                                            }
+                                            else { }
+                                        }
+                                        else
+                                        {
+                                            <div class="text-center dgalaxy-tree-space">无评论图片</div>
+                                        }
+                                    </div>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">评论内容</label>
+                            <div class="layui-input-block">
+                                <textarea class="layui-textarea" disabled>@temp.EvaluateModel.DetailedContent</textarea>
+                            </div>
+                        </div>
+                        <div id="Audit_@temp.EvaluateModel.ID" class="layui-form-item text-center">
+                            @if (null == temp.EvaluateModel.AdminAccount_ID)
+                            {
+                                <button class="layui-btn audit" data-audit="true" data-id="@temp.EvaluateModel.ID">通过</button>
+                                <button class="layui-btn layui-btn-danger audit" data-audit="false" data-id="@temp.EvaluateModel.ID">未通过</button>
+                            }
+                            else
+                            {
+                                if (temp.EvaluateModel.AuditStatus)
+                                {
+                                    <span class="dgalaxy-audit-pass">审核通过</span>
+                                }
+                                else
+                                {
+                                    <span class="dgalaxy-audit-notpass">审核未通过</span>
+                                }
+                            }
+                        </div>
+                    </div>
+                </p>
+            </div>
+        </div>                                       }
+</div>
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        //加载表单
+        layui.use(['form', 'element', 'layer'], function () {
+            var element = layui.element,
+                layer = layui.layer,
+                form = layui.form;
+
+            //监听面板折叠
+            element.on('collapse()', function (data) {
+            });
+
+            //图片标题查看
+            layer.photos({
+                photos: '#Images',
+                anim: 0 //0-6的选择，指定弹出图片动画类型
+            });
+        });
+    </script>
+    <!-- 处理审核 -->
+    <script>
+        $(function () {
+            $('.audit').live('click', function () {
+                var id = $(this).data('id');
+                var audit = $(this).data('audit');
+
+                $.post('@Url.Action("Audit", "OrderEvaluate")', { ID: id, Audit: audit }, function (data) {
+                    layui.use('layer', function () {
+                        //弹出提示消息
+                        layer.open({
+                            type: 0,
+                            title: '提示信息',
+                            content: data.Message,
+                            time: 5000,
+                            resize: false,
+                            end: function () {
+                                if (200 == data.Code) {
+                                    if (true == audit) {
+                                        $('#Audit_' + id).html('<span class="dgalaxy-audit-pass">审核通过</span>');
+                                    }
+                                    else {
+                                        $('#Audit_' + id).html('<span class="dgalaxy-audit-notpass">审核未通过</span>');
+                                    }
+                                }
+                                else if (201 == data.Code) {
+                                    //关闭父级弹出层
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    parent.layer.close(index);
+                                }
+                                else { }
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    </script>
+}

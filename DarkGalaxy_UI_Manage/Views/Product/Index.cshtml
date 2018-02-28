@@ -1,0 +1,297 @@
+﻿@model IEnumerable<DarkGalaxy_Model.Category>
+
+@{
+    ViewBag.Title = "产品";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+<!-- 主体工具栏 -->
+<div class="layui-row layui-elem-quote dgalaxy-tab-tool">
+    <div class="layui-inline dgalaxy-search-box">
+        <input id="Search" class="layui-input" placeholder="请输入标题" autocomplete="off">
+    </div>
+    <button id="SearchButton" class="layui-btn layui-btn-normal" data-type="Search">
+        <i class="layui-icon">&#xe615;</i>&nbsp;搜索
+    </button>
+    <button id="Create" class="layui-btn">
+        <i class="layui-icon">&#xe61f;</i>&nbsp;新建
+    </button>
+    <button id="BatchRemove" class="layui-btn layui-btn-danger" data-type="BatchRemove">
+        <i class="layui-icon">&#xe640;</i>&nbsp;删除选中项
+    </button>
+    <button id="Refresh" class="layui-btn layui-btn-warm">
+        <i class="layui-icon">&#x1002;</i>&nbsp;刷新
+    </button>
+</div>
+
+<!-- 当前选中分类ID -->
+<input id="cid" type="hidden" value="" />
+<!-- 分类树形菜单 -->
+<div class="layui-col-md2">
+    <ul id="Category"></ul>
+</div>
+<!-- 主体表格 -->
+<div class="layui-col-md10">
+    <table id="Table" lay-filter="Table"></table>
+</div>
+<div class="clear"></div>
+
+@section Foot
+{
+    <!-- layui -->
+<script>
+        layui.use(['layer', 'table', 'tree'], function () {
+            var $ = layui.jquery,
+                layer = layui.layer,
+                table = layui.table,
+                active = {
+                    //数据表格重载（搜索）
+                    Search: function () {
+                        table.reload('DataTable', {
+                            where: {
+                                Search: $('#Search').val()
+                            },
+                            page: {
+                                curr: 1
+                            }
+                        });
+                    },
+                    //数据表格删除选中数据
+                    BatchRemove: function () {
+                        var checkStatus = table.checkStatus('DataTable'),
+                            datas = checkStatus.data;
+                        if (0 == datas.length) {
+                            layer.open({
+                                type: 0,
+                                title: '提示信息',
+                                content: "请选择数据",
+                                time: 5000,
+                                resize: false
+                            });
+                        }
+                        else {
+                            var batchIDArray = [];
+                            for (var i = 0; i < datas.length; i++) {
+                                batchIDArray.push(datas[i].ProductInfo.ID);
+                            }
+                            //批量删除
+                            $.post('@Url.Action("BatchDelete", "Product")', { BatchIDArray: batchIDArray }, function (data) {
+                                //提示消息
+                                layer.open({
+                                    type: 0,
+                                    title: '提示信息',
+                                    content: data,
+                                    time: 5000,
+                                    resize: false,
+                                    end: function () {
+                                        //重载表格
+                                        if (0 == $('#cid').val()) {
+                                            table.reload('DataTable', {
+                                                page: {
+                                                    curr: 1
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            table.reload('DataTable', {
+                                                where: {
+                                                    ACID: $('#cid').val()
+                                                },
+                                                page: {
+                                                    curr: 1
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                    }
+                };
+
+            //加载树形菜单
+            $.post('@Url.Action("IndexJson", "Category")', function (data) {
+                //根据返回的状态码处理数据
+                if (404 == data.Code) {//无数据
+                    $('#Category').html(data.Message);
+                }
+                else if (200 == data.Code) {//成功查询到数据
+                    var Nodes = function (node, start) {
+                        //加载顶级树
+                        node = node || function () {
+                            var arr = [];
+                            for (var i = 0; i < data.Datas.length; i++) {
+                                if (0 == data.Datas[i].ParentID) {
+                                    arr.push({
+                                        id: data.Datas[i].ID,
+                                        name: data.Datas[i].Title
+                                    });
+                                }
+                                else { }
+                            }
+                            return arr;
+                        }();
+                        start = start || 1;
+                        //加载子级树
+                        layui.each(node, function (index, item) {
+                        var childs = [];
+                        for (var i = 0; i < data.Datas.length; i++) {
+                            if (item.id == data.Datas[i].ParentID) {
+                                childs.push({
+                                    id: data.Datas[i].ID,
+                                    name: data.Datas[i].Title
+                                });
+                            }
+                        }
+                        node[index].children = childs;
+                        Nodes(childs, index + start + 1);
+                    });
+                        return node;
+                    }
+                    layui.tree({
+                    elem: '#Category',
+                    nodes: Nodes(),
+                    click: function (node) {
+                            $('#cid').val(node.id);
+                            table.reload('DataTable', {
+                                where: {
+                                    ACID: node.id
+                                },
+                                page: {
+                                    curr: 1
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+            /*数据表格加载*/
+            table.render({
+                id: 'DataTable',
+                elem: '#Table',
+                height: 'full-120',
+                cols: [[ //标题栏
+                    { fixed: 'left', checkbox: true },
+                    { fixed: 'left', field: 'SortIndex', title: '排序', width: 70, align: 'center', templet: '#SortIndex', sort: true, unresize: true },
+                    { field: 'ProductCategory', title: '分类', align: 'center', templet: '#ProductCategory' },
+                    { field: 'Title', title: '标题', align: 'center', templet: '#Title' },
+                    { field: 'ArticleTime', title: '发布时间', minWidth: 110, align: 'center', templet: '#ArticleTime' },
+                    { field: 'CreateDateTime', title: '创建时间', minWidth: 150, align: 'center', templet: '#CreateDateTime', sort: true },
+                    { fixed: 'right', title: '操作', minWidth: 150, align: 'center', toolbar: '#Tools' }
+                ]],
+                url: '@Url.Action("IndexJson", "Product")',
+                method: 'POST',
+                request: {
+                    pageName: 'Page', //页码的参数名称
+                    limitName: 'PageSize' //每页数据量的参数名
+                },
+                response: {
+                    statusName: 'Code',
+                    statusCode: 200, //成功的状态码
+                    msgName: 'Message', //状态信息的字段名称
+                    countName: 'Total', //数据总数的字段名称
+                    dataName: 'Datas' //数据列表的字段名称
+                },
+                page: true,
+                limits: [5, 10, 15, 20, 30],
+                limit: 15,
+                initSort: {
+                    field: 'CreateDateTime', //排序字段，对应 cols 设定的各字段名
+                    type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+                }
+            });
+
+            /*新建产品*/
+            $('#Create').live('click', function () {
+                layer.open({
+                    id: 'CreateProduct',
+                    type: 2,
+                    title: '新建',
+                    content: '@Url.Action("Create", "Product")',
+                    anim: 1,
+                    shadeClose: true,
+                    shade: 0.8,
+                    resize: false,
+                    area: ['90%', '90%']
+                });
+            });
+
+            /*表格搜索*/
+            $('#SearchButton').live('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+            /*批量删除*/
+            $('#BatchRemove').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+            /*工具条监听*/
+            table.on('tool(Table)', function (obj) {
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+                if (layEvent === 'del') { //删除
+                    layer.confirm('确认删除?（删除后无法还原）', { icon: 3, title: '提示信息' }, function (index) {
+                        $.post('@Url.Action("Delete", "Product")', { ID: data.ProductModel.ID }, function (data) {
+                            layer.open({
+                                type: 0,
+                                title: '提示信息',
+                                content: data.Message,
+                                time: 5000,
+                                resize: false,
+                                end: function () {
+                                    if (200 == data.Code) {
+                                        obj.del();
+                                    }
+                                    else{ }
+                                }
+                            });
+                        });
+                    });
+                }
+                else if (layEvent === 'edit') { //编辑
+                    layer.open({
+                        id: 'EditProduct',
+                        type: 2,
+                        title: '编辑',
+                        content: '@Url.Action("Edit", "Product")' + '?ID=' + data.ProductModel.ID,
+                        anim: 1,
+                        shadeClose: true,
+                        shade: 0.8,
+                        resize: false,
+                        area: ['90%', '90%']
+                    });
+                }
+            });
+        });
+</script>
+    <!-- 数据模版 -->
+    <script type="text/html" id="ProductCategory">
+        <div id="ProductCategory_{{ d.ProductModel.ID }}">{{ d.CategoryModel.Title}}</div>
+    </script>
+    <script type="text/html" id="SortIndex">
+        {{ d.ProductModel.SortIndex}}
+    </script>
+    <script type="text/html" id="Title">
+        <div id="Title_{{ d.ProductModel.ID }}">{{ d.ProductModel.Title}}</div>
+    </script>
+    <script type="text/html" id="Description">
+        <div id="Description_{{ d.ProductModel.ID }}">{{=d.ProductModel.Description}}</div>
+    </script>
+    <script type="text/html" id="ArticleTime">
+        <div id="ArticleTime_{{ d.ProductModel.ID }}">{{ toDate(d.ProductModel.ArticleTime).pattern("yyyy-MM-dd") }}</div>
+    </script>
+    <script type="text/html" id="CreateDateTime">
+        {{ toDate(d.ProductModel.CreateDateTime).pattern("yyyy-MM-dd HH:mm") }}
+    </script>
+    <!-- 工具栏模版 -->
+    <script type="text/html" id="Tools">
+        <button class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</button>
+        <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</button>
+    </script>
+}

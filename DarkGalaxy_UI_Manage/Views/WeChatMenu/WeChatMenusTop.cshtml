@@ -1,0 +1,21 @@
+﻿@model IEnumerable<DarkGalaxy_Model.WeChatMenu>
+
+<div id="ParentIDRow" class="layui-form-item">
+    <label class="layui-form-label">上级菜单<span class="dgalaxy-required">*</span></label>
+    <div class="layui-input-block">
+        <select id="ParentID" name="ParentID" lay-filter="ParentID" lay-verify="required">
+            @if (null != Model)
+            {
+                <option value="" selected="">请选择上级菜单</option>
+                foreach (var temp in Model)
+                {
+                    <option value="@temp.ID">@temp.Title</option>
+                }
+            }
+            else
+            {
+                <option value="" selected="">暂无一级菜单，请首先添加一级菜单</option>
+            }
+        </select>
+    </div>
+</div>

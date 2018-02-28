@@ -1,0 +1,87 @@
+﻿@model DarkGalaxy_Model.WeChatBasicInformation
+
+@{
+    ViewBag.Title = "WeChat基本信息";
+    Layout = "~/Views/Shared/_TabLayout.cshtml";
+}
+
+@using (Ajax.BeginForm("Edit", "WeChatBasicInfo", new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "Success",
+}, new
+{
+    @class = "layui-form layui-form-pane"
+}))
+{
+    <input name="ID" type="hidden" value="@Model.ID" />
+    <!-- 开发基本 -->
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>基本参数</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">接口链接<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input name="APIUrl" class="layui-input" type="text" lay-verify="required|url" placeholder="请输入接口链接" autocomplete="off" value="@Model.APIUrl">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开发者ID<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input name="AppID" class="layui-input" type="text" lay-verify="required" placeholder="请输入开发者ID" autocomplete="off" value="@Model.AppID">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开发者密码<span class="dgalaxy-required">*</span></label>
+        <div class="layui-input-block">
+            <input name="AppSecret" class="layui-input" type="text" lay-verify="required" placeholder="请输入开发者密码" autocomplete="off" value="@Model.AppSecret">
+        </div>
+    </div>
+
+    <!-- 微信支付 -->
+    <fieldset class="layui-elem-field layui-field-title dgalaxy-title">
+        <legend>支付参数</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label class="layui-form-label">支付商户号</label>
+        <div class="layui-input-block">
+            <input name="PayMchID" class="layui-input" type="text" placeholder="请输入微信支付商户号" autocomplete="off" value="@Model.PayMchID">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">支付密钥</label>
+        <div class="layui-input-block">
+            <input name="PayKey" class="layui-input" type="text" placeholder="微信支付密钥" autocomplete="off" value="@Model.PayKey">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <button class="layui-btn" lay-filter="Save" lay-submit="">保存</button>
+        <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+    </div>
+}
+
+@section Foot
+{
+    <!-- layui -->
+    <script>
+        //加载表单
+        layui.use('form', function () {
+            var form = layui.form;
+        });
+    </script>
+    <!-- 表单异步提交 -->
+    <script>
+        function Success(data) {
+            layui.use('layer', function () {
+                //弹出提示消息
+                layer.open({
+                    type: 0,
+                    title: '提示信息',
+                    content: data.Message,
+                    time: 5000,
+                    resize: false
+                });
+            });
+        }
+    </script>
+}
