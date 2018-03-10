@@ -112,8 +112,9 @@ namespace DarkGalaxy_DAL
         /// <param name="Site">地点</param>
         /// <param name="DepartureDate">出发日期</param>
         /// <param name="RegressionDate">返回日期</param>
+        /// <param name="sortType">排序类型</param>
         /// <returns>查询到的记录集合</returns>
-        public List<Commodity> SelectIntoCommodityValidLike(int PageIndex, int PageSize, out int Total, string Site = null, DateTime? DepartureDate = null, DateTime? RegressionDate = null)
+        public List<Commodity> SelectIntoCommodityValidLike(int PageIndex, int PageSize, out int Total, string Site = null, DateTime? DepartureDate = null, DateTime? RegressionDate = null, CommoditySortType sortType = CommoditySortType.Default)
         {
             //处理错误参数
             if ((0 >= PageIndex) || (0 >= PageSize))
@@ -127,6 +128,7 @@ namespace DarkGalaxy_DAL
 
             //查询商品记录
             string Where = "DepartureDate > @DAL_Nowdate and Enabled = 1";
+            string OrderBy = null;
             List<SqlParameter> ParameterList = new List<SqlParameter>();
             ParameterList.Add(new SqlParameter("DAL_Nowdate", DateTime.Now) { DbType = DbType.DateTime });
             if (!String.IsNullOrEmpty(Site))
@@ -147,7 +149,16 @@ namespace DarkGalaxy_DAL
                 ParameterList.Add(new SqlParameter("DAL_RegressionDate", RegressionDate) { DbType = DbType.DateTime });
             }
             else { }
-            result = SelectIntoTable(PageIndex, PageSize, out Total, Where, ParameterList.ToArray());
+            if (CommoditySortType.PriceAsc == sortType)
+            {
+                OrderBy = "Price asc";
+            }
+            else if (CommoditySortType.PriceDesc == sortType)
+            {
+                OrderBy = "Price desc";
+            }
+            else { }
+            result = SelectIntoTable(PageIndex, PageSize, out Total, Where, ParameterList.ToArray(), OrderBy);
 
             return result;
         }

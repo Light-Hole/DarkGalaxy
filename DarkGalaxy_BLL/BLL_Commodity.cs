@@ -310,8 +310,9 @@ namespace DarkGalaxy_BLL
         /// <param name="Site">地点</param>
         /// <param name="DepartureDate">出发日期</param>
         /// <param name="RegressionDate">返回日期</param>
+        /// <param name="sortType">排序类型</param>
         /// <returns>查询到的记录集合</returns>
-        public List<Commodity> SelectCommodityValidLike(int PageIndex, int PageSize, out int Total, string Site = null, DateTime? DepartureDate = null, DateTime? RegressionDate = null)
+        public List<Commodity> SelectCommodityValidLike(int PageIndex, int PageSize, out int Total, string Site = null, DateTime? DepartureDate = null, DateTime? RegressionDate = null, CommoditySortType sortType = CommoditySortType.Default)
         {
             //处理错误参数
             if ((0 >= PageIndex) || (0 >= PageSize))
@@ -325,7 +326,7 @@ namespace DarkGalaxy_BLL
 
             //分页查询商品的全部记录
             DAL_Commodity CommodityDAL = new DAL_Commodity();
-            result = CommodityDAL.SelectIntoCommodityValidLike(PageIndex, PageSize, out Total, Site, DepartureDate, RegressionDate);
+            result = CommodityDAL.SelectIntoCommodityValidLike(PageIndex, PageSize, out Total, Site, DepartureDate, RegressionDate, sortType);
 
             return result;
         }

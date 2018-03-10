@@ -14,7 +14,7 @@ namespace DarkGalaxy_UI.Controllers
     [Login]
     public class CommodityController : Controller
     {
-        public ActionResult IndexJson(int page, int pageSize, string search = null, DateTime? departureDate = null, DateTime? regressionDate = null)
+        public ActionResult IndexJson(int page, int pageSize, string search = null, DateTime? departureDate = null, DateTime? regressionDate = null, CommoditySortType sortType = CommoditySortType.Default)
         {
             DGResultData<Commodity> result = new DGResultData<Commodity>();
 
@@ -32,7 +32,7 @@ namespace DarkGalaxy_UI.Controllers
             //分页查询商品数据
             int intTotal = 0;
             BLL_Commodity bllCommodity = new BLL_Commodity();
-            result.Datas = bllCommodity.SelectCommodityValidLike(page, pageSize, out intTotal, search, departureDate, regressionDate);
+            result.Datas = bllCommodity.SelectCommodityValidLike(page, pageSize, out intTotal, search, departureDate, regressionDate, sortType);
             result.Total = intTotal;
 
             //处理返回值

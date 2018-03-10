@@ -99,4 +99,23 @@ namespace DarkGalaxy_Model
         /// </summary>
         Finish = 80
     }
+
+    /// <summary>
+    /// 商品排序类型
+    /// </summary>
+    public enum CommoditySortType
+    {
+        /// <summary>
+        /// 默认排序
+        /// </summary>
+        Default,
+        /// <summary>
+        /// 价格升序排序
+        /// </summary>
+        PriceAsc,
+        /// <summary>
+        /// 价格降序排序
+        /// </summary>
+        PriceDesc
+    }
 }

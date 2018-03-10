@@ -28,8 +28,9 @@ namespace DarkGalaxy_Common.DarkGalaxy
         /// <param name="NeglectType">不解析的特性类型</param>
         /// <param name="DGSQLText">DGSQL语句</param>
         /// <param name="Where">Where条件</param>
+        /// <param name="OrderBy">排序条件</param>
         /// <returns>TLSQL字符串</returns>
-        public static string AnalysisDGSQL(AttributeType NeglectType, string DGSQLText, string Where = null)
+        public static string AnalysisDGSQL(AttributeType NeglectType, string DGSQLText, string Where = null, string OrderBy = null)
         {
             //处理错误参数
             if (String.IsNullOrEmpty(DGSQLText))
@@ -181,6 +182,18 @@ namespace DarkGalaxy_Common.DarkGalaxy
             if (DGSQLText.Contains("{DGColumns = DGColumnValues}"))//解析列名与列值相等
             {
                 DGSQLText = DGSQLText.Replace("{DGColumns = DGColumnValues}", DGColumnsAndDGColumnValues);
+            }
+            else { }
+            if (DGSQLText.Contains("{DGOrderBy}"))//解析排序
+            {
+                if (String.IsNullOrEmpty(OrderBy))
+                {
+                    DGSQLText = DGSQLText.Replace("{DGOrderBy}", "SortIndex asc");
+                }
+                else
+                {
+                    DGSQLText = DGSQLText.Replace("{DGOrderBy}", OrderBy);
+                }
             }
             else { }
             result = DGSQLText;
@@ -387,7 +400,7 @@ namespace DarkGalaxy_Common.DarkGalaxy
             {
                 foreach (var Attribute in temp.CustomAttributes)
                 {
-                    if("DGNotNull" == Attribute.AttributeType.Name)
+                    if ("DGNotNull" == Attribute.AttributeType.Name)
                     {
                         MethodInfo GetMethodInfo = temp.GetGetMethod();
                         object GetMethodReturn = GetMethodInfo.Invoke(GenericsObject, null);

@@ -22,7 +22,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">标题(中)<span class="dgalaxy-required">*</span></label>
         <div class="layui-input-block">
-            <input name="Title" class="layui-input" type="text" lay-verify="required" placeholder="请输入商品标题" autocomplete="off" value="@Model.CommodityModel.Title">
+            <input id="Title" name="Title" class="layui-input" type="text" lay-verify="required" placeholder="请输入商品标题" autocomplete="off" value="@Model.CommodityModel.Title">
         </div>
     </div>
     <div class="layui-form-item">
@@ -407,10 +407,10 @@
                                 var daytimeNumber = $('#DaytimeNumber').val();
                                 var nightNumber = $('#NightNumber').val();
                                 var price = $('#Price').val();
-                                parent.$('#Date_' + id).text(title);
+                                parent.$('#Title_' + id).text(title);
                                 parent.$('#Site_' + id).text(departureSite + ' / ' + regressionSite);
-                                parent.$('#Time_' + id).text(departureDate + ' / ' + regressionDate);
-                                parent.$('#Number_' + id).text(daytimeNumber + '天' + nightNumber + '晚');
+                                parent.$('#Date_' + id).text(departureDate + ' / ' + regressionDate);
+                                parent.$('#Number_' + id).text(daytimeNumber + ' 天' + nightNumber + ' 晚');
                                 parent.$('#Price_' + id).text(price);
                             }
                         }

@@ -34,11 +34,11 @@
                 <div class="card dgalaxy-card-contacts" data-name="@temp.Name" data-gender="@temp.Gender" data-idcard="@temp.IDCard" data-gender-text="@strGender">
                     <div class="card-content dgalaxy-card-center">
                         <div class="dgalaxy-info">
-                            <div class="float-left">@temp.Name</div>
-                            <div class="float-right">@strGender</div>
+                            <div class="text-line-single dgalaxy-name">@temp.Name</div>
+                            <div class="text-line-single dgalaxy-phone">@strGender</div>
                             <div class="clear"></div>
                         </div>
-                        <div class="txt-line-single-2 dgalaxy-address">@temp.IDCard</div>
+                        <div class="text-line-single-2 dgalaxy-address">@temp.IDCard</div>
                     </div>
                 </div>
             }
@@ -46,7 +46,7 @@
         else
         {
             <!-- 旅客未找到提示 -->
-            <div class="dgalaxy-nofound-big dgalaxy-nofound-big-contacts">
+            <div class="dgalaxy-nofound-page">
                 <div class="dgalaxy-nofound-text">还没有旅客呢！</div>
             </div>
         }

@@ -18,10 +18,15 @@
         <div class="view view-main">
             <!-- 页面区域 -->
             <div class="pages navbar-fixed toolbar-through">
-                <div id="Home" data-page="home" class="page dgalaxy-commodity">
+                <div id="Home" data-page="home" class="page with-subnavbar dgalaxy-commodity">
                     <!-- 保存分页数据 -->
                     <input id="Page" type="hidden" value="1" />
                     <input id="Loading" type="hidden" value="1" />
+
+                    <!-- 保存搜索数据 -->
+                    <input id="Search" type="hidden" />
+                    <input id="DepartureDate" type="hidden" />
+                    <input id="RegressionDate" type="hidden" />
 
                     <!-- 导航区域 -->
                     <div class="navbar">
@@ -41,17 +46,61 @@
                                     <i class="f7-icons">person</i>
                                 </a>
                             </div>
+
+                            <!-- 二级导航区域 -->
+                            <div class="subnavbar dgalaxy-sort">
+                                <div id="SortChooseBtn" class="dgalaxy-btn sort-btn" data-popup=".data-popup-sort"><span id="SortChooseText">综合排序</span>&nbsp;<i id="SortIcon" class="iconfont icon-xiangxia1"></i></div>
+                                <div class="dgalaxy-btn sort-btn active">默认排序</div>
+                                <div class="dgalaxy-view"><i class="iconfont icon-liebiaoxingshi"></i></div>
+                                <div id="Filter" class="dgalaxy-filter">筛选&nbsp;<i class="iconfont icon-shaixuan"></i></div>
+                                <div class="clear"></div>
+                                <div id="SortChoose" class="list-block dgalaxy-btn-list">
+                                    <ul>
+                                        <li class="sort-choose active" data-sort="@DarkGalaxy_Model.CommoditySortType.Default">
+                                            <label class="label-radio item-content">
+                                                <input type="radio" name="SortChoose" value="@DarkGalaxy_Model.CommoditySortType.Default" checked="checked">
+                                                <div class="item-inner">
+                                                    <div class="item-title">综合排序</div>
+                                                </div>
+                                            </label>
+                                        </li>
+                                        <li class="sort-choose" data-sort="@DarkGalaxy_Model.CommoditySortType.PriceAsc">
+                                            <label class="label-radio item-content">
+                                                <input type="radio" name="SortChoose" value="@DarkGalaxy_Model.CommoditySortType.PriceAsc">
+                                                <div class="item-inner">
+                                                    <div class="item-title">价格升序</div>
+                                                </div>
+                                            </label>
+                                        </li>
+                                        <li class="sort-choose" data-sort="@DarkGalaxy_Model.CommoditySortType.PriceDesc">
+                                            <label class="label-radio item-content">
+                                                <input type="radio" name="SortChoose" value="@DarkGalaxy_Model.CommoditySortType.PriceDesc">
+                                                <div class="item-inner">
+                                                    <div class="item-title">价格降序</div>
+                                                </div>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- 数据主体区域 -->
-                    <div class="page-content infinite-scroll" data-distance="50">
+                    <div class="page-content hide-navbar-on-scroll infinite-scroll dgalaxy-page-content" data-distance="100">
+                        <div id="Mask" class="dgalaxy-mask"></div>
+
                         <!-- 卡片列表 -->
                         <div id="Content"></div>
 
                         <!-- 加载提示符 -->
                         <div class="infinite-scroll-preloader">
                             <div class="preloader"></div>
+                        </div>
+
+                        <!-- 数据未找到提示 -->
+                        <div class="dgalaxy-nofound-page">
+                            <div class="dgalaxy-nofound-text">未找到数据，<a href="@Url.Action("Index","Home")">点击这里</a>返回主页</div>
                         </div>
                     </div>
                 </div>
@@ -92,6 +141,8 @@
     <script>
         var frameSeven = new Framework7({
             dynamicNavbar: true,//启用动态导航栏
+            //pushState: true,//启用浏览器历史记录
+            sortable: false,//禁用排序列表
             cacheIgnore: [//禁用页面缓存
                 '@Url.Action("Index","Contacts")',
                 '@Url.Action("Index","Passenger")',
@@ -100,7 +151,10 @@
                 '@Url.Action("Details","Order")',
                 '@Url.Action("Affirm","Order")',
                 '@Url.Action("Choose", "Contacts")',
-                '@Url.Action("Choose", "Passenger")',]
+                '@Url.Action("Choose", "Passenger")',],
+            modalTitle: '提示消息',
+            modalButtonOk: '确定',
+            modalButtonCancel: '取消'
         });
         var mainView = frameSeven.addView('.view-main');
     </script>
@@ -111,7 +165,7 @@
             f7Route('.toolbar .tab-link', mainView);
 
             //设置工具栏点击样式
-            $('.toolbar .tab-link').live('click', function () {
+            $('.toolbar .tab-link').click(function () {
                 $('.toolbar .tab-link').removeClass('active');
                 $(this).addClass('active');
             });
@@ -202,7 +256,7 @@
                 },
                 showErrors: function (errorMap, errorList) {
                     if (0 != errorList.length) {
-                        frameSeven.alert(errorList[0].message, '提示消息');
+                        frameSeven.alert(errorList[0].message);
                     }
                     else { }
                 }
@@ -215,7 +269,7 @@
             var pageSelector = selector + ' ';
             var callbackUrl = queryData.regionCallbackUrl;
 
-            //解除绑定单击事件
+            //解除绑定点击事件
             $(pageSelector + '.item-link').die('click');
 
             //设置路由
@@ -260,7 +314,7 @@
         function loadPageOrderOperate(selector) {
             var pageSelector = selector + ' ';
 
-            //解除绑定单击事件
+            //解除绑定点击事件
             $(pageSelector + '.order-close').die('click');
             $(pageSelector + '.order-payment').die('click');
             $(pageSelector + '.order-details').die('click');
@@ -271,20 +325,24 @@
             $(pageSelector + '.order-close').live('click', function () {
                 var id = $(this).data('id');
 
-                //修改订单状态
-                $.post('@Url.Action("Close","Order")?id=' + id, function (data) {
-                    if (200 === data.Code) {
-                        frameSeven.alert(data.Message, '提示消息', function () {
-                            mainView.router.load({
-                                url: '@Url.Action("Index","Order")',
-                                reload: true,
-                            });
+                frameSeven.confirm('确认要取消订单吗?',
+                    function () {
+                        //修改订单状态
+                        $.post('@Url.Action("Close","Order")?id=' + id, function (data) {
+                            if (200 === data.Code) {
+                                frameSeven.alert(data.Message, function () {
+                                    mainView.router.load({
+                                        url: '@Url.Action("Index","Order")',
+                                        reload: true,
+                                    });
+                                });
+                            }
+                            else {
+                                frameSeven.alert(data.Message);
+                            }
                         });
                     }
-                    else {
-                        frameSeven.alert(data.Message, '提示消息');
-                    }
-                });
+                );
             });
 
             //订单付款
@@ -299,20 +357,24 @@
             $(pageSelector + '.order-refund').live('click', function () {
                 var id = $(this).data('id');
 
-                //修改订单状态
-                $.post('@Url.Action("Refund", "Order")?id=' + id, function (data) {
-                    if (200 === data.Code) {
-                        frameSeven.alert(data.Message, '提示消息', function () {
-                            mainView.router.load({
-                                url: '@Url.Action("Index","Order")',
-                                reload: true,
-                            });
+                frameSeven.confirm('确认要退款吗?',
+                    function () {
+                        //修改订单状态
+                        $.post('@Url.Action("Refund", "Order")?id=' + id, function (data) {
+                            if (200 === data.Code) {
+                                frameSeven.alert(data.Message, function () {
+                                    mainView.router.load({
+                                        url: '@Url.Action("Index","Order")',
+                                        reload: true,
+                                    });
+                                });
+                            }
+                            else {
+                                frameSeven.alert(data.Message);
+                            }
                         });
                     }
-                    else {
-                        frameSeven.alert(data.Message, '提示消息');
-                    }
-                });
+                );
             });
 
             //订单详情
@@ -334,29 +396,134 @@
         function loadPageHome(selector, queryData) {
             var pageSelector = selector + ' ';
             var pageSize = 5;
-            var dataSearch = null;
-            var dataDepartureDate = null;
-            var dataRegressionDate = null;
-            if (null != queryData){
+            var dataSearch = $(pageSelector + '#Search').val();
+            var dataDepartureDate = $(pageSelector + '#DepartureDate').val();
+            var dataRegressionDate = $(pageSelector + '#RegressionDate').val();
+            var sortType = null;
+
+            //解除绑定事件
+            $(pageSelector + '.sort-btn').off('click');
+            $(pageSelector + '.sort-choose').off('click');
+            $(pageSelector + '.infinite-scroll').off('infinite');
+
+            //初始化传入数据
+            if ((null !== queryData) && (undefined !== queryData)) {
+                //获取传入数据
                 dataSearch = queryData.search;
                 dataDepartureDate = queryData.departureDate;
                 dataRegressionDate = queryData.regressionDate;
+
+                //保存传入数据
+                if ((null !== dataSearch) && (undefined !== dataSearch)) {
+                    $(pageSelector + '#Search').val(dataSearch);
+                    $(pageSelector + '#SearchBox').val(dataSearch);
+                }
+                else { }
+                if (undefined !== dataDepartureDate) {
+                    $(pageSelector + '#DepartureDate').val(dataDepartureDate);
+                }
+                else { }
+                if (undefined !== dataRegressionDate) {
+                    $(pageSelector + '#RegressionDate').val(dataRegressionDate);
+                }
+                else { }
             }
             else { }
 
-            //搜索页面跳转
+            //绑定排序按钮点击事件
+            $(pageSelector + '.sort-btn').on('click',function () {
+                //改变排序按钮样式
+                $(pageSelector + '.sort-btn').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            //绑定排序列表按钮点击事件
+            $(pageSelector + '#SortChooseBtn').click(function () {
+                var sortIconDom = $(pageSelector + '#SortIcon');
+
+                //改变排序列表按钮样式、遮罩层样式
+                if (sortIconDom.is('.icon-xiangxia1')) {
+                    sortIconDom.removeClass('icon-xiangxia1');
+                    sortIconDom.addClass('icon-xiangshang1');
+                    $(pageSelector + '#SortChoose').show();
+                    $(pageSelector + '#Mask').show();
+                }
+                else {
+                    sortIconDom.removeClass('icon-xiangshang1');
+                    sortIconDom.addClass('icon-xiangxia1');
+                    $(pageSelector + '#SortChoose').hide();
+                    $(pageSelector + '#Mask').hide();
+                }
+            });
+
+            //绑定排序列表按钮选择点击事件
+            $(pageSelector + '.sort-choose').on('click', function () {
+                var sortChooseText = $(this).find('.item-title').first().text();
+                var sortIconDom = $(pageSelector + '#SortIcon');
+                sortType = $(this).data('sort');
+
+                //改变排序按钮样式
+                $(pageSelector + '.sort-choose').removeClass('active');
+                $(this).addClass('active');
+
+                //改变排序按钮文本
+                $(pageSelector + '#SortChooseText').html(sortChooseText);
+
+                //改变排序列表按钮样式、遮罩层样式
+                sortIconDom.removeClass('icon-xiangshang1');
+                sortIconDom.addClass('icon-xiangxia1');
+                $(pageSelector + '#SortChoose').hide();
+                $(pageSelector + '#Mask').hide();
+
+                //加载数据
+                loadingData(1, pageSize);
+            });
+
+            //绑定遮罩层点击事件
+            $(pageSelector + '#Mask').click(function () {
+                var sortIconDom = $(pageSelector + '#SortIcon');
+
+                //改变排序列表按钮样式、遮罩层样式
+                sortIconDom.removeClass('icon-xiangshang1');
+                sortIconDom.addClass('icon-xiangxia1');
+                $(pageSelector + '#SortChoose').hide();
+                $(pageSelector + '#Mask').hide();
+            });
+
+            //设置商品搜索页面路由
             $(pageSelector + '#SearchBox').focus(function () {
+                mainView.router.load({
+                    url: '@Url.Action("Search", "Commodity")'
+                });
+            });
+            $(pageSelector + '#Filter').click(function () {
                 mainView.router.load({
                     url: '@Url.Action("Search", "Commodity")'
                 });
             });
 
             //加载数据
-            function addItems(page, pageSize) {
-                // 生成新条目的HTML
-                $.post('@Url.Action("IndexJson", "Commodity")', { page: page, pageSize: pageSize, search: dataSearch, departureDate: dataDepartureDate, regressionDate: dataRegressionDate }, function (data) {
-                    var html = '';
+            function loadingData(page, pageSize) {
+                //异步请求数据，生成新条目的html
+                $.post('@Url.Action("IndexJson", "Commodity")', { page: page, pageSize: pageSize, search: dataSearch, departureDate: dataDepartureDate, regressionDate: dataRegressionDate, sortType: sortType }, function (data) {
                     if (200 === data.Code) {//请求成功
+                        var html = '';
+                        
+                        //初始化页面状态
+                        if (1 === data.PageIndex) {
+                            $(pageSelector + '#Content').html('');
+                            $(pageSelector + '#Page').val('1');
+                            $(pageSelector + '#Loading').val('1');
+                            $(pageSelector + '.infinite-scroll-preloader').show();//显示加载提示符
+
+                            //隐藏数据未找到提示
+                            if ($(pageSelector + '.dgalaxy-nofound-page').is(':visible')) {
+                                $(pageSelector + '.dgalaxy-nofound-page').hide();
+                            }
+                            else { }
+                        }
+                        else { }
+
                         for (var i = 0; i < data.Datas.length; i++) {
                             var commodity = data.Datas[i];
                             html += '<div class="card dgalaxy-card-commodity">';
@@ -385,34 +552,40 @@
                             html += '</div>';
                         }
 
+                        //追加html条目
+                        $(pageSelector + '#Content').append(html);
+
                         //判断是否继续加载
                         if (pageSize > data.Datas.length) {
-                            $(pageSelector + '#Loading').val('0');
+                            $(pageSelector + '#Loading').val('0');//修改查询状态
                             $(pageSelector + '.infinite-scroll-preloader').remove();//删除加载提示符
                         }
                         else { }
                     }
-                    else if (404 === data.Code){
-                        $(pageSelector + '#Loading').val('0');
+                    else if (404 === data.Code){//未找到数据
+                        $(pageSelector + '#Loading').val('0');//修改查询状态
                         $(pageSelector + '.infinite-scroll-preloader').remove();//删除加载提示符
+
+                        //显示数据未找到提示
+                        if ((1 === data.PageIndex) && ($(pageSelector + '.dgalaxy-nofound-page').is(':hidden'))) {
+                            $(pageSelector + '.dgalaxy-nofound-page').show();
+                        }
+                        else { }
                     }
                     else { }
-
-                    //加载数据
-                    $(pageSelector + '#Content').append(html);
                 });
             }
 
             //预加载数据
-            addItems(1, pageSize);
+            loadingData(1, pageSize);
 
             //注册'infinite'事件处理函数
             $(pageSelector + '.infinite-scroll').on('infinite', function () {
                 if ('1' == $(pageSelector + '#Loading').val()) {
-                    //加载数据
                     var page = parseInt($(pageSelector + '#Page').val()) + 1;//设置页码
-                    $(pageSelector + '#Page').val(page);
-                    addItems(page, pageSize);
+
+                    $(pageSelector + '#Page').val(page);//保存分页数据
+                    loadingData(page, pageSize);//加载数据
                 }
                 else {
                     frameSeven.detachInfiniteScroll($(pageSelector + '.infinite-scroll'));//注销无限加载
@@ -491,17 +664,23 @@
         function loadPageContacts(selector) {
             var pageSelector = selector + ' ';
 
-            //解除绑定单击事件
+            //解除绑定点击事件
             $(pageSelector + '.delete').die('click');
 
-            //删除操作
+            //绑定常用联系人删除点击事件
             $(pageSelector + '.delete').live('click', function () {
                 var id = $(this).data('id');
-                $.post('@Url.Action("Delete", "Contacts")', { id: id }, function (data) {
-                    frameSeven.alert(data.Message, '提示消息', function () {
-                        mainView.router.refreshPage();//刷新页面
-                    });
-                });
+
+                frameSeven.confirm('确认要删除该地址吗?',
+                    function () {
+                        //删除常用联系人
+                        $.post('@Url.Action("Delete", "Contacts")', { id: id }, function (data) {
+                            frameSeven.alert(data.Message, function () {
+                                mainView.router.refreshPage();//刷新页面
+                            });
+                        });
+                    }
+                );
             });
         };
     </script>
@@ -539,7 +718,7 @@
             $(pageSelector + formID).on('form:success', function (e) {
                 var data = JSON.parse(e.originalEvent.detail.data);
                 if (200 === data.Code) {
-                    frameSeven.alert(data.Message, '提示消息', function () {
+                    frameSeven.alert(data.Message, function () {
                         mainView.router.back({
                             url: callbackUrl,
                             query: { callbackUrl: queryData.chooseCallbackUrl },
@@ -548,7 +727,7 @@
                     });
                 }
                 else {
-                    frameSeven.alert(data.Message, '提示消息');
+                    frameSeven.alert(data.Message);
                 }
             });
         };
@@ -559,7 +738,7 @@
             var pageSelector = selector + ' ';
             var callbackUrl = queryData.callbackUrl;
 
-            //解除绑定单击事件
+            //解除绑定点击事件
             $(pageSelector + '.dgalaxy-card-contacts').die('click');
 
             //常用联系人选择事件
@@ -603,17 +782,23 @@
         function loadPagePassenger(selector) {
             var pageSelector = selector + ' ';
 
-            //解除绑定单击事件
+            //解除绑定点击事件
             $(pageSelector + '.delete').die('click');
 
-            //删除操作
+            //绑定常用旅客删除点击事件
             $(pageSelector + '.delete').live('click', function () {
                 var id = $(this).data('id');
-                $.post('@Url.Action("Delete", "Passenger")', { id: id }, function(data) {
-                    frameSeven.alert(data.Message, '提示消息', function () {
-                        mainView.router.refreshPage();//刷新页面
-                    });
-                });
+
+                frameSeven.confirm('确认要删除该旅客吗?',
+                    function () {
+                        //删除常用旅客
+                        $.post('@Url.Action("Delete", "Passenger")', { id: id }, function(data) {
+                            frameSeven.alert(data.Message, function () {
+                                mainView.router.refreshPage();//刷新页面
+                            });
+                        });
+                    }
+                );
             });
         };
     </script>
@@ -630,7 +815,7 @@
             $(pageSelector + formID).on('form:success', function (e) {
                 var data = JSON.parse(e.originalEvent.detail.data);
                 if (200 === data.Code) {
-                    frameSeven.alert(data.Message, '提示消息', function () {
+                    frameSeven.alert(data.Message, function () {
                         mainView.router.back({
                             url: callbackUrl,
                             query: {
@@ -642,7 +827,7 @@
                     });
                 }
                 else {
-                    frameSeven.alert(data.Message, '提示消息');
+                    frameSeven.alert(data.Message);
                 }
             });
         };
@@ -653,7 +838,7 @@
             var pageSelector = selector + ' ';
             var callbackUrl = queryData.callbackUrl;
 
-            //解除绑定单击事件
+            //解除绑定点击事件
             $(pageSelector + '.dgalaxy-card-contacts').die('click');
 
             //常用旅客选择事件
@@ -735,7 +920,7 @@
                dayNamesShort: dayNamesShort
            });
 
-           //搜索点击事件
+           //绑定搜索点击事件
            $(pageSelector + '#SearchBtn').click(function () {
                var search = $(pageSelector + '#SearchBox').val();
                var departureDate = $(pageSelector + '#DepartureDate').val();
@@ -787,7 +972,7 @@
         function loadPageCommoditySpec(selector) {
             var pageSelector = selector + ' ';
 
-            //解除绑定单击事件
+            //解除绑定点击事件
             $(pageSelector + '.subtract').die('click');
             $(pageSelector + '.add').die('click');
 
@@ -811,7 +996,7 @@
             //计算商品数量
             calculationNumber();
 
-            //商品数量操作
+            //绑定商品数量操作
             $(pageSelector + '.subtract').live('click', function () {
                 //修改商品数量
                 var domNumber = $(this).next();
@@ -830,11 +1015,11 @@
                 calculationNumber();//计算商品规格数量
             });
 
-            //结算操作
+            //绑定结算按钮点击事件
             $(pageSelector + '#Denominate').click(function () {
                 var sumNumber = parseInt($(pageSelector + '#Number').html());//获取商品规格数量
                 if (0 === sumNumber) {
-                    frameSeven.alert('请选择商品', '提示消息');
+                    frameSeven.alert('请选择商品');
                 }
                 else {
                     //设置路由URL
@@ -868,22 +1053,34 @@
             var status = $(pageSelector + '#Status').val();
             var statues = status.split('/');
 
-            //加载数据
-            function addItems(page, pageSize, statues, tabID) {
-                //初始化页面状态
-                if (1 === page) {
-                    $(pageSelector + tabID).html('');
-                    $(pageSelector + '#Page').val('1');
-                    $(pageSelector + '#Loading').val('1');
-                    $(pageSelector + '.infinite-scroll-preloader').show();//显示加载提示符
-                    $(pageSelector + '.dgalaxy-nofound-big').hide();//隐藏订单未找到提示
-                }
-                else { }
+            //解除绑定事件
+            $(pageSelector + '.tab').off('show');
+            $(pageSelector + '.infinite-scroll').off('infinite');
 
-                //生成新条目的HTML
+            //加载数据
+            function loadingData(page, pageSize, statues, tabID) {
+                //异步请求数据，生成新条目的html
                 $.post('@Url.Action("IndexJson","Order")', { page: page, pageSize: pageSize, statues: statues }, function (data) {
-                    var html = '';
                     if (200 === data.Code) {//请求成功
+                        var html = '';
+
+                        //初始化页面状态
+                        if (1 === data.PageIndex) {
+                            $(pageSelector + tabID).html('');
+                            $(pageSelector + '#Page').val('1');
+                            $(pageSelector + '#Loading').val('1');
+
+                            //显示加载提示符
+                            $(pageSelector + '.infinite-scroll-preloader').show();
+
+                            //隐藏订单未找到提示
+                            if ($(pageSelector + '.dgalaxy-nofound-page').is(':visible')) {
+                                $(pageSelector + '.dgalaxy-nofound-page').hide();
+                            }
+                            else { }
+                        }
+                        else { }
+
                         for (var i = 0; i < data.Datas.length; i++) {
                             var viewModel = data.Datas[i];
                             html += '<div class="card dgalaxy-card-order-detail">';
@@ -897,18 +1094,20 @@
                                 html += '                    <img src="' + detailViewModel.CommodityModel.ImagePath + '" />';
                                 html += '                </div>';
                                 html += '                <div class="dgalaxy-card-right">';
-                                html += '                    <div class="txt-line-single-2 dgalaxy-title">' + detailViewModel.CommodityModel.Title + '</div>';
-                                html += '                    <div class="txt-line-single dgalaxy-price">￥' + (detailViewModel.OrderDetailModel.Price /100.00) + '</div>';
-                                html += '                    <div class="txt-line-single dgalaxy-price-original"><s>￥' + (detailViewModel.OrderDetailModel.Price / 100.00) + '</s></div>';
-                                html += '                    <div class="clear"></div>';
-                                html += '                    <div class="txt-line-single-2 dgalaxy-subtitle">' + detailViewModel.SpecificationModel.Title + '</div>';
-                                html += '                    <div class="txt-line-single dgalaxy-number">x' + detailViewModel.OrderDetailModel.Quantity + '</div>';
-                                html += '                    <div class="clear"></div>';
+                                html += '                    <div class="dgalaxy-view-card">';
+                                html += '                        <div class="text-line-single-2 dgalaxy-title">' + detailViewModel.CommodityModel.Title + '</div>';
+                                html += '                        <div class="text-line-single dgalaxy-price">￥' + (detailViewModel.OrderDetailModel.Price /100.00) + '</div>';
+                                html += '                        <div class="text-line-single dgalaxy-price-original"><s>￥' + (detailViewModel.OrderDetailModel.Price / 100.00) + '</s></div>';
+                                html += '                        <div class="clear"></div>';
+                                html += '                        <div class="text-line-single-2 dgalaxy-subtitle">' + detailViewModel.SpecificationModel.Title + '</div>';
+                                html += '                        <div class="text-line-single dgalaxy-number">x' + detailViewModel.OrderDetailModel.Quantity + '</div>';
+                                html += '                        <div class="clear"></div>';
+                                html += '                    </div>';
                                 html += '                </div>';
                                 html += '                <div class="clear"></div>';
                                 html += '            </div>';
                             }
-                            html += '            <div class="txt-line-single dgalaxy-total">共' + viewModel.OrderModel.TotalQuantity + '件商品&nbsp;&nbsp;合计：￥' + (viewModel.OrderModel.ActualPrice / 100.00) + '</div>';
+                            html += '            <div class="text-line-single dgalaxy-total">共' + viewModel.OrderModel.TotalQuantity + '件商品&nbsp;&nbsp;合计：￥' + (viewModel.OrderModel.ActualPrice / 100.00) + '</div>';
                             html += '        </div>';
                             html += '    </a>';
                             html += '    <div class="card-footer dgalaxy-card-footer">';
@@ -917,59 +1116,58 @@
                             html += '</div>';
                         }
 
+                        //追加html条目
+                        $(pageSelector + tabID).append(html);
+
                         //判断是否继续加载
                         if (pageSize > data.Datas.length) {
-                            $(pageSelector + '#Loading').val('0');
+                            $(pageSelector + '#Loading').val('0');//修改查询状态
                             $(pageSelector + '.infinite-scroll-preloader').hide();//隐藏加载提示符
                         }
                         else { }
                     }
-                    else if (404 === data.Code) {
-                        $(pageSelector + '#Loading').val('0');
+                    else if (404 === data.Code) {//未找到数据
+                        $(pageSelector + '#Loading').val('0');//修改查询状态
                         $(pageSelector + '.infinite-scroll-preloader').hide();//隐藏加载提示符
 
                         //显示订单未找到提示
-                        if ((1 === data.PageIndex) && ($(pageSelector + '.dgalaxy-nofound-big').is(':hidden'))) {
-                            $(pageSelector + '.dgalaxy-nofound-big').show();
+                        if ((1 === data.PageIndex) && ($(pageSelector + '.dgalaxy-nofound-page').is(':hidden'))) {
+                            $(pageSelector + '.dgalaxy-nofound-page').show();
                         }
                         else { }
                     }
                     else { }
-
-                    //加载数据
-                    $(pageSelector + tabID).append(html);
                 });
             }
 
-            //预加载数据
-            addItems(1, pageSize, statues, tabID);
+            //加载数据
+            loadingData(1, pageSize, statues, tabID);
 
-            //监听二级导航切换事件
+            //绑定订单二级导航切换事件
             $(pageSelector + '.tab').on('show', function () {
-                //修改分页数据
+                //保存分页数据
                 tabID = $(this).data('id');
                 status = $(this).data('status').toString();
                 statues = status.split('/');
                 $(pageSelector + '#TabID').val(tabID);
                 $(pageSelector + '#Status').val(status);
-                addItems(1, pageSize, statues, tabID);
 
-                //注册无限加载
-                frameSeven.attachInfiniteScroll($(pageSelector + '.infinite-scroll'));
+                loadingData(1, pageSize, statues, tabID);//加载数据
+                frameSeven.attachInfiniteScroll($(pageSelector + '.infinite-scroll'));//注册无限加载
             });
 
             //注册'infinite'事件处理函数
             $(pageSelector + '.infinite-scroll').on('infinite', function () {
                 if ('1' === $(pageSelector + '#Loading').val()) {
-                    //查询、修改分页数据
                     var page = parseInt($(pageSelector + '#Page').val()) + 1;//设置页码
+
+                    //获取分页数据
                     tabID = $(pageSelector + '#TabID').val();
                     status = $(pageSelector + '#Status').val();
                     statues = status.split('/');
-                    $(pageSelector + '#Page').val(page);
 
-                    //加载数据
-                    addItems(page, pageSize, statues, tabID);
+                    $(pageSelector + '#Page').val(page);//保存分页数据
+                    loadingData(page, pageSize, statues, tabID);//加载数据
                 }
                 else {
                     frameSeven.detachInfiniteScroll($(pageSelector + '.infinite-scroll'));//注销无限加载
@@ -1008,18 +1206,19 @@
         function loadPageOrderAffirm(selector, formID, queryData) {
             var pageSelector = selector + ' ';
             var callbackUrl = queryData.callbackUrl;
-
-            //判断是否清空表单保存数据
             var storedData = undefined;
+
+            //解除绑定事件
+            $(pageSelector + '.passenger-choose').off('click');
+            $(pageSelector + formID).off('form:success');
+
+            //判断是否清空表单存储数据
             if (undefined !== queryData.EmptyForm) {
                 frameSeven.formDeleteData(pageSelector + formID);//删除表单存储数据
             }
             else {
                 storedData = frameSeven.formGetData(pageSelector + formID);//获取表单存储数据
             }
-
-            //解除绑定单击事件
-            $(pageSelector + '.passenger-choose').die('click');
 
             //加载表单验证
             loadFormValidate(pageSelector + formID);
@@ -1180,7 +1379,7 @@
             });
 
             //常用旅客选择
-            $(pageSelector + '.passenger-choose').live('click', function () {
+            $(pageSelector + '.passenger-choose').on('click', function () {
                 var id = $(this).data('id');
                 var url = '@Url.Action("Choose", "Passenger")';
                 mainView.router.load({
@@ -1204,7 +1403,7 @@
                     });
                 }
                 else {
-                    frameSeven.alert(data.Message, '提示消息');
+                    frameSeven.alert(data.Message);
                 }
             });
         }
@@ -1215,7 +1414,7 @@
             var pageSelector = selector + ' ';
 
             $(pageSelector + '#ConfirmPaymen').click(function () {
-                //加载WeChat支付
+                //异步请求WeChat支付
                 $.post('@Url.Action("WeChatPay", "Payment")', { orderID: queryData.ID }, function (data) {
                     if (200 === data.Code) {
                         //设置JSApi配置

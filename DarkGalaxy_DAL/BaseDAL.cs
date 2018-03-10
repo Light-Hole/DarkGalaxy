@@ -408,9 +408,10 @@ namespace DarkGalaxy_DAL
         /// <param name="PageSize">页大小</param>
         /// <param name="Total">分页数据总数</param>
         /// <param name="Where">查询条件</param>
+        /// <param name="OrderBy">排序条件</param>
         /// <param name="SqlParameters">查询条件参数</param>
         /// <returns>查询到的记录集合</returns>
-        public List<T> SelectIntoTable(int PageIndex, int PageSize, out int Total, string Where = null, SqlParameter[] SqlParameters = null)
+        public List<T> SelectIntoTable(int PageIndex, int PageSize, out int Total, string Where = null, SqlParameter[] SqlParameters = null, string OrderBy = null)
         {
             //处理错误参数
             if ((0 >= PageIndex) || (0 >= PageSize))
@@ -433,7 +434,7 @@ namespace DarkGalaxy_DAL
             else { }
             CommandText = CommandText.Replace("{DGPageIndex}", PageIndex.ToString());
             CommandText = CommandText.Replace("{DGPageSize}", PageSize.ToString());
-            CommandText = DGAnalysis<T>.AnalysisDGSQL(AttributeType.SelectNeglect, CommandText, Where);
+            CommandText = DGAnalysis<T>.AnalysisDGSQL(AttributeType.SelectNeglect, CommandText, Where, OrderBy);
             CommandTextTotal = DGAnalysis<T>.AnalysisDGSQL(AttributeType.SelectNeglect, CommandTextTotal, Where);
             if ((String.IsNullOrEmpty(CommandText)) || (String.IsNullOrEmpty(CommandTextTotal)))
             {

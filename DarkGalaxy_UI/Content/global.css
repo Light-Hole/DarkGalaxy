@@ -41,21 +41,21 @@
     white-space: nowrap;
 }
 
-.txt-line-single-2 {
+.text-line-single-2 {
     display: -webkit-box;
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
 }
 
-.txt-line-single-3 {
+.text-line-single-3 {
     display: -webkit-box;
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
 }
 
-.txt-line-single-4 {
+.text-line-single-4 {
     display: -webkit-box;
     overflow: hidden;
     -webkit-box-orient: vertical;

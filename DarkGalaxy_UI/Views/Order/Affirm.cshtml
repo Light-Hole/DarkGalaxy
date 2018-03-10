@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<DarkGalaxy_UI.Models.SpecificationViewModel>
 
-<div id="OrderAffirm" data-page="orderAffirm" class="page no-tabbar  dgalaxy-order-affirm">
+<div id="OrderAffirm" data-page="orderAffirm" class="page no-tabbar dgalaxy-order">
     <!-- 导航区域 -->
     <div class="navbar">
         <div class="navbar-inner">
@@ -31,7 +31,7 @@
                                     <div id="Phone" class="float-left text-line-single dgalaxy-phone"></div>
                                     <div class="clear"></div>
                                 </div>
-                                <div class="txt-line-single-2 dgalaxy-address">收货地址：<span id="Address"></span></div>
+                                <div class="text-line-single-2 dgalaxy-address">收货地址：<span id="Address"></span></div>
                             </div>
 
                             <!-- 保存选择联系人数据 -->
@@ -46,10 +46,10 @@
                         </div>
                         <div class="clear"></div>
                     </div>
-                    <div class="dgalaxy-card-adorn"></div>
+                    <div class="dgalaxy-adorn"></div>
                 </div>
             </div>
-            <div class="card dgalaxy-card-order-affirm">
+            <div class="card dgalaxy-card-order-detail">
                 <div class="card-header dgalaxy-card-header">商品详情</div>
                 <div class="card-content dgalaxy-card-content">
                     @{
@@ -68,24 +68,25 @@
                                         <img src="@temp.CommodityModel.ImagePath" />
                                     </div>
                                     <div class="dgalaxy-card-right">
-                                        <div class="txt-line-single-2 dgalaxy-title">@temp.CommodityModel.Title</div>
-                                        <div class="txt-line-single-2 dgalaxy-subtitle">@temp.SpecificationModel.Title</div>
-                                        <div class="txt-rowhide dgalaxy-shipments">出发时间：@temp.CommodityModel.DepartureDate.ToString("yyyy-MM-dd")</div>
-                                        <div class="dgalaxy-subtotal">
-                                            <div class="dgalaxy-cost">￥<span class="price">@(temp.SpecificationModel.Price / 100.00)</span></div>
-                                            <div class="dgalaxy-number">x<span class="num">@temp.Number</span></div>
-                                        </div>
+                                        <div class="dgalaxy-view-list">
+                                            <div class="text-line-single-2 dgalaxy-title">@temp.CommodityModel.Title</div>
+                                            <div class="text-line-single-2 dgalaxy-subtitle">@temp.SpecificationModel.Title</div>
+                                            <div class="txt-rowhide dgalaxy-shipments">出发时间：@temp.CommodityModel.DepartureDate.ToString("yyyy-MM-dd")</div>
+                                            <div class="text-line-single dgalaxy-price">￥@(temp.SpecificationModel.Price / 100.00)</div>
+                                            <div class="text-line-single dgalaxy-number">x<span>@temp.Number</span></div>
+                                            <div class="clear"></div>
 
-                                        <!-- 保存规格数据 -->
-                                        <input type="hidden" name="denominates[@intIndex].SpecID" value="@temp.SpecificationModel.ID" />
-                                        <input type="hidden" name="denominates[@intIndex].SpecNumber" value="@temp.Number" />
+                                            <!-- 保存规格数据 -->
+                                            <input type="hidden" name="denominates[@intIndex].SpecID" value="@temp.SpecificationModel.ID" />
+                                            <input type="hidden" name="denominates[@intIndex].SpecNumber" value="@temp.Number" />
+                                        </div>
                                     </div>
                                     <div class="clear"></div>
                                 </div>
                             }
                         }
                     }
-                    <div class="list-block dgalaxy-btn">
+                    <div class="list-block dgalaxy-btn-list">
                         <ul>
                             <li>
                                 <a href="#" class="item-link item-content open-popup" data-popup=".data-popup-coupon">
@@ -94,23 +95,27 @@
                                         <div class="item-after">不使用优惠</div>
                                     </div>
                                 </a>
-                                <div class="popup data-popup-coupon dgalaxy-popup-choose">
-                                    <div class="dgalaxy-title">优惠卷</div>
-                                    <div class="list-block dgalaxy-list-choose">
-                                        <ul>
-                                            <li>
-                                                <label class="label-radio item-content">
-                                                    <input type="radio" name="my-radio" value="Books" checked="checked">
-                                                    <div class="item-inner">
-                                                        <div class="item-title">不使用优惠</div>
-                                                    </div>
-                                                </label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="dgalaxy-btn-row">
-                                        <div class="close-popup dgalaxy-btn-short">取消</div>
-                                        <div class="close-popup dgalaxy-btn-short">确定</div>
+
+                                <!-- 优惠卷弹出层区域 -->
+                                <div class="popup data-popup-coupon dgalaxy-order-affirm-popup">
+                                    <div class="dgalaxy-popup-choose">
+                                        <div class="dgalaxy-title">优惠卷</div>
+                                        <div class="list-block dgalaxy-list-choose">
+                                            <ul>
+                                                <li>
+                                                    <label class="label-radio item-content">
+                                                        <input type="radio" name="my-radio" value="Books" checked="checked">
+                                                        <div class="item-inner">
+                                                            <div class="item-title">不使用优惠</div>
+                                                        </div>
+                                                    </label>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="dgalaxy-btn-row">
+                                            <div class="close-popup dgalaxy-btn-short">取消</div>
+                                            <div class="close-popup dgalaxy-btn-short">确定</div>
+                                        </div>
                                     </div>
                                 </div>
                             </li>
@@ -145,13 +150,13 @@
                                         <div id="@strGenderText" class="float-left text-line-single dgalaxy-phone"></div>
                                         <div class="clear"></div>
                                     </div>
-                                    <div class="txt-line-single-2 dgalaxy-address">身份证号码：<span id="@strIDCard"></span></div>
+                                    <div class="text-line-single-2 dgalaxy-address">身份证号码：<span id="@strIDCard"></span></div>
                                 </div>
 
                                 <!-- 保存选择旅客数据 -->
-                                <input id="@strNameValue" type="hidden" name="orderPassengers[@i].Name" required/>
-                                <input id="@strGenderValue" type="hidden" name="orderPassengers[@i].Gender" required/>
-                                <input id="@strIDCardValue" type="hidden" name="orderPassengers[@i].IDCard" required/>
+                                <input id="@strNameValue" type="hidden" name="orderPassengers[@i].Name" required />
+                                <input id="@strGenderValue" type="hidden" name="orderPassengers[@i].Gender" required />
+                                <input id="@strIDCardValue" type="hidden" name="orderPassengers[@i].IDCard" required />
                             </div>
                             <div class="dgalaxy-card-right">
                                 <i class="f7-icons font-15">chevron_right</i>
@@ -159,7 +164,7 @@
                             <div class="clear"></div>
                         </div>
                     }
-                    <div class="dgalaxy-card-adorn"></div>
+                    <div class="dgalaxy-adorn"></div>
                 </div>
             </div>
         </form>
