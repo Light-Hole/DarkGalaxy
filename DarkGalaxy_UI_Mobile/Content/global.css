@@ -1,0 +1,95 @@
+﻿/*通用样式*/
+.float-right {
+    float: right;
+}
+
+.float-left {
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+.no-margin {
+    margin: 0px !important;
+}
+
+.no-padding {
+    padding: 0px !important;
+}
+
+.no-border {
+    border: 0px !important;
+}
+
+.text-left{
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-line-single {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.text-line-single-2 {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.text-line-single-3 {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+.text-line-single-4 {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+}
+
+.font-15 {
+    font-size: 15px !important;
+}
+
+.font-20 {
+    font-size: 20px !important;
+}
+
+.font-25 {
+    font-size: 25px !important;
+}
+
+.width-full {
+    width: 100% !important;
+}
+
+.height-full {
+    height: 100% !important;
+}
+
+.width-max {
+    max-width: 100%;
+}
+
+.width-min {
+    min-width: 800px;
+}
+
+.height-min {
+    min-height: 600px;
+}
